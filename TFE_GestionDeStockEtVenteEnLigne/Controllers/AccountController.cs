@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using TFE_GestionDeStockEtVenteEnLigne.Models;
 using TFE_GestionDeStockEtVenteEnLigne.Models.AccountViewModels;
 using TFE_GestionDeStockEtVenteEnLigne.Services;
+using TFE_GestionDeStockEtVenteEnLigne.Data;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
@@ -24,6 +25,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
+        private TFEContext _context;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -31,7 +33,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory, TFEContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -39,6 +41,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _context = context;
         }
 
         //
@@ -117,11 +120,12 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 if (result.Succeeded)
                 {
                     Client c = new Client();
-                    c.Prenom = Request.Form["FirstName"]; 
-                    c.Nom= Request.Form["LastName"];
-                    c.Tel= Request.Form["NumTel"];
+                    c.Prenom = Request.Form["FirstName"];
+                    c.Nom = Request.Form["LastName"];
+                    c.Tel = Request.Form["NumTel"];
                     c.RegisterViewModelID = user.Id;
-                        
+                    _context.Add(c);
+                    await _context.SaveChangesAsync();
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

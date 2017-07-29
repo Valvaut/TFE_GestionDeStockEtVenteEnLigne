@@ -8,6 +8,9 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models.AccountViewModels
 {
     public class RegisterViewModel
     {
+        //[Required]
+        //public int ID { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

@@ -16,11 +16,10 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public String NumTva { get; set; }
         public String Tel { get; set; }
         public String NumeroClient{ get; set; }
-        public String MDP { get; set; }
 
 
         public ICollection<Domicile> Domicile { get; set; }
         public ICollection<Commande> Commande { get; set; }
-        public RegisterViewModel RegisterViewModel { get; set; }
+
     }
 }
