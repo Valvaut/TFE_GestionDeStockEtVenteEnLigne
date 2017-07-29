@@ -1,0 +1,89 @@
+@model TFE_GestionDeStockEtVenteEnLigne.Models.Produit
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Produit</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="ID" />
+        <dt>
+            @Html.DisplayNameFor(model => model.Ref)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ref)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Denomination)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Denomination)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Prix)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Prix)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuantiteEmballage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuantiteEmballage)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NBPieceEmballage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NBPieceEmballage)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TVA)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TVA)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CompteCompta)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CompteCompta)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Marque)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Marque)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuantiteStock)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuantiteStock)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Image)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

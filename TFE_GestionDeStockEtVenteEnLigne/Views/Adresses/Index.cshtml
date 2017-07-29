@@ -1,0 +1,70 @@
+@model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Adresse>
+
+@{
+    ViewData["Title"] = "Adresses";
+}
+
+<h2>Adresses</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Localite)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Rue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Numero)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NumeroBoite)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pays)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CodePostal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Comune)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Localite)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Numero)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroBoite)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pays)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CodePostal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comune)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

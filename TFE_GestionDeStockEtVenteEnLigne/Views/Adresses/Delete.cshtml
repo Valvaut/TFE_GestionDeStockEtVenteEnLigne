@@ -1,0 +1,65 @@
+@model TFE_GestionDeStockEtVenteEnLigne.Models.Adresse
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Adresse</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="ID" />
+        <dt>
+            @Html.DisplayNameFor(model => model.Localite)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Localite)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Rue)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Rue)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Numero)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Numero)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NumeroBoite)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NumeroBoite)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pays)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pays)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CodePostal)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CodePostal)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Comune)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Comune)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

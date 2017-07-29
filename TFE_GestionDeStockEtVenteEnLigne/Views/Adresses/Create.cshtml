@@ -1,0 +1,77 @@
+@model TFE_GestionDeStockEtVenteEnLigne.Models.Adresse
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Adresse</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Localite" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Localite" class="form-control" />
+                <span asp-validation-for="Localite" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Rue" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Rue" class="form-control" />
+                <span asp-validation-for="Rue" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Numero" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Numero" class="form-control" />
+                <span asp-validation-for="Numero" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="NumeroBoite" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="NumeroBoite" class="form-control" />
+                <span asp-validation-for="NumeroBoite" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Pays" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Pays" class="form-control" />
+                <span asp-validation-for="Pays" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CodePostal" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CodePostal" class="form-control" />
+                <span asp-validation-for="CodePostal" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Comune" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Comune" class="form-control" />
+                <span asp-validation-for="Comune" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

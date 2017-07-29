@@ -1,0 +1,77 @@
+@model TFE_GestionDeStockEtVenteEnLigne.Models.Horraire
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Horraire</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Lundi" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Lundi" class="form-control" />
+                <span asp-validation-for="Lundi" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Mardi" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Mardi" class="form-control" />
+                <span asp-validation-for="Mardi" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Mercredi" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Mercredi" class="form-control" />
+                <span asp-validation-for="Mercredi" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Jeudi" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Jeudi" class="form-control" />
+                <span asp-validation-for="Jeudi" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Vendredi" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Vendredi" class="form-control" />
+                <span asp-validation-for="Vendredi" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Samedi" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Samedi" class="form-control" />
+                <span asp-validation-for="Samedi" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Dimanche" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Dimanche" class="form-control" />
+                <span asp-validation-for="Dimanche" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

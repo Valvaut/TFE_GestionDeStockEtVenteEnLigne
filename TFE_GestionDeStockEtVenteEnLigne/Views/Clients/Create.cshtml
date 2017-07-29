@@ -1,0 +1,89 @@
+@model TFE_GestionDeStockEtVenteEnLigne.Models.Adaptateur.ClientAdaptateur
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Client</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Client.Nom" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Client.Nom" class="form-control" />
+                <span asp-validation-for="Client.Nom" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Client.Prenom" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Client.Prenom" class="form-control" />
+                <span asp-validation-for="Client.Prenom" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Client.Mail" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Client.Mail" class="form-control" />
+                <span asp-validation-for="Client.Mail" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Client.NumTva" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Client.NumTva" class="form-control" />
+                <span asp-validation-for="Client.NumTva" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Client.Tel" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Client.Tel" class="form-control" />
+                <span asp-validation-for="Client.Tel" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Client.NumeroClient" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Client.NumeroClient" class="form-control" />
+                <span asp-validation-for="Client.NumeroClient" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Client.Domicile" class="col-md-2 control-label"></label>
+            <div class="col-md-10 multiselect">
+                <div class="tab-pane">
+                    @if (Model.ListeAdresse.Count > 0)
+                    {
+                        @foreach (var item in Model.ListeAdresse)
+                        {
+                            <input type=checkbox name="addresse" value="@item.ID"> @item.Numero @item.NumeroBoite @item.Rue  @item.Localite<br /> @item.CodePostal  @item.Comune<br />
+                            <br />
+                        }
+                    }
+                    else
+                    {
+                        <span>Aucune addresse trouver!</span>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

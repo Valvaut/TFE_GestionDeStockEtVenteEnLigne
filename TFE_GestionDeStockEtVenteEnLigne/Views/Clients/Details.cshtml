@@ -1,0 +1,60 @@
+@model TFE_GestionDeStockEtVenteEnLigne.Models.Client
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Client</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nom)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Nom)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Prenom)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Prenom)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Mail)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Mail)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Adresse)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Adresse)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NumTva)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NumTva)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Tel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tel)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NumeroClient)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NumeroClient)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

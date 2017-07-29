@@ -1,0 +1,117 @@
+@model TFE_GestionDeStockEtVenteEnLigne.Models.Adaptateur.FournisseurAdaptateur
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Fournisseur</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Fournisseur.Nom" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Fournisseur.Nom" class="form-control" />
+                <span asp-validation-for="Fournisseur.Nom" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Fournisseur.Reference" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Fournisseur.Reference" class="form-control" />
+                <span asp-validation-for="Fournisseur.Reference" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Fournisseur.Mail" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Fournisseur.Mail" class="form-control" />
+                <span asp-validation-for="Fournisseur.Mail" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Fournisseur.Telephone" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Fournisseur.Telephone" class="form-control" />
+                <span asp-validation-for="Fournisseur.Telephone" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Fournisseur.Fax" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Fournisseur.Fax" class="form-control" />
+                <span asp-validation-for="Fournisseur.Fax" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Fournisseur.NumCompte" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Fournisseur.NumCompte" class="form-control" />
+                <span asp-validation-for="Fournisseur.NumCompte" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Fournisseur.NumTva" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Fournisseur.NumTva" class="form-control" />
+                <span asp-validation-for="Fournisseur.NumTva" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Fournisseur.Provients" class="col-md-2 control-label"></label>
+            <div class="col-md-10 multiselect">
+                <div class="tab-pane">
+                    @if (Model.ListAdresse.Count > 0)
+                    {
+                        @foreach (var item in Model.ListAdresse)
+                        {
+                            <input type=checkbox name="addresse" value="@item.ID"> @item.Numero @item.NumeroBoite @item.Rue  @item.Localite<br /> @item.CodePostal  @item.Comune<br />
+                            <br />
+                        }
+                    }
+                    else
+                    {
+                        <span>Aucune addresse trouver!</span>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Fournisseur.Representant" class="col-md-2 control-label"></label>
+            <div class="col-md-10 multiselect">
+                <div class="tab-pane">
+                    @if (Model.ListeRepresentant.Count > 0)
+                    {
+                        @foreach (var item in Model.ListeRepresentant)
+                        {
+                            <input type=checkbox name="Representant" value="@item.ID">@item.Nom @item.Prenom @item.Mail
+                            <br />
+                        }
+                    }
+                    else
+                    {
+                        <span>Aucun Representant trouver!</span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

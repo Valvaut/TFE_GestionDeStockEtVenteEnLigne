@@ -1,0 +1,41 @@
+@model TFE_GestionDeStockEtVenteEnLigne.Models.Commande
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Commande</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="ID" />
+        <dt>
+            @Html.DisplayNameFor(model => model.dateCommade)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.dateCommade)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EnCours)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EnCours)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Envoie)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Envoie)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

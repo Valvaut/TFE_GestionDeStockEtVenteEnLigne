@@ -1,0 +1,94 @@
+@model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Produit>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ref)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Denomination)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Prix)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.QuantiteEmballage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NBPieceEmballage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TVA)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CompteCompta)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Marque)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.QuantiteStock)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.Image)
+                </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ref)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Denomination)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prix)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuantiteEmballage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NBPieceEmballage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TVA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompteCompta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Marque)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuantiteStock)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Image)
+            </td>*@
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

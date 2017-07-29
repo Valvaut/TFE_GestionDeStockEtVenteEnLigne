@@ -1,0 +1,60 @@
+@model TFE_GestionDeStockEtVenteEnLigne.Models.Horraire
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Horraire</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Lundi)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Lundi)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Mardi)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Mardi)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Mercredi)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Mercredi)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Jeudi)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Jeudi)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Vendredi)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Vendredi)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Samedi)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Samedi)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Dimanche)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Dimanche)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

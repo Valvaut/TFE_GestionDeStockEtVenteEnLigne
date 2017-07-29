@@ -1,0 +1,98 @@
+@model TFE_GestionDeStockEtVenteEnLigne.Models.HorraireEventAdapter
+
+@{
+    ViewData["Title"] = "Accueil";
+}
+
+<h2>Accueil</h2>
+<h3>Horraires d'ouvertures</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Lundi
+            </th>
+            <th>
+                Mardi
+            </th>
+            <th>
+                Mercredi
+            </th>
+            <th>
+                Jeudi
+            </th>
+            <th>
+                Vendredi
+            </th>
+            <th>
+                Samedi
+            </th>
+            <th>
+                Dimanche
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Horraire)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Lundi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mardi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mercredi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Jeudi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vendredi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Samedi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dimanche)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<h3> Evenements</h3>
+<a asp-area="" asp-controller="Evenements" asp-action="Create">Create Events</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Date
+            </th>
+            <th>
+                Description
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ListEvent)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
