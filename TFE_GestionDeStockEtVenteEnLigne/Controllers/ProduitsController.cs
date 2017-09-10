@@ -5,14 +5,18 @@ using Microsoft.EntityFrameworkCore;
 using TFE_GestionDeStockEtVenteEnLigne.Data;
 using TFE_GestionDeStockEtVenteEnLigne.Models;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
+using System;
+
+
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
     public class ProduitsController : Controller
     {
         private readonly TFEContext _context;
+        private object getUserId;
 
         public ProduitsController(TFEContext context)
         {
@@ -20,10 +24,36 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         }
 
         // GET: Produits
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Produits.ToListAsync());
+        //}
+        public async Task<IActionResult> Index(string sortOrder,string searchStr)
         {
-            return View(await _context.Produits.ToListAsync());
+            ViewData["RefSort"] = String.IsNullOrEmpty(sortOrder) ? "ref_desc" : "";
+            ViewData["DenoSort"] = sortOrder == "Denomination" ? "deno_desc" : "Denomination";
+            ViewData["Filter"] = searchStr;
+
+            var produits = from f in _context.Produits select f;
+
+            if (!String.IsNullOrEmpty(searchStr))
+            {
+                produits = produits.Where(f => f.Ref.Contains(searchStr) || f.Denomination.Contains(searchStr));
+            }
+            switch (sortOrder)
+            {
+                case "ref_desc":
+                    produits = produits.OrderByDescending(f => f.Ref);break;
+                case "Denomination":
+                    produits = produits.OrderBy(f => f.Denomination);break;
+                case "deno_desc":
+                    produits = produits.OrderByDescending(f => f.Denomination);break;
+                default:
+                    produits = produits.OrderBy(f => f.Ref);break;
+            }
+            return View(await produits.ToListAsync());
         }
+
 
         // GET: Produits/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -45,6 +75,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         }
 
         // GET: Produits/Create
+        //[Authorize(Roles = "gestionnaire")]
         public async Task<IActionResult> Create()
         {
             ProduitCatAdapter pc = new ProduitCatAdapter();
@@ -60,6 +91,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //[Authorize(Roles = "gestionnaire")]
         public async Task<IActionResult> Create( ProduitCatAdapter produitcatAdapter)
         {
            
@@ -105,6 +137,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         }
 
         // GET: Produits/Edit/5
+        [Authorize(Roles = "gestionnaire")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -125,6 +158,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "gestionnaire")]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Ref,Denomination,Prix,QuantiteEmballage,NBPieceEmballage,TVA,CompteCompta,Description,Marque,QuantiteStock,Image")] Produit produit)
         {
             if (id != produit.ID)
@@ -156,6 +190,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         }
 
         // GET: Produits/Delete/5
+        [Authorize(Roles = "gestionnaire")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -176,6 +211,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         // POST: Produits/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "gestionnaire")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var produit = await _context.Produits.SingleOrDefaultAsync(m => m.ID == id);
@@ -188,5 +224,6 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         {
             return _context.Produits.Any(e => e.ID == id);
         }
+
     }
 }

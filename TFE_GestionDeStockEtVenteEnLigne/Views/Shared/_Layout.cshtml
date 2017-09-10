@@ -33,24 +33,40 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Horraires" asp-action="Index">Accueil</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">Mon Panier</a></li>
-                    <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            Gestion <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a asp-area="" asp-controller="Adresses" asp-action="Index">Adresses</a></li>
-                            <li><a asp-area="" asp-controller="Attributs" asp-action="Index">Attributs</a></li>
-                            <li><a asp-area="" asp-controller="Categories" asp-action="Index">Categories</a></li>
-                            <li><a asp-area="" asp-controller="Clients" asp-action="Index">Clients</a></li>
-                            <li><a asp-area="" asp-controller="Commandes" asp-action="Index">Commandes</a></li>
-                            <li><a asp-area="" asp-controller="Factures" asp-action="Index">Factures</a></li>
-                            <li><a asp-area="" asp-controller="Fournisseurs" asp-action="Index">Fournisseurs</a></li>
-                            <li><a asp-area="" asp-controller="MotClefs" asp-action="Index">Mot Clefs</a></li>
-                            <li><a asp-area="" asp-controller="Representants" asp-action="Index">Representants</a></li>
+                   
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (User.IsInRole("gestionnaire"))
+                        {
+                            <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    Gestion <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a asp-area="" asp-controller="Adresses" asp-action="Index">Adresses</a></li>
+                                    <li><a asp-area="" asp-controller="Attributs" asp-action="Index">Attributs</a></li>
+                                    <li><a asp-area="" asp-controller="Categories" asp-action="Index">Categories</a></li>
+                                    <li><a asp-area="" asp-controller="Clients" asp-action="Index">Clients</a></li>
+                                    <li><a asp-area="" asp-controller="Commandes" asp-action="Index">Commandes</a></li>
+                                    <li><a asp-area="" asp-controller="Factures" asp-action="Index">Factures</a></li>
+                                    <li><a asp-area="" asp-controller="Fournisseurs" asp-action="Index">Fournisseurs</a></li>
+                                    <li><a asp-area="" asp-controller="MotClefs" asp-action="Index">Mot Clefs</a></li>
+                                    <li><a asp-area="" asp-controller="Representants" asp-action="Index">Representants</a></li>
+                                    <li><a asp-area="" asp-controller="Produits" asp-action="Index">Produits</a></li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
                             <li><a asp-area="" asp-controller="Produits" asp-action="Index">Produits</a></li>
-                        </ul>
-                    </li>
+                        }
+                        <li><a asp-area="" asp-controller="Paniers" asp-action="Index">Mon Panier</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-area="" asp-controller="Produits" asp-action="Index">Produits</a></li>
+                    }
+
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>

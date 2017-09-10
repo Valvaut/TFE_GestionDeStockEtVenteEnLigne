@@ -9,6 +9,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
     {
         public int ID { get; set; }
         public String Nom { get; set; } 
+        public String Mesure { get; set; }
 
         public ICollection<Valeur> Valeur { get; set; }
     }

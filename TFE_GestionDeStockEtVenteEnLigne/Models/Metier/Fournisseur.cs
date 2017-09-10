@@ -15,6 +15,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public String Fax { get; set; }
         public String NumCompte { get; set; }
         public String NumTva { get; set; }
+        public String SiteNet { get; set; }
 
         public ICollection<Implantation> Implanter { get; set; }
         public ICollection<Representant> Representant { get; set; }

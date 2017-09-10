@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using TFE_GestionDeStockEtVenteEnLigne.Models.Metier;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Models
 {
@@ -26,6 +26,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
 
         public ICollection<Possede> Possede { get; set; }
         public ICollection <ProduitMotClef>MotClef { get; set; }
+        public ICollection<Panier> Panier { get; set; }
         public Categorie Categorie { get; set; }
         public ICollection<Valeur> Valeur { get; set; }
         public ICollection<Provient> Provients { get; set; }

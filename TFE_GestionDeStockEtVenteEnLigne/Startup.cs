@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using TFE_GestionDeStockEtVenteEnLigne.Data;
 using TFE_GestionDeStockEtVenteEnLigne.Models;
 using TFE_GestionDeStockEtVenteEnLigne.Services;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace TFE_GestionDeStockEtVenteEnLigne
 {
@@ -52,8 +53,16 @@ namespace TFE_GestionDeStockEtVenteEnLigne
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
+            //SESSION
             services.AddMvc();
+            services.AddDistributedMemoryCache();
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.CookieName = "Session";
+            });
+
+          
+            services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -63,6 +72,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,TFEContext context)
         {
+            app.UseSession();
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -79,6 +89,8 @@ namespace TFE_GestionDeStockEtVenteEnLigne
 
             app.UseStaticFiles();
 
+            app.UseSession();
+
             app.UseIdentity();
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
@@ -90,6 +102,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne
                     template: "{controller=Horraires}/{action=Index}/{id?}");
             });
             DbInitializer.Initialize(context);
+           // DbInitializer.Initialize2(app.ApplicationServices);
         }
     }
 }

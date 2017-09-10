@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TFE_GestionDeStockEtVenteEnLigne.Models.AccountViewModels;
+using TFE_GestionDeStockEtVenteEnLigne.Models.Metier;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Models
 {
@@ -20,6 +21,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
 
         public ICollection<Domicile> Domicile { get; set; }
         public ICollection<Commande> Commande { get; set; }
+        public ICollection<Panier> Panier { get; set; }
 
     }
 }

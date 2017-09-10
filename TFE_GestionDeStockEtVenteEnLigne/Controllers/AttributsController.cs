@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TFE_GestionDeStockEtVenteEnLigne.Data;
 using TFE_GestionDeStockEtVenteEnLigne.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
+    //[Authorize(Roles = "gestionnaire")]
     public class AttributsController : Controller
     {
         private readonly TFEContext _context;
@@ -54,7 +56,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Nom")] Attribut attribut)
+        public async Task<IActionResult> Create([Bind("ID,Nom,Mesure")] Attribut attribut)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +88,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Nom")] Attribut attribut)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Nom,Mesure")] Attribut attribut)
         {
             if (id != attribut.ID)
             {

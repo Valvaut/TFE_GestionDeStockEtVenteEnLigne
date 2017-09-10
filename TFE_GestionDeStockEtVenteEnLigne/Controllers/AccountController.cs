@@ -13,6 +13,8 @@ using TFE_GestionDeStockEtVenteEnLigne.Models;
 using TFE_GestionDeStockEtVenteEnLigne.Models.AccountViewModels;
 using TFE_GestionDeStockEtVenteEnLigne.Services;
 using TFE_GestionDeStockEtVenteEnLigne.Data;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using TFE_GestionDeStockEtVenteEnLigne.Models.Metier;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
@@ -21,6 +23,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
@@ -33,7 +36,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory, TFEContext context)
+            ILoggerFactory loggerFactory, TFEContext context, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -42,6 +45,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _context = context;
+            _roleManager = roleManager;
         }
 
         //
@@ -119,6 +123,18 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    IdentityRole role = new IdentityRole { Name = "client", NormalizedName = "CLIENT" };
+                    bool roleExist = await _roleManager.RoleExistsAsync(role.NormalizedName);
+                    if (!roleExist)//si le role nexiste pas on le crée
+                    {
+                        IdentityResult RoleResult = await _roleManager.CreateAsync(role);
+                        if (RoleResult.Succeeded)//puis l'ajoute a l'utilisateur
+                            await _userManager.AddToRoleAsync(user, role.Name);
+                    }
+                    else//sinon on l'ajoute directement a l'utilisateur
+                    {
+                        await _userManager.AddToRoleAsync(user, role.Name);
+                    }
                     Client c = new Client();
                     c.Prenom = Request.Form["FirstName"];
                     c.Nom = Request.Form["LastName"];
@@ -482,7 +498,16 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
         }
-
+        public async Task<IActionResult> AddPanier(int id)
+        {
+            var IdUser = _userManager.GetUserId(User);
+            Panier Panier= new Panier();
+            Panier.RegisterViewModelID = IdUser;
+            Panier.ProduitID = id;
+            _context.Add(Panier);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index","Produits");
+        }
         #endregion
     }
 }

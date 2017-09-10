@@ -6,28 +6,27 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TFE_GestionDeStockEtVenteEnLigne.Data;
-using TFE_GestionDeStockEtVenteEnLigne.Models;
-using Microsoft.AspNetCore.Authorization;
+using TFE_GestionDeStockEtVenteEnLigne.Models.Metier;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
-    [Authorize(Roles = "gestionnaire")]
-    public class AdressesController : Controller
+    public class PaniersController : Controller
     {
         private readonly TFEContext _context;
 
-        public AdressesController(TFEContext context)
+        public PaniersController(TFEContext context)
         {
             _context = context;    
         }
 
-        // GET: Adresses
+        // GET: Paniers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Adresses.ToListAsync());
+            var tFEContext = _context.Panier.Include(p => p.Produit);
+            return View(await tFEContext.ToListAsync());
         }
 
-        // GET: Adresses/Details/5
+        // GET: Paniers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,39 +34,42 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 return NotFound();
             }
 
-            var adresse = await _context.Adresses
+            var panier = await _context.Panier
+                .Include(p => p.Produit)
                 .SingleOrDefaultAsync(m => m.ID == id);
-            if (adresse == null)
+            if (panier == null)
             {
                 return NotFound();
             }
 
-            return View(adresse);
+            return View(panier);
         }
 
-        // GET: Adresses/Create
+        // GET: Paniers/Create
         public IActionResult Create()
         {
+            ViewData["ProduitID"] = new SelectList(_context.Produits, "ID", "ID");
             return View();
         }
 
-        // POST: Adresses/Create
+        // POST: Paniers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Localite,Rue,Numero,NumeroBoite,Pays,CodePostal,Comune")] Adresse adresse)
+        public async Task<IActionResult> Create([Bind("ID,RegisterViewModelID,ProduitID")] Panier panier)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(adresse);
+                _context.Add(panier);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(adresse);
+            ViewData["ProduitID"] = new SelectList(_context.Produits, "ID", "ID", panier.ProduitID);
+            return View(panier);
         }
 
-        // GET: Adresses/Edit/5
+        // GET: Paniers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,22 +77,23 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 return NotFound();
             }
 
-            var adresse = await _context.Adresses.SingleOrDefaultAsync(m => m.ID == id);
-            if (adresse == null)
+            var panier = await _context.Panier.SingleOrDefaultAsync(m => m.ID == id);
+            if (panier == null)
             {
                 return NotFound();
             }
-            return View(adresse);
+            ViewData["ProduitID"] = new SelectList(_context.Produits, "ID", "ID", panier.ProduitID);
+            return View(panier);
         }
 
-        // POST: Adresses/Edit/5
+        // POST: Paniers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Localite,Rue,Numero,NumeroBoite,Pays,CodePostal,Comune")] Adresse adresse)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,RegisterViewModelID,ProduitID")] Panier panier)
         {
-            if (id != adresse.ID)
+            if (id != panier.ID)
             {
                 return NotFound();
             }
@@ -99,12 +102,12 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             {
                 try
                 {
-                    _context.Update(adresse);
+                    _context.Update(panier);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AdresseExists(adresse.ID))
+                    if (!PanierExists(panier.ID))
                     {
                         return NotFound();
                     }
@@ -115,10 +118,11 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return View(adresse);
+            ViewData["ProduitID"] = new SelectList(_context.Produits, "ID", "ID", panier.ProduitID);
+            return View(panier);
         }
 
-        // GET: Adresses/Delete/5
+        // GET: Paniers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -126,30 +130,31 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 return NotFound();
             }
 
-            var adresse = await _context.Adresses
+            var panier = await _context.Panier
+                .Include(p => p.Produit)
                 .SingleOrDefaultAsync(m => m.ID == id);
-            if (adresse == null)
+            if (panier == null)
             {
                 return NotFound();
             }
 
-            return View(adresse);
+            return View(panier);
         }
 
-        // POST: Adresses/Delete/5
+        // POST: Paniers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var adresse = await _context.Adresses.SingleOrDefaultAsync(m => m.ID == id);
-            _context.Adresses.Remove(adresse);
+            var panier = await _context.Panier.SingleOrDefaultAsync(m => m.ID == id);
+            _context.Panier.Remove(panier);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool AdresseExists(int id)
+        private bool PanierExists(int id)
         {
-            return _context.Adresses.Any(e => e.ID == id);
+            return _context.Panier.Any(e => e.ID == id);
         }
     }
 }

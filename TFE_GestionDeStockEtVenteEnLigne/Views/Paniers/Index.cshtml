@@ -1,4 +1,4 @@
-@model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Attribut>
+@model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Metier.Panier>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,22 +12,23 @@
 <table class="table">
     <thead>
         <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.RegisterViewModelID)
+                </th>
             <th>
-                @Html.DisplayNameFor(model => model.Nom)
+                @Html.DisplayNameFor(model => model.Produit)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Mesure)
-            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Nom)
+                @Html.DisplayFor(modelItem => item.RegisterViewModelID)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Mesure)
+                @Html.DisplayFor(modelItem => item.Produit.ID)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |

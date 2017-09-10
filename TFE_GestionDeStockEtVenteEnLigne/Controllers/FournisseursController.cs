@@ -9,9 +9,11 @@ using TFE_GestionDeStockEtVenteEnLigne.Data;
 using TFE_GestionDeStockEtVenteEnLigne.Models;
 using TFE_GestionDeStockEtVenteEnLigne.Models.Adaptateur;
 using TFE_GestionDeStockEtVenteEnLigne.Models.Metier;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
+    //[Authorize(Roles = "gestionnaire")]
     public class FournisseursController : Controller
     {
         private readonly TFEContext _context;

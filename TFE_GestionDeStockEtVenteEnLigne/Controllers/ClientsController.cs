@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using TFE_GestionDeStockEtVenteEnLigne.Data;
 using TFE_GestionDeStockEtVenteEnLigne.Models;
 using TFE_GestionDeStockEtVenteEnLigne.Models.Adaptateur;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
+    [Authorize(Roles = "gestionnaire")]
     public class ClientsController : Controller
     {
         private readonly TFEContext _context;

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +12,7 @@ using TFE_GestionDeStockEtVenteEnLigne.Services;
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
     [Authorize]
+    //[Authorize(Roles = "gestionnaire")]
     public class ManageController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

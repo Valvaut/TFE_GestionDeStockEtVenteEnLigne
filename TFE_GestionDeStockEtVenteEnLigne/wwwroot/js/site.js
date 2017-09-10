@@ -18,3 +18,4 @@ jQuery.fn.multiselect = function () {
         });
     });
 };
+

@@ -1,4 +1,4 @@
-@model TFE_GestionDeStockEtVenteEnLigne.Models.Attribut
+@model TFE_GestionDeStockEtVenteEnLigne.Models.Metier.Panier
 
 @{
     ViewData["Title"] = "Create";
@@ -8,19 +8,20 @@
 
 <form asp-action="Create">
     <div class="form-horizontal">
-        <h4>Attribut</h4>
+        <h4>Panier</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Nom" class="col-md-2 control-label"></label>
+            <label asp-for="RegisterViewModelID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Nom" class="form-control" />
-                <span asp-validation-for="Nom" class="text-danger"></span>
+                <input asp-for="RegisterViewModelID" class="form-control" />
+                <span asp-validation-for="RegisterViewModelID" class="text-danger"></span>
             </div>
-            <label asp-for="Mesure" class="col-md-2 control-label"></label>
+        </div>
+        <div class="form-group">
+            <label asp-for="ProduitID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Mesure" class="form-control" />
-                <span asp-validation-for="Mesure" class="text-danger"></span>
+                <select asp-for="ProduitID" class ="form-control" asp-items="ViewBag.ProduitID"></select>
             </div>
         </div>
         <div class="form-group">
@@ -35,6 +36,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

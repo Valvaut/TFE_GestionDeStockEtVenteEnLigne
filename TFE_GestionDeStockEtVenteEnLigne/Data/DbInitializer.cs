@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
-using System.Threading.Tasks;
 using TFE_GestionDeStockEtVenteEnLigne.Models;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Data
 {
-    public class DbInitializer
+    public class DbInitializer 
     {
+
+
         public static void Initialize(TFEContext context)
         {
             context.Database.EnsureCreated();
@@ -34,7 +37,55 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data
                 context.Adresses.Add(a);
             }
             context.SaveChanges();
-           
+            var Attribut = new Attribut[]
+            {
+                new Attribut{ Nom= "a",Mesure = "a"}
+            };
+            foreach (Attribut a in Attribut)
+            {
+                context.Attributs.Add(a);
+            }
+            context.SaveChanges();
+
+            var MotClef = new MotClef[]
+            {
+                new MotClef{ Valeur= "a"}
+            };
+            foreach (MotClef a in MotClef)
+            {
+                context.MotClefs.Add(a);
+            }
+            context.SaveChanges();
+
+            var Fournisseur = new Fournisseur[]
+            {
+                new Fournisseur{ Nom= "a",Reference="a",Mail="a",Telephone="a",Fax="a",NumCompte="a",SiteNet="a",NumTva="a" }
+            };
+            foreach (Fournisseur a in Fournisseur)
+            {
+                context.Fournisseurs.Add(a);
+            }
+            context.SaveChanges();
+            var cat = new Categorie[]
+            {
+                new Categorie{ Nom="a" }
+            };
+            foreach (Categorie a in cat)
+            {
+                context.Categories.Add(a);
+            }
+            context.SaveChanges();
+         
+        }
+        public static async void Initialize2(IServiceProvider services)
+        {
+            using (var scope = services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var manager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+                var user = new ApplicationUser { UserName = "michele.tinant@skynet.be", Email = "michele.tinant@skynet.be" };
+                var result = await manager.CreateAsync(user, "password");
+            }
         }
     }
 }
