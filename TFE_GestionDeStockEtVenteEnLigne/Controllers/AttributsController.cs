@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
-    //[Authorize(Roles = "gestionnaire")]
+    [Authorize(Roles = "gestionnaire")]
     public class AttributsController : Controller
     {
         private readonly TFEContext _context;

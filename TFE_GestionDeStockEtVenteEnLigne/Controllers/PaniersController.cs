@@ -7,22 +7,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TFE_GestionDeStockEtVenteEnLigne.Data;
 using TFE_GestionDeStockEtVenteEnLigne.Models.Metier;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using TFE_GestionDeStockEtVenteEnLigne.Models;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
+    [Authorize(Roles = "gestionnaire,client")]
     public class PaniersController : Controller
     {
         private readonly TFEContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public PaniersController(TFEContext context)
+        public PaniersController(UserManager<ApplicationUser> userManager,TFEContext context)
         {
-            _context = context;    
+            _context = context;
+            _userManager = userManager;
         }
 
         // GET: Paniers
         public async Task<IActionResult> Index()
         {
-            var tFEContext = _context.Panier.Include(p => p.Produit);
+            var IdUser = _userManager.GetUserId(User);
+            var tFEContext = _context.Panier.Include(p => p.Produit).Where(p=>p.RegisterViewModelID == IdUser);
             return View(await tFEContext.ToListAsync());
         }
 

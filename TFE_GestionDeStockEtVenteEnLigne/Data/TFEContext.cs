@@ -36,6 +36,6 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data
         public DbSet<Horraire> Horraire { get; set; }
         public DbSet<Evenement> Evenement { get; set; }
         public DbSet<Panier> Panier { get; set; }
-
+        public object HttpContext { get; internal set; }
     }
 }

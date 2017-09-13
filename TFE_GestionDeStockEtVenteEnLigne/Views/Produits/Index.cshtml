@@ -95,16 +95,18 @@
                 @Html.DisplayFor(modelItem => item.Image)
             </td>*@
             <td>
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a>
             @if (User.Identity.IsAuthenticated)
              {
                 if (User.IsInRole("gestionnaire"))
                 {
                     <a asp-action="Edit" asp-route-id="@item.ID">Edit</a><span> |</span>
-                    <a asp-action="Details" asp-route-id="@item.ID">Details</a>
+                    
                 }
-                <form>
-                    <a asp-controller="Account" asp-action="AddPanier" asp-route-id="@item.ID">Ajouter au panier</a>
-                    <input type="number" />
+                <form asp-controller="Account" asp-action="AddPanier" asp-route-id="@item.ID" method="post">
+                    <input type="number" name="Quantite" min="1" />
+                    <input type="submit" value="Ajouter au panier" class="btn btn-default" />
+                    
                 </form>
                 
              }

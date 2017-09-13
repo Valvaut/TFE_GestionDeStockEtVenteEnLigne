@@ -502,6 +502,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         {
             var IdUser = _userManager.GetUserId(User);
             Panier Panier= new Panier();
+            Panier.Quantite = int.Parse(Request.Form["Quantite"]);
             Panier.RegisterViewModelID = IdUser;
             Panier.ProduitID = id;
             _context.Add(Panier);

@@ -37,12 +37,33 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             }
 
             var client = await _context.Clients
+                .Include(c=>c.Domicile)
+                .Include(c=> c.Commande)
+                .ThenInclude(com=>com.Possede)
                 .SingleOrDefaultAsync(m => m.ID == id);
             if (client == null)
             {
                 return NotFound();
             }
+            //Adresse adresse;
+            foreach (var c in client.Domicile)
+            {
+                c.Adresse = await _context.Adresses.SingleOrDefaultAsync(a => a.ID == c.AdresseID);
+            }
 
+            foreach (var c in client.Commande)
+            {
+                foreach (var i in c.Possede)
+                {
+                    i.Produit = await _context.Produits
+                               .Include(p => p.Categorie)
+                                   .ThenInclude(d => d.CategorieParent)
+                               .Include(p => p.MotClef)
+                                   .ThenInclude(mp => mp.MotClef)
+                               .AsNoTracking()
+                               .SingleOrDefaultAsync(m => m.ID == i.ProduitID);
+                }
+            }
             return View(client);
         }
 

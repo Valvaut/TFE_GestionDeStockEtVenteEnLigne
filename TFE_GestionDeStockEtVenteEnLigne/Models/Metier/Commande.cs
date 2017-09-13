@@ -8,6 +8,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
     public class Commande
     {
         public int ID { get; set; }
+        public int ClientId { get; set; }
         public DateTime DateCommade{ get; set; }
         public bool EnCours { get; set; }
         public DateTime Envoie { get; set; }

@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
-    //[Authorize(Roles = "gestionnaire")]
+    [Authorize(Roles = "gestionnaire")]
     public class FournisseursController : Controller
     {
         private readonly TFEContext _context;

@@ -8,23 +8,30 @@ using Microsoft.EntityFrameworkCore;
 using TFE_GestionDeStockEtVenteEnLigne.Data;
 using TFE_GestionDeStockEtVenteEnLigne.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
-    //[Authorize(Roles = "gestionnaire")]
+    [Authorize(Roles = "gestionnaire,client")]
     public class CommandesController : Controller
     {
         private readonly TFEContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CommandesController(TFEContext context)
+        public CommandesController(UserManager<ApplicationUser> userManager, TFEContext context)
         {
-            _context = context;    
+            _context = context;
+            _userManager = userManager;
         }
 
         // GET: Commandes
-        public async Task<IActionResult> Index()
+        public  IActionResult Index()
         {
-            return View(await _context.Commandes.ToListAsync());
+            var IdUser = _userManager.GetUserId(User);
+            var IdClient = _context.Clients.Where(c => c.RegisterViewModelID == IdUser).ToArray();
+            var listeCommande =  _context.Commandes.Where(c=>c.ClientId== IdClient[0].ID);
+
+            return View(listeCommande);
         }
 
         // GET: Commandes/Details/5
@@ -35,19 +42,65 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 return NotFound();
             }
 
-            var commande = await _context.Commandes
-                .SingleOrDefaultAsync(m => m.ID == id);
+            //var commande = await _context.Commandes.Include(p=>p.Possede).ThenInclude(pr=>pr.produits)
+            //    .SingleOrDefaultAsync(m => m.ID == id);
+            Commande commande = await _context.Commandes.Include(c => c.Possede).SingleOrDefaultAsync(m => m.ID == id);
+            Produit produit;
             if (commande == null)
             {
                 return NotFound();
             }
+            foreach (var i in commande.Possede)
+            {
+                 produit = await _context.Produits
+                    .Include(p => p.Categorie)
+                        .ThenInclude(c => c.CategorieParent)
+                    .Include(p => p.MotClef)
+                        .ThenInclude(mp => mp.MotClef)
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync(m => m.ID == i.ProduitID);
+                i.Produit = produit;
+            }
+            
 
             return View(commande);
         }
 
         // GET: Commandes/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var IdUser = _userManager.GetUserId(User);
+            var IdClient = _context.Clients.Where(c => c.RegisterViewModelID == IdUser);
+            var tFEContext = _context.Panier.Include(p => p.Produit).Where(p => p.RegisterViewModelID == IdUser).ToArray();
+            var Client = IdClient.ToArray();
+            Commande commande = new Commande();
+            commande.ClientId = Client[0].ID;
+            commande.DateCommade = DateTime.Now;
+            if (User.IsInRole("gestionnaire"))
+                commande.EnCours = false;
+            else
+                commande.EnCours = true;
+            _context.Add(commande);
+            await _context.SaveChangesAsync();
+            int idCommande = commande.ID;
+            foreach (var e in tFEContext)
+            {
+                Possede p = new Possede();
+                p.CommandeID = idCommande;
+                p.ProduitID = e.ProduitID;
+                p.Quantite = e.Quantite;
+                _context.Add(p);
+            }
+            await _context.SaveChangesAsync();
+            Facture f = new Facture();
+            f.CommandeID = idCommande;
+            _context.Add(f);
+            await _context.SaveChangesAsync();
+
+            var panier = _context.Panier.Where(p => p.RegisterViewModelID == IdUser);
+            _context.Panier.RemoveRange(panier);
+            await _context.SaveChangesAsync();
+
             return View();
         }
 

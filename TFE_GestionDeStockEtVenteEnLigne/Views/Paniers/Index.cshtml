@@ -12,13 +12,24 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.RegisterViewModelID)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegisterViewModelID)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Produit)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantite)
+            </th>
+            <th>
+                Image
+            </th>
+            <th>
+                Prix unitaire
+            </th>
+            <th>
+                Prix
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -31,11 +42,36 @@
                 @Html.DisplayFor(modelItem => item.Produit.ID)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Quantite)
+            </td>
+            <td>
+                @{
+                    var base64 = Convert.ToBase64String(item.Produit.Image);
+                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                    <img class="imagePetite" src="@imgSrc" id="myBtn" />
+                }
+                @*@Html.DisplayFor(modelItem => item.Produit.Image)*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produit.Prix)
+            </td>
+            <td>
+                @{ var prixQuantite = (item.Produit.Prix * @item.Quantite); } 
+                
+            </td>
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
             </td>
         </tr>
 }
+       
     </tbody>
 </table>
+
+    Total:
+
+<form>
+    <input asp-controller="Commandes" asp-action="Create" type="submit"  value="Valider Commande" method="get"/>
+</form>

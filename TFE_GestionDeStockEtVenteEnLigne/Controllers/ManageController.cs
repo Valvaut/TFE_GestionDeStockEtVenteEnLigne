@@ -12,7 +12,6 @@ using TFE_GestionDeStockEtVenteEnLigne.Services;
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
     [Authorize]
-    //[Authorize(Roles = "gestionnaire")]
     public class ManageController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

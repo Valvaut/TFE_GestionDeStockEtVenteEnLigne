@@ -72,6 +72,8 @@ namespace TFE_GestionDeStockEtVenteEnLigne
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,TFEContext context)
         {
+            app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
+            //app.UseStatusCodePages();
             app.UseSession();
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();

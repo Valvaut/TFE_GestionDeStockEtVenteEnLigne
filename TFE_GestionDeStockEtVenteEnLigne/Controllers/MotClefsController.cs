@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
-    //[Authorize(Roles = "gestionnaire")]
+    [Authorize(Roles = "gestionnaire")]
     public class MotClefsController : Controller
     {
         private readonly TFEContext _context;
