@@ -38,6 +38,8 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 
             var facture = await _context.Factures
                 .Include(f => f.Commande)
+                    .ThenInclude(c=>c.Possede)
+                        .ThenInclude(p=>p.Produit)
                 .SingleOrDefaultAsync(m => m.ID == id);
             if (facture == null)
             {

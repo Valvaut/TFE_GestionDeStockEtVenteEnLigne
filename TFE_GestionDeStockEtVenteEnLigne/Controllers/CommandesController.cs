@@ -9,6 +9,7 @@ using TFE_GestionDeStockEtVenteEnLigne.Data;
 using TFE_GestionDeStockEtVenteEnLigne.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using TFE_GestionDeStockEtVenteEnLigne.Models.Adaptateur;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
@@ -29,7 +30,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         {
             var IdUser = _userManager.GetUserId(User);
             var IdClient = _context.Clients.Where(c => c.RegisterViewModelID == IdUser).ToArray();
-            var listeCommande =  _context.Commandes.Where(c=>c.ClientId== IdClient[0].ID);
+            var listeCommande =  _context.Commandes.Where(c=>c.ClientID== IdClient[0].ID);
 
             return View(listeCommande);
         }
@@ -67,40 +68,8 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         }
 
         // GET: Commandes/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            var IdUser = _userManager.GetUserId(User);
-            var IdClient = _context.Clients.Where(c => c.RegisterViewModelID == IdUser);
-            var tFEContext = _context.Panier.Include(p => p.Produit).Where(p => p.RegisterViewModelID == IdUser).ToArray();
-            var Client = IdClient.ToArray();
-            Commande commande = new Commande();
-            commande.ClientId = Client[0].ID;
-            commande.DateCommade = DateTime.Now;
-            if (User.IsInRole("gestionnaire"))
-                commande.EnCours = false;
-            else
-                commande.EnCours = true;
-            _context.Add(commande);
-            await _context.SaveChangesAsync();
-            int idCommande = commande.ID;
-            foreach (var e in tFEContext)
-            {
-                Possede p = new Possede();
-                p.CommandeID = idCommande;
-                p.ProduitID = e.ProduitID;
-                p.Quantite = e.Quantite;
-                _context.Add(p);
-            }
-            await _context.SaveChangesAsync();
-            Facture f = new Facture();
-            f.CommandeID = idCommande;
-            _context.Add(f);
-            await _context.SaveChangesAsync();
-
-            var panier = _context.Panier.Where(p => p.RegisterViewModelID == IdUser);
-            _context.Panier.RemoveRange(panier);
-            await _context.SaveChangesAsync();
-
             return View();
         }
 
@@ -109,15 +78,52 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,dateCommade,EnCours,Envoie")] Commande commande)
+        public async Task<IActionResult> Create( CommandeAdresseAdaptateur Adaptateur)
         {
             if (ModelState.IsValid)
             {
+                //ajout de l'adresse dans la bd
+                _context.Add(Adaptateur.Adresse);
+                await _context.SaveChangesAsync();
+                //récup des infoi utilisateur et du panier
+                var IdUser = _userManager.GetUserId(User);
+                var IdClient = _context.Clients.Where(c => c.RegisterViewModelID == IdUser);
+                var tFEContext = _context.Panier.Include(p => p.Produit).Where(p => p.RegisterViewModelID == IdUser).ToArray();
+                var Client = IdClient.ToArray();
+                //création de la comande
+                Commande commande = new Commande();
+                commande.AdresseID = Adaptateur.Adresse.ID;
+                commande.ClientID = Client[0].ID;
+                commande.DateCommade = DateTime.Now;
+                if (User.IsInRole("gestionnaire"))
+                    commande.EnCours = false;
+                else
+                    commande.EnCours = true;
                 _context.Add(commande);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                //ajout des produit a la commande
+                int idCommande = commande.ID;
+                foreach (var e in tFEContext)
+                {
+                    Possede p = new Possede();
+                    p.CommandeID = idCommande;
+                    p.ProduitID = e.ProduitID;
+                    e.Produit.QuantiteStock = e.Produit.QuantiteStock -e.Quantite;
+                    p.Quantite = e.Quantite;
+                    _context.Add(p);
+                }
+                await _context.SaveChangesAsync();
+                //creation de la facture
+                Facture f = new Facture();
+                f.CommandeID = idCommande;
+                _context.Add(f);
+                await _context.SaveChangesAsync();
+                //vidage du panier
+                var panier = _context.Panier.Where(p => p.RegisterViewModelID == IdUser);
+                _context.Panier.RemoveRange(panier);
+                await _context.SaveChangesAsync();
             }
-            return View(commande);
+            return RedirectToAction("Index","Commandes");
         }
 
         // GET: Commandes/Edit/5

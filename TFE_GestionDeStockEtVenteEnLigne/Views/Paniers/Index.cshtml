@@ -57,6 +57,7 @@
             </td>
             <td>
                 @{ var prixQuantite = (item.Produit.Prix * @item.Quantite); } 
+                @prixQuantite
                 
             </td>
             <td>
@@ -69,8 +70,14 @@
        
     </tbody>
 </table>
-
-    Total:
+@{ 
+    int total=0;
+    foreach (var item in Model)
+    {
+        total += (item.Produit.Prix * item.Quantite);
+    }
+}
+    total: @total
 
 <form>
     <input asp-controller="Commandes" asp-action="Create" type="submit"  value="Valider Commande" method="get"/>

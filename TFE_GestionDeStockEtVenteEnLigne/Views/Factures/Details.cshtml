@@ -30,6 +30,96 @@
         </dd>
     </dl>
 </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewBag.RefSort">
+                    Ref
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewBag.DenoSort">
+                   Denomination
+                </a>
+            </th>
+            <th>
+                Prix
+            </th>
+            <th>
+                QuantiteEmballage
+            </th>
+            <th>
+                NBPieceEmballage
+            </th>
+            <th>
+               TVA
+            </th>
+            <th>
+               CompteCompta
+            </th>
+            <th>
+               Description
+            </th>
+            <th>
+                Marque
+            </th>
+            <th>
+                Quantite
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>*@
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Commande.Possede) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produit.Ref)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produit.Denomination)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produit.Prix)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produit.QuantiteEmballage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produit.NBPieceEmballage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produit.TVA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produit.CompteCompta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produit.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produit.Marque)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantite)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Image)
+            </td>*@
+        </tr>
+}
+    </tbody>
+</table>
+@{
+    int total = 0;
+    foreach (var item in Model.Commande.Possede)
+    {
+        total += (item.Produit.Prix * item.Quantite);
+    }
+}
+    total: @total
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
     <a asp-action="Index">Back to List</a>

@@ -19,6 +19,6 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public ICollection<RepHabite> RepHabite { get; set; }
         public ICollection<Domicile> DomicileClient { get; set; }
         public ICollection<Implantation> Implanter { get; set; }
-        public ICollection<AdresseFacturation> AdresseFacturation { get; set; }
+        public ICollection<Commande> ListeCommande { get; set; }
     }
 }

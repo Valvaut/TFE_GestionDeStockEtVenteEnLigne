@@ -24,7 +24,6 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data
         public DbSet<Facture> Factures { get; set; }
         public DbSet<Commande> Commandes { get; set; }
         public DbSet<Fournisseur> Fournisseurs { get; set; }
-        public DbSet<AdresseFacturation> AdresseFacturations { get; set; }
         public DbSet<Attribut> Attributs { get; set; }
         public DbSet<Domicile> Domiciles { get; set; }
         public DbSet<Implantation> Implantations { get; set; }

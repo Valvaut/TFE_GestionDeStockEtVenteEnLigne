@@ -1,4 +1,4 @@
-@model TFE_GestionDeStockEtVenteEnLigne.Models.Commande
+@model TFE_GestionDeStockEtVenteEnLigne.Models.Adaptateur.CommandeAdresseAdaptateur
 
 @{
     ViewData["Title"] = "Create";
@@ -12,25 +12,52 @@
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="DateCommade" class="col-md-2 control-label"></label>
+            <label asp-for="Adresse.Localite" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="DateCommade" class="form-control" />
-                <span asp-validation-for="DateCommade" class="text-danger"></span>
+                <input asp-for="Adresse.Localite" class="form-control" />
+                <span asp-validation-for="Adresse.Localite" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <div class="checkbox">
-                    <input asp-for="EnCours" />
-                    <label asp-for="EnCours"></label>
-                </div>
+            <label asp-for="Adresse.Rue" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Adresse.Rue" class="form-control" />
+                <span asp-validation-for="Adresse.Rue" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Envoie" class="col-md-2 control-label"></label>
+            <label asp-for="Adresse.Numero" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Envoie" class="form-control" />
-                <span asp-validation-for="Envoie" class="text-danger"></span>
+                <input asp-for="Adresse.Numero" class="form-control" />
+                <span asp-validation-for="Adresse.Numero" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Adresse.NumeroBoite" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Adresse.NumeroBoite" class="form-control" />
+                <span asp-validation-for="Adresse.NumeroBoite" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Adresse.Pays" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Adresse.Pays" class="form-control" />
+                <span asp-validation-for="Adresse.Pays" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Adresse.CodePostal" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Adresse.CodePostal" class="form-control" />
+                <span asp-validation-for="Adresse.CodePostal" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Adresse.Comune" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Adresse.Comune" class="form-control" />
+                <span asp-validation-for="Adresse.Comune" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">

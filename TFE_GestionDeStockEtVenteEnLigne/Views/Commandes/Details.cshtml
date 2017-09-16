@@ -10,6 +10,9 @@
     <h4>Commande</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dd>
+            @Html.DisplayFor(model => model.ID)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.DateCommade)
         </dt>
@@ -44,5 +47,9 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to List</a> |
+    <form asp-action="Details" asp-controller="Factures" asp-route-id="@Model.ID">
+        <input type="submit" value="Voir la facture" class="btn btn-default" />
+    </form>
+   
 </div>

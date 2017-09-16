@@ -123,7 +123,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    IdentityRole role = new IdentityRole { Name = "client", NormalizedName = "CLIENT" };
+                    IdentityRole role = new IdentityRole { Name = "gestionnaire", NormalizedName = "GESTIONNAIRE" };
                     bool roleExist = await _roleManager.RoleExistsAsync(role.NormalizedName);
                     if (!roleExist)//si le role nexiste pas on le crée
                     {
