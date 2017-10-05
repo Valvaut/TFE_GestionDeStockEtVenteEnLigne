@@ -104,7 +104,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne
                     template: "{controller=Horraires}/{action=Index}/{id?}");
             });
             DbInitializer.Initialize(context);
-           // DbInitializer.Initialize2(app.ApplicationServices);
+            DbInitializer.Initialize2(app.ApplicationServices);
         }
     }
 }

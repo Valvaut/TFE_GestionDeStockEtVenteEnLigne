@@ -121,21 +121,27 @@
         <div class="form-group">
             <label asp-for="Produit.Valeur" class="col-md-2 control-label"></label>
             <div class="col-md-10 multiselect">
-                <div class="tab-pane">
-                    @if (Model.TousLesAttributs.Count > 0)
-                    {
-                        @foreach (var item in Model.TousLesAttributs)
+                <div class="tab-pane" >
+                    <div id="attributs">
+                        @if (Model.TousLesAttributs.Count > 0)
                         {
-                            <input type=checkbox name="attributs" value="@item.ID"> @item.Nom
-                            <imput type=text name="Attributs"></imput>
-                            <br/>
+                            <select typeof="Text" name="nameAttribut"id="nameAttribut">
+
+                                @foreach (var item in Model.TousLesAttributs)
+                                {
+                                    <Option value="@item.ID">@item.Nom</Option>
+                                }
+                            </select>
+                            <input type="Text" name="ValueAttribut" />
                         }
-                    }
-                    else
-                    { 
-                        <span>Aucun attributs trouver</span>
-                    }
+                        else
+                        {
+                            <span>Aucun attributs trouver</span>
+                        }
+
+                    </div>
                 </div>
+                <button type="button" onclick="addInputAttribut()">Ajouter Attributs</button>
             </div>
         </div>
         
@@ -187,7 +193,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 <script type="text/javascript">
-  $(function() {
+  (function() {
        $(".multiselect").multiselect();
   });
 </script>

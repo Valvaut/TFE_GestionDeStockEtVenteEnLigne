@@ -28,16 +28,55 @@
         <dd>
             @Html.DisplayFor(model => model.Categorie.Nom)
         </dd>
+        @{
+            var NonValeur=Model.Valeur.ToArray();
+            @for (int i = 0; i < Model.Valeur.Count; i++)
+            {
+                <dt>
+                    @NonValeur[i].Attribut.Nom
+                </dt>
+                <dd>
+                    @NonValeur[i].Valeurs
+                </dd>
+            }
+        }
+        @*<dt>
+            @Html.DisplayNameFor(model => model.Valeur)
+        </dt>
+       
+        <dd>
+            @foreach (var item in Model.Valeur)
+            {
+               
+                @Html.DisplayFor(model => item.Valeurs)
+                @Html.DisplayFor(model => item.Attribut.Mesure)
+                if (!(Model.Valeur.Last().Equals(item)))
+                {
+                    @:,
+                }
+            }   
+        </dd>*@
         <dt>
             @Html.DisplayNameFor(model => model.MotClef)
         </dt>
-       
-            <dd>
-                @foreach (var item in Model.MotClef)
+
+        <dd>
+            @{ 
+                var a =Model.MotClef.ToArray();
+                @for (int i = 0; i < Model.MotClef.Count; i++)
                 {
-                    @Html.DisplayFor(model => item.MotClef.Valeur)@:,
-                }   
-            </dd>
+                    @a[i].MotClef.Valeur;
+                    if (i < Model.MotClef.Count - 1)
+                    {
+                        @:,
+                    }
+                }
+            }
+            @*@foreach (var item in Model.MotClef)
+            {
+                @Html.DisplayFor(model => item.MotClef.Valeur)@:,
+            }*@
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Prix)
         </dt>
