@@ -123,22 +123,23 @@
             <div class="col-md-10 multiselect">
                 <div class="tab-pane" >
                     <div id="attributs">
-                        @if (Model.TousLesAttributs.Count > 0)
-                        {
-                            <select typeof="Text" name="nameAttribut"id="nameAttribut">
+                        <p>
+                            @if (Model.TousLesAttributs.Count > 0)
+                            {
+                                <select typeof="Text" name="nameAttribut" id="nameAttribut">
 
-                                @foreach (var item in Model.TousLesAttributs)
-                                {
-                                    <Option value="@item.ID">@item.Nom</Option>
-                                }
-                            </select>
-                            <input type="Text" name="ValueAttribut" />
-                        }
-                        else
-                        {
-                            <span>Aucun attributs trouver</span>
-                        }
-
+                                    @foreach (var item in Model.TousLesAttributs)
+                                    {
+                                        <Option value="@item.ID">@item.Nom</Option>
+                                    }
+                                </select><input type="Text" name="ValueAttribut"/>
+                               
+                            }
+                            else
+                            {
+                                <span>Aucun attributs trouver</span>
+                            }
+                        </p>
                     </div>
                 </div>
                 <button type="button" onclick="addInputAttribut()">Ajouter Attributs</button>

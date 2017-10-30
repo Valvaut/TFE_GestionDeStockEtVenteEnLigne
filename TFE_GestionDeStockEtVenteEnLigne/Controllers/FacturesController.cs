@@ -8,10 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using TFE_GestionDeStockEtVenteEnLigne.Data;
 using TFE_GestionDeStockEtVenteEnLigne.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.NodeServices;
+using System.Net.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
-    [Authorize(Roles = "gestionnaire")]
+    
     public class FacturesController : Controller
     {
         private readonly TFEContext _context;
@@ -159,6 +162,24 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         private bool FactureExists(int id)
         {
             return _context.Factures.Any(e => e.ID == id);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Facture([FromServices] INodeServices nodeServices)
+        {
+            HttpClient hc = new HttpClient();
+            var host = Request.Host.ToString()+ Request.Path.ToString()+ Request.QueryString.ToString();
+            var b = Request.QueryString;
+
+            var htmlContent = await hc.GetStringAsync($"http://{Request.Host}/Factures/Details/2");
+
+            var result = await nodeServices.InvokeAsync<byte[]>("./pdf", htmlContent);
+
+            HttpContext.Response.ContentType = "application/pdf";
+
+            HttpContext.Response.Headers.Add("x-filename", "report.pdf");
+            HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "x-filename");
+            HttpContext.Response.Body.Write(result, 0, result.Length);
+            return new ContentResult();
         }
     }
 }

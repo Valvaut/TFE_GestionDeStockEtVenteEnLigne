@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -13,6 +10,7 @@ using TFE_GestionDeStockEtVenteEnLigne.Data;
 using TFE_GestionDeStockEtVenteEnLigne.Models;
 using TFE_GestionDeStockEtVenteEnLigne.Services;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Identity;
 
 namespace TFE_GestionDeStockEtVenteEnLigne
 {
@@ -40,6 +38,8 @@ namespace TFE_GestionDeStockEtVenteEnLigne
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //nodejs
+            services.AddNodeServices(); 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -47,8 +47,6 @@ namespace TFE_GestionDeStockEtVenteEnLigne
 
             services.AddDbContext<TFEContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -70,8 +68,9 @@ namespace TFE_GestionDeStockEtVenteEnLigne
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,TFEContext context)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,TFEContext context, ApplicationDbContext contextIdentity, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            
             app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
             //app.UseStatusCodePages();
             app.UseSession();
@@ -95,6 +94,8 @@ namespace TFE_GestionDeStockEtVenteEnLigne
 
             app.UseIdentity();
 
+          
+            //context.Database.Migrate();
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc(routes =>
@@ -104,7 +105,9 @@ namespace TFE_GestionDeStockEtVenteEnLigne
                     template: "{controller=Horraires}/{action=Index}/{id?}");
             });
             DbInitializer.Initialize(context);
-            DbInitializer.Initialize2(app.ApplicationServices);
+            contextIdentity.Database.Migrate();
+            DbInitializer.Initialize2(contextIdentity, userManager, roleManager);
+           
         }
     }
 }

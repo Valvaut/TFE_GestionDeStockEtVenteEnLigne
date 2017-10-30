@@ -77,15 +77,20 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data
             context.SaveChanges();
          
         }
-        public static async void Initialize2(IServiceProvider services)
+        public static async void Initialize2(ApplicationDbContext contextIdentity,UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            using (var scope = services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            if (contextIdentity.Users.Any())
             {
-                var manager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
-                var user = new ApplicationUser { UserName = "michele.tinant@skynet.be", Email = "michele.tinant@skynet.be" };
-                var result = await manager.CreateAsync(user, "password");
+                return;   // exit method, Database has been    
             }
+
+            // crée le compte gérant par défault
+            var user = new ApplicationUser { UserName = "michele.tinant@skynet.be", Email = "michele.tinant@skynet.be" };
+            await userManager.CreateAsync(user, "Rofl_1");
+            IdentityRole role = new IdentityRole { Name = "gestionnaire", NormalizedName = "GESTIONNAIRE" };
+            IdentityResult RoleResult = await roleManager.CreateAsync(role);
+            if (RoleResult.Succeeded)//puis l'ajoute a l'utilisateur
+                 await userManager.AddToRoleAsync(user, role.Name);
         }
     }
 }
