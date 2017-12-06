@@ -167,12 +167,14 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         public async Task<IActionResult> Facture([FromServices] INodeServices nodeServices)
         {
             HttpClient hc = new HttpClient();
-            var host = Request.Host.ToString()+ Request.Path.ToString()+ Request.QueryString.ToString();
-            var b = Request.QueryString;
+            //var host = Request.Host.ToString()+ Request.Path.ToString()+ Request.QueryString.ToString();
+            //var b = Request.QueryString;
+            string scheme = Request.Headers["Referer"].ToString();
+            var htmlContent = await hc.GetStringAsync(scheme);
+            string[] stringSeparators = new string[] { "</div><div class=\"veutpas\"></div>", "<div class=\"factureContenu\">" };
+            String[] result1 = htmlContent.Split(stringSeparators, StringSplitOptions.None);
 
-            var htmlContent = await hc.GetStringAsync($"http://{Request.Host}/Factures/Details/2");
-
-            var result = await nodeServices.InvokeAsync<byte[]>("./pdf", htmlContent);
+            var result = await nodeServices.InvokeAsync<byte[]>("./pdf", result1[1]);
 
             HttpContext.Response.ContentType = "application/pdf";
 

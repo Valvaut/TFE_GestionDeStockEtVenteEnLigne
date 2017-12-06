@@ -16,7 +16,6 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
     public class ProduitsController : Controller
     {
         private readonly TFEContext _context;
-        private object getUserId;
 
         public ProduitsController(TFEContext context)
         {
@@ -28,28 +27,29 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         //{
         //    return View(await _context.Produits.ToListAsync());
         //}
-        public async Task<IActionResult> Index(string sortOrder,string searchStr)
+        public async Task<IActionResult> Index(string sortOrder, string searchStr)
         {
             ViewData["RefSort"] = String.IsNullOrEmpty(sortOrder) ? "ref_desc" : "";
             ViewData["DenoSort"] = sortOrder == "Denomination" ? "deno_desc" : "Denomination";
             ViewData["Filter"] = searchStr;
 
             var produits = from f in _context.Produits select f;
+            var pro = _context.Produits;
 
-            if (!String.IsNullOrEmpty(searchStr))
+             if (!String.IsNullOrEmpty(searchStr))
             {
                 produits = produits.Where(f => f.Ref.Contains(searchStr) || f.Denomination.Contains(searchStr));
             }
             switch (sortOrder)
             {
                 case "ref_desc":
-                    produits = produits.OrderByDescending(f => f.Ref);break;
+                    produits = produits.OrderByDescending(f => f.Ref); break;
                 case "Denomination":
-                    produits = produits.OrderBy(f => f.Denomination);break;
+                    produits = produits.OrderBy(f => f.Denomination); break;
                 case "deno_desc":
-                    produits = produits.OrderByDescending(f => f.Denomination);break;
+                    produits = produits.OrderByDescending(f => f.Denomination); break;
                 default:
-                    produits = produits.OrderBy(f => f.Ref);break;
+                    produits = produits.OrderBy(f => f.Ref); break;
             }
             return View(await produits.ToListAsync());
         }
@@ -82,6 +82,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 
         // GET: Produits/Create
         //[Authorize(Roles = "gestionnaire")]
+        [Authorize(Roles = "gestionnaire")]
         public async Task<IActionResult> Create()
         {
             ProduitCatAdapter pc = new ProduitCatAdapter();
@@ -98,6 +99,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize(Roles = "gestionnaire")]
+        [Authorize(Roles = "gestionnaire")]
         public async Task<IActionResult> Create( ProduitCatAdapter produitcatAdapter)
         {
            

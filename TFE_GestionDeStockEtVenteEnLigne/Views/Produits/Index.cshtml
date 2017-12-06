@@ -4,10 +4,16 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h2>Index</h2
+ @if (User.Identity.IsAuthenticated)
+ {
+     if (User.IsInRole("gestionnaire"))
+     {
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+     }
+ }
 <form asp-action="Index" method="get">
     <div class="form-action no-color">
         <p>
@@ -23,7 +29,6 @@
                 <a asp-action="Index" asp-route-sortOrder="@ViewBag.RefSort">
                     @Html.DisplayNameFor(model => model.Ref)
                 </a>
-                <a>ייייייייייייייייייייייייייייייייייייייייייייייייייייייייי</a>
             </th>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewBag.DenoSort">
@@ -98,10 +103,10 @@
             <td>
                 <a asp-action="Details" asp-route-id="@item.ID">Details</a>
             @if (User.Identity.IsAuthenticated)
-             {
+            {
                 if (User.IsInRole("gestionnaire"))
                 {
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a><span> |</span>
+                    <span> |</span> <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
                     
                 }
                 <form asp-controller="Account" asp-action="AddPanier" asp-route-id="@item.ID" method="post">

@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @*<a asp-action="Create">Create New</a>*@
 </p>
 <table class="table">
     <thead>
@@ -71,7 +71,7 @@
     </tbody>
 </table>
 @{ 
-    int total=0;
+    float total=0;
     foreach (var item in Model)
     {
         total += (item.Produit.Prix * item.Quantite);

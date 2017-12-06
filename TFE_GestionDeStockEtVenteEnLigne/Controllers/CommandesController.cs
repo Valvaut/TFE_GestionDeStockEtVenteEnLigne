@@ -90,6 +90,11 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 var IdClient = _context.Clients.Where(c => c.RegisterViewModelID == IdUser);
                 var tFEContext = _context.Panier.Include(p => p.Produit).Where(p => p.RegisterViewModelID == IdUser).ToArray();
                 var Client = IdClient.ToArray();
+                Domicile d = new Domicile();
+                d.AdresseID = Adaptateur.Adresse.ID;
+                d.ClientID = Client[0].ID;
+                _context.Add(d);
+                await _context.SaveChangesAsync();
                 //création de la comande
                 Commande commande = new Commande();
                 commande.AdresseID = Adaptateur.Adresse.ID;

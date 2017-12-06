@@ -4,133 +4,135 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
-<div id="content">
-    <div>
-        <h4>Facture</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Numero)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Numero)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.DatePaiement)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.DatePaiement)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Commande)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Commande.ID)
-            </dd>
-        </dl>
-    </div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.RefSort">
-                        Ref
-                    </a>
-                </th>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.DenoSort">
-                        Denomination
-                    </a>
-                </th>
-                <th>
-                    Prix
-                </th>
-                <th>
-                    QuantiteEmballage
-                </th>
-                <th>
-                    NBPieceEmballage
-                </th>
-                <th>
-                    TVA
-                </th>
-                <th>
-                    CompteCompta
-                </th>
-                <th>
-                    Description
-                </th>
-                <th>
-                    Marque
-                </th>
-                <th>
-                    Quantite
-                </th>
-                @*<th>
-                        @Html.DisplayNameFor(model => model.Image)
-                    </th>*@
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Commande.Possede)
-            {
+<div class="factureContenu">
+    <h2>Details</h2>
+    <div id="content">
+        <div>
+            <h4>Facture</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Numero)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Numero)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.DatePaiement)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.DatePaiement)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Commande)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Commande.ID)
+                </dd>
+            </dl>
+        </div>
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Produit.Ref)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Produit.Denomination)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Produit.Prix)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Produit.QuantiteEmballage)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Produit.NBPieceEmballage)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Produit.TVA)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Produit.CompteCompta)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Produit.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Produit.Marque)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quantite)
-                    </td>
-                    @*<td>
-                            @Html.DisplayFor(modelItem => item.Image)
-                        </td>*@
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.RefSort">
+                            Ref
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.DenoSort">
+                            Denomination
+                        </a>
+                    </th>
+                    <th>
+                        Prix
+                    </th>
+                    <th>
+                        QuantiteEmballage
+                    </th>
+                    <th>
+                        NBPieceEmballage
+                    </th>
+                    <th>
+                        TVA
+                    </th>
+                    <th>
+                        CompteCompta
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Marque
+                    </th>
+                    <th>
+                        Quantite
+                    </th>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.Image)
+                        </th>*@
                 </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Commande.Possede)
+            {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Produit.Ref)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Produit.Denomination)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Produit.Prix)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Produit.QuantiteEmballage)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Produit.NBPieceEmballage)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Produit.TVA)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Produit.CompteCompta)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Produit.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Produit.Marque)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantite)
+                        </td>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.Image)
+                            </td>*@
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @{
+            int total = 0;
+            foreach (var item in Model.Commande.Possede)
+            {
+                total += (item.Produit.Prix * item.Quantite);
             }
-        </tbody>
-    </table>
-    @{
-        int total = 0;
-        foreach (var item in Model.Commande.Possede)
-        {
-            total += (item.Produit.Prix * item.Quantite);
         }
-    }
-    total: @total
-</div>
+        total: @total
+    </div>
+</div><div class="veutpas"></div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
 <div>
-    <button id="cmd">Generate PDF</button>
-    @*<form method="get" asp-action="Facture">*@
-        @*<button id="cmd" type="button">PDF</button>*@
-    @*</form>*@
+    @*<button id="cmd">Generate PDF</button>*@
+    <form method="get" asp-action="Facture">
+        <button type="submit">PDF</button>
+    </form>
 
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>
