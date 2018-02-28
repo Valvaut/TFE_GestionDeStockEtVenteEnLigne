@@ -4,10 +4,12 @@
     ViewData["Title"] = "Accueil";
 }
 
-<h2>Accueil</h2>
-<h3>Horaires d'ouvertures</h3>
-<table class="table">
-    <thead>
+<h2>L'Espace Du Petit Futé</h2>
+<div class="grad colorBlue bienvenue">Nous vous souhaitons la bienvenue</div>
+<h3>Nous rendre visite</h3>
+<table class="colorBlue textCenter info">
+   @* <caption class="headerLine">Nous rendre visite</caption>*@
+    @*<thead>
         <tr>
             <th>
                 Lundi
@@ -32,42 +34,64 @@
             </th>
             <th></th>
         </tr>
-    </thead>
+    </thead>*@
     <tbody>
         @foreach (var item in Model.Horraire)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Lundi)
+                    Lundi @Html.DisplayFor(modelItem => item.Lundi)
                 </td>
+            </tr>
+            <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Mardi)
+                    Mardi @Html.DisplayFor(modelItem => item.Mardi)
                 </td>
+            </tr>
+            <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Mercredi)
+                    Mercredi @Html.DisplayFor(modelItem => item.Mercredi)
                 </td>
+            </tr>
+            <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Jeudi)
+                    Jeudi @Html.DisplayFor(modelItem => item.Jeudi)
                 </td>
+            </tr>
+            <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Vendredi)
+                    Vendredi @Html.DisplayFor(modelItem => item.Vendredi)
                 </td>
+            </tr>
+            <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Samedi)
+                    Samedi @Html.DisplayFor(modelItem => item.Samedi)
                 </td>
+            </tr>
+            <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Dimanche)
+                    Dimanche @Html.DisplayFor(modelItem => item.Dimanche)
                 </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
-                </td>
+                @*<td>
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
+                    </td>*@
             </tr>
         }
     </tbody>
 </table>
-<h3> Evenements</h3>
-<a asp-area="" asp-controller="Evenements" asp-action="Create">Create Events</a>
-<table class="table">
+<div class="colorBlue info">
+    <h3>Nous Contacter</h3>
+   
+    <span>A-kreides, 43 </span><br/>
+    <span>6700 Toernich - Arlon</span><br />
+    <span> Belgique </span><br />
+    <br />
+    <span>Tel : 0032 (0)63 236133</span><br />
+    <span>E-mail : michele.tinant@skynet.be</span><br />
+</div>
+@*<h3> Evenements</h3>
+<a asp-area="" asp-controller="Evenements" asp-action="Create">Create Events</a>*@
+@*<table class="table">
     <thead>
         <tr>
             <th>
@@ -95,4 +119,4 @@
             </tr>
         }
     </tbody>
-</table>
+</table>*@
