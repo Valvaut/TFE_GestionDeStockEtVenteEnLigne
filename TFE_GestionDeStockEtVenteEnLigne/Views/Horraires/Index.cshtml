@@ -1,40 +1,45 @@
+@using TFE_GestionDeStockEtVenteEnLigne.Controllers
 @model TFE_GestionDeStockEtVenteEnLigne.Models.HorraireEventAdapter
 
 @{
     ViewData["Title"] = "Accueil";
 }
+<div>
+    @await Component.InvokeAsync("Recherche")
+</div>
+
 
 <h2>L'Espace Du Petit Futé</h2>
 <div class="grad colorBlue bienvenue">Nous vous souhaitons la bienvenue</div>
 <h3>Nous rendre visite</h3>
 <table class="colorBlue textCenter info">
-   @* <caption class="headerLine">Nous rendre visite</caption>*@
+    @* <caption class="headerLine">Nous rendre visite</caption>*@
     @*<thead>
-        <tr>
-            <th>
-                Lundi
-            </th>
-            <th>
-                Mardi
-            </th>
-            <th>
-                Mercredi
-            </th>
-            <th>
-                Jeudi
-            </th>
-            <th>
-                Vendredi
-            </th>
-            <th>
-                Samedi
-            </th>
-            <th>
-                Dimanche
-            </th>
-            <th></th>
-        </tr>
-    </thead>*@
+            <tr>
+                <th>
+                    Lundi
+                </th>
+                <th>
+                    Mardi
+                </th>
+                <th>
+                    Mercredi
+                </th>
+                <th>
+                    Jeudi
+                </th>
+                <th>
+                    Vendredi
+                </th>
+                <th>
+                    Samedi
+                </th>
+                <th>
+                    Dimanche
+                </th>
+                <th></th>
+            </tr>
+        </thead>*@
     <tbody>
         @foreach (var item in Model.Horraire)
         {
@@ -81,8 +86,8 @@
 </table>
 <div class="colorBlue info">
     <h3>Nous Contacter</h3>
-   
-    <span>A-kreides, 43 </span><br/>
+
+    <span>A-kreides, 43 </span><br />
     <span>6700 Toernich - Arlon</span><br />
     <span> Belgique </span><br />
     <br />
@@ -90,33 +95,33 @@
     <span>E-mail : michele.tinant@skynet.be</span><br />
 </div>
 @*<h3> Evenements</h3>
-<a asp-area="" asp-controller="Evenements" asp-action="Create">Create Events</a>*@
+    <a asp-area="" asp-controller="Evenements" asp-action="Create">Create Events</a>*@
 @*<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Date
-            </th>
-            <th>
-                Description
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.ListEvent)
-        {
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
-                </td>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Description
+                </th>
             </tr>
-        }
-    </tbody>
-</table>*@
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ListEvent)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>*@

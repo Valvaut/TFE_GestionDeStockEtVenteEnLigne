@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
-    [Authorize(Roles = "gestionnaire")]
+    //[Authorize(Roles = "gestionnaire")]
     public class CategoriesController : Controller
     {
         private readonly TFEContext _context;
@@ -19,6 +19,11 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         public CategoriesController(TFEContext context)
         {
             _context = context;    
+        }
+        // GET: Categories
+        public async Task<IActionResult> Recherche()
+        {
+            return View(await _context.Categories.ToListAsync());
         }
 
         // GET: Categories
@@ -159,5 +164,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         {
             return _context.Categories.Any(e => e.ID == id);
         }
+
+
     }
 }
