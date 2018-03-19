@@ -24,6 +24,18 @@ namespace TFE_GestionDeStockEtVenteEnLigne.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var categorie = await _context.Categories.Include(c => c.CategorieEnfant).ToListAsync();
+            int i = 0;
+            while ( i< categorie.Count)
+            {
+                if (categorie[i].CategorieParent != null)
+                {
+                    categorie.Remove(categorie[i]);
+                }
+                else
+                {
+                    ++i;
+                }
+            }
             return View(categorie);
         }
     }

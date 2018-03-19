@@ -1,0 +1,14 @@
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Categorie>
+
+    @foreach (var category in Model)
+{
+    <tr><td>@category.Nom</td></tr>
+    @if(category.CategorieEnfant != null)
+    {
+        @Html.Partial("Categorie", category.CategorieEnfant)
+    }
+
+}
