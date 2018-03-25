@@ -27,7 +27,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         //{
         //    return View(await _context.Produits.ToListAsync());
         //}
-        public async Task<IActionResult> Index(string sortOrder, string searchStr)
+        public async Task<IActionResult> Index(string sortOrder, string searchStr, string cat)
         {
             ViewData["RefSort"] = String.IsNullOrEmpty(sortOrder) ? "ref_desc" : "";
             ViewData["DenoSort"] = sortOrder == "Denomination" ? "deno_desc" : "Denomination";
@@ -35,8 +35,11 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 
             var produits = from f in _context.Produits select f;
             var pro = _context.Produits;
-
-             if (!String.IsNullOrEmpty(searchStr))
+            if (!String.IsNullOrEmpty(cat))
+            {
+                produits = produits.Where(f => f.Categorie.Nom.Contains(cat));
+            }
+            else if (!String.IsNullOrEmpty(searchStr))
             {
                 produits = produits.Where(f => f.Ref.Contains(searchStr) || f.Denomination.Contains(searchStr));
             }

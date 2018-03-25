@@ -5,7 +5,8 @@
 
     @foreach (var category in Model)
 {
-    <tr><td>@category.Nom</td></tr>
+    <tr><td>
+            <a asp-area="" asp-controller="Produits" asp-action="Index" asp-route-cat="@category.Nom">@category.Nom</a></td></tr>
     @if(category.CategorieEnfant != null)
     {
         @Html.Partial("Categorie", category.CategorieEnfant)

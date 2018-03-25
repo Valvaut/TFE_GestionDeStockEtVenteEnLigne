@@ -18,6 +18,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public String Tel { get; set; }
         public bool Newsletter { get; set; }
 
+        //public RegisterViewModel User { get; set; }
         public ICollection<Domicile> Domicile { get; set; }
         public ICollection<Commande> Commande { get; set; }
         public ICollection<Panier> Panier { get; set; }
