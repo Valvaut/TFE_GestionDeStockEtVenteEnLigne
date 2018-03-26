@@ -71,6 +71,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,TFEContext context, ApplicationDbContext contextIdentity, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             
+
             app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
             //app.UseStatusCodePages();
             app.UseSession();

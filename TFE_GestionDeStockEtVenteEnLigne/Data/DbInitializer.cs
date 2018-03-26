@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data
         public static void Initialize(TFEContext context)
         {
             context.Database.EnsureCreated();
+           
 
             if (context.Horraire.Any())
             {
@@ -84,8 +86,9 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data
                 return;   // exit method, Database has been    
             }
 
+            contextIdentity.Database.Migrate();
             // crée le compte gérant par défault
-            var user = new ApplicationUser { UserName = "michele.tinant@skynet.be", Email = "michele.tinant@skynet.be", Prenom ="Michele", NumTva ="", Tel ="063218952"};
+            var user = new ApplicationUser { UserName = "michele.tinant@skynet.be", Email = "michele.tinant@skynet.be",  BirthDate = DateTime.Now};
             await userManager.CreateAsync(user, "Rofl_1");
             IdentityRole role = new IdentityRole { Name = "gestionnaire", NormalizedName = "GESTIONNAIRE" };
             IdentityResult RoleResult = await roleManager.CreateAsync(role);
