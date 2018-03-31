@@ -120,6 +120,10 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email};
+                user.Prenom = Request.Form["FirstName"];
+                user.Nom = Request.Form["LastName"];
+                user.Tel = Request.Form["NumTel"];
+                user.Newsletter = false;
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -150,7 +154,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Horraires");
                 }
                 AddErrors(result);
             }

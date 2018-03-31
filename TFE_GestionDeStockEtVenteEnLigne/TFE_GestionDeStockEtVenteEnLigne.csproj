@@ -11,6 +11,35 @@
   <PropertyGroup>
     <UserSecretsId>aspnet-TFE_GestionDeStockEtVenteEnLigne-774281fb-c30d-4f45-8e32-85176945a4e5</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20180327171549_client01.cs" />
+    <Compile Remove="Data\Migrations\20180327171549_client01.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180327171744_client01.cs" />
+    <Compile Remove="Data\Migrations\20180327171744_client01.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180327172217_client02.cs" />
+    <Compile Remove="Data\Migrations\20180327172217_client02.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180328152944_client03.cs" />
+    <Compile Remove="Data\Migrations\20180328152944_client03.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180328153528_Client02.cs" />
+    <Compile Remove="Data\Migrations\20180328153528_Client02.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180328154027_client03.cs" />
+    <Compile Remove="Data\Migrations\20180328154027_client03.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180328154941_user01.cs" />
+    <Compile Remove="Data\Migrations\20180328154941_user01.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180331105514_test.cs" />
+    <Compile Remove="Data\Migrations\20180331105514_test.Designer.cs" />
+    <Compile Remove="Migrations\20180328153614_perso01.cs" />
+    <Compile Remove="Migrations\20180328153614_perso01.Designer.cs" />
+    <Compile Remove="Migrations\20180328154352_perso02.cs" />
+    <Compile Remove="Migrations\20180328154352_perso02.Designer.cs" />
+    <Compile Remove="Migrations\20180331110316_client02.cs" />
+    <Compile Remove="Migrations\20180331110316_client02.Designer.cs" />
+    <Compile Remove="Migrations\20180331113555_client02.cs" />
+    <Compile Remove="Migrations\20180331113555_client02.Designer.cs" />
+    <Compile Remove="Migrations\20180331115551_client03.cs" />
+    <Compile Remove="Migrations\20180331115551_client03.Designer.cs" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.3" />

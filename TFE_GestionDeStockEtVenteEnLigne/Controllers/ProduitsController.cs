@@ -27,7 +27,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         //{
         //    return View(await _context.Produits.ToListAsync());
         //}
-        public async Task<IActionResult> Index(string sortOrder, string searchStr)
+        public async Task<IActionResult> Index(string sortOrder, string searchStr, string cat)
         {
             ViewData["RefSort"] = String.IsNullOrEmpty(sortOrder) ? "ref_desc" : "";
             ViewData["DenoSort"] = sortOrder == "Denomination" ? "deno_desc" : "Denomination";
@@ -36,7 +36,11 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             var produits = from f in _context.Produits select f;
             var pro = _context.Produits;
 
-             if (!String.IsNullOrEmpty(searchStr))
+            if (!String.IsNullOrEmpty(cat))
+            {
+                produits = produits.Where(f => f.Categorie.Nom.Contains(cat));
+            }
+            else if (!String.IsNullOrEmpty(searchStr))
             {
                 produits = produits.Where(f => f.Ref.Contains(searchStr) || f.Denomination.Contains(searchStr));
             }
@@ -102,81 +106,88 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         [Authorize(Roles = "gestionnaire")]
         public async Task<IActionResult> Create( ProduitCatAdapter produitcatAdapter)
         {
-           
+
             if (ModelState.IsValid)
             {
-                //gestion de l'image et du produit
-                MemoryStream ms = new MemoryStream();
-                var images = Request.Form.Files["Image"];
-                images.OpenReadStream().CopyTo(ms);
-                produitcatAdapter.Produit.Image = ms.ToArray();
-                _context.Add(produitcatAdapter.Produit);//insert le produit
-
-
-                var tableauIDAttributs = Request.Form["nameAttribut"];
-                var tableauValeurs = Request.Form["ValueAttribut"];
-
-                List<int> listIDAttribut = new List<int>();
-                foreach (var NameAttribut in tableauIDAttributs)
+                try
                 {
-                    listIDAttribut.Add(int.Parse(NameAttribut));
-                }
 
-                List<String> listValeur = new List<String>();
-                foreach (var Value in tableauValeurs)
-                {
-                    listValeur.Add(Value);
-                }
-                List<Valeur> ListValeurConstruit = new List<Valeur>();
-                int i = 0;
-                while (i< listIDAttribut.Count && i< listValeur.Count)
-                {
-                    Valeur v = new Valeur
+                    //gestion de l'image et du produit
+                    MemoryStream ms = new MemoryStream();
+                    var images = Request.Form.Files["Image"];
+                    images.OpenReadStream().CopyTo(ms);
+                    produitcatAdapter.Produit.Image = ms.ToArray();
+                    _context.Add(produitcatAdapter.Produit);//insert le produit
+
+
+                    var tableauIDAttributs = Request.Form["nameAttribut"];
+                    var tableauValeurs = Request.Form["ValueAttribut"];
+
+                    List<int> listIDAttribut = new List<int>();
+                    foreach (var NameAttribut in tableauIDAttributs)
                     {
-                        Valeurs = listValeur[i]
-                    };
-                    v.AttributID = listIDAttribut[i];
-                    ++i;
-                    v.ProduitID = produitcatAdapter.Produit.ID;
-                    _context.Add(v);
-                    await _context.SaveChangesAsync();
-                }
-                
-                //récupère les id mots clef
-                var tableauMotClef = Request.Form["MotClef"];
-                List<int> ListMotClef = new List<int>();
-                foreach (var mot in tableauMotClef)
-                {
-                    ListMotClef.Add(int.Parse(mot));
-                }
-                foreach (int motClef in ListMotClef)
-                {
-                    ProduitMotClef pm = new ProduitMotClef
+                        listIDAttribut.Add(int.Parse(NameAttribut));
+                    }
+
+                    List<String> listValeur = new List<String>();
+                    foreach (var Value in tableauValeurs)
                     {
-                        MotClefId = motClef,
-                        ProduitID = produitcatAdapter.Produit.ID
+                        listValeur.Add(Value);
+                    }
+                    List<Valeur> ListValeurConstruit = new List<Valeur>();
+                    int i = 0;
+                    while (i < listIDAttribut.Count && i < listValeur.Count)
+                    {
+                        Valeur v = new Valeur
+                        {
+                            Valeurs = listValeur[i]
+                        };
+                        v.AttributID = listIDAttribut[i];
+                        ++i;
+                        v.ProduitID = produitcatAdapter.Produit.ID;
+                        _context.Add(v);
+
+                    }
+
+                    //récupère les id mots clef
+                    var tableauMotClef = Request.Form["MotClef"];
+                    List<int> ListMotClef = new List<int>();
+                    foreach (var mot in tableauMotClef)
+                    {
+                        ListMotClef.Add(int.Parse(mot));
+                    }
+                    foreach (int motClef in ListMotClef)
+                    {
+                        ProduitMotClef pm = new ProduitMotClef
+                        {
+                            MotClefId = motClef,
+                            ProduitID = produitcatAdapter.Produit.ID
+                        };
+                        _context.Add(pm);
+                      
+                    }
+                    //gere le fournisseur
+                    int fournisseurID = int.Parse((Request.Form["select"]).ToString().Replace(',', '.'));
+                    Provient provient = new Provient
+                    {
+                        Prix = int.Parse(Request.Form["Prix"]),
+                        TauxTVA = int.Parse(Request.Form["tauxTVA"]),
+                        QuantiteMinCommande = int.Parse(Request.Form["quantite"]),
+                        ProduitID = produitcatAdapter.Produit.ID,
+                        FournisseurID = fournisseurID
                     };
-                    _context.Add(pm);
+                    _context.Add(provient);
                     await _context.SaveChangesAsync();
+
+
+
+                    return RedirectToAction("");
                 }
-                //gere le fournisseur
-                int fournisseurID= int.Parse(Request.Form["select"]);
-                Provient provient = new Provient
+                catch (Exception e)
                 {
-                    Prix = int.Parse(Request.Form["Prix"]),
-                    TauxTVA = int.Parse(Request.Form["tauxTVA"]),
-                    QuantiteMinCommande = int.Parse(Request.Form["quantite"]),
-                    ProduitID = produitcatAdapter.Produit.ID,
-                    FournisseurID = fournisseurID
-                };
-                _context.Add(provient);
-                await _context.SaveChangesAsync();
-                
 
-
-                return RedirectToAction("Index");
+                }
             }
-
             produitcatAdapter.ListCat = _context.Categories.ToList();
             return View(produitcatAdapter);
         }

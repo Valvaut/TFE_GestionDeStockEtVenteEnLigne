@@ -9,6 +9,9 @@ using TFE_GestionDeStockEtVenteEnLigne.Data;
 using TFE_GestionDeStockEtVenteEnLigne.Models;
 using TFE_GestionDeStockEtVenteEnLigne.Models.Adaptateur;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
@@ -16,31 +19,41 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
     public class ClientsController : Controller
     {
         private readonly TFEContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public ClientsController(TFEContext context)
+        public ClientsController(TFEContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            _context = context;    
+            _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         // GET: Clients
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Clients.ToListAsync());
+            var user = this.User;
+            if (user.IsInRole("gestionnaire"))
+            {
+                return View(await _userManager.Users.ToListAsync());
+            }
+            return View(await _userManager.Users.ToListAsync());
+
         }
 
         // GET: Clients/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var client = await _context.Clients
+            var client = await _userManager.Users
                 .Include(c=>c.Domicile)
                 .Include(c=> c.Commande)
                 .ThenInclude(com=>com.Possede)
-                .SingleOrDefaultAsync(m => m.ID == id);
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (client == null)
             {
                 return NotFound();
@@ -68,11 +81,10 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         }
 
         // GET: Clients/Create
-        public async Task<IActionResult> Create()
+        public  IActionResult Create()
         {
-            ClientAdaptateur c = new ClientAdaptateur();
-            c.ListeAdresse = await _context.Adresses.ToListAsync();
-            return View(c);
+      
+            return View();
         }
 
         // POST: Clients/Create
@@ -92,14 +104,14 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         }
 
         // GET: Clients/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var client = await _context.Clients.SingleOrDefaultAsync(m => m.ID == id);
+            var client = await _userManager.Users.SingleOrDefaultAsync(m => m.Id == id);
             if (client == null)
             {
                 return NotFound();
@@ -112,9 +124,9 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Nom,Prenom,Mail,Adresse,NumTva,Tel,NumeroClient")] Client client)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,Nom,Prenom,Mail,Adresse,NumTva,Tel,NumeroClient")] ApplicationUser client)
         {
-            if (id != client.ID)
+            if (id != client.Id)
             {
                 return NotFound();
             }
@@ -123,12 +135,12 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             {
                 try
                 {
-                    _context.Update(client);
+                    await _userManager.UpdateAsync(client);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClientExists(client.ID))
+                    if (!ClientExists(client.Id))
                     {
                         return NotFound();
                     }
@@ -143,15 +155,15 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         }
 
         // GET: Clients/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var client = await _context.Clients
-                .SingleOrDefaultAsync(m => m.ID == id);
+            var client = await _userManager.Users
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (client == null)
             {
                 return NotFound();
@@ -163,10 +175,10 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         // POST: Clients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var client = await _context.Clients.SingleOrDefaultAsync(m => m.ID == id);
-            _context.Clients.Remove(client);
+            var client = await _userManager.Users.SingleOrDefaultAsync(m => m.Id == id);
+            await _userManager.DeleteAsync(client);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -174,6 +186,10 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         private bool ClientExists(int id)
         {
             return _context.Clients.Any(e => e.ID == id);
+        }
+        private bool ClientExists(string id)
+        {
+            return _userManager.Users.Any(e => e.Id == id);
         }
     }
 }

@@ -5,123 +5,17 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using TFE_GestionDeStockEtVenteEnLigne.Data;
 
-namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
+namespace TFE_GestionDeStockEtVenteEnLigne.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(TFEContext))]
+    [Migration("20180328154908_client01")]
+    partial class client01
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasName("RoleNameIndex");
-
-                    b.ToTable("AspNetRoles");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ClaimType");
-
-                    b.Property<string>("ClaimValue");
-
-                    b.Property<string>("RoleId")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ClaimType");
-
-                    b.Property<string>("ClaimValue");
-
-                    b.Property<string>("UserId")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
-                {
-                    b.Property<string>("LoginProvider");
-
-                    b.Property<string>("ProviderKey");
-
-                    b.Property<string>("ProviderDisplayName");
-
-                    b.Property<string>("UserId")
-                        .IsRequired();
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserLogins");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId");
-
-                    b.Property<string>("RoleId");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserToken<string>", b =>
-                {
-                    b.Property<string>("UserId");
-
-                    b.Property<string>("LoginProvider");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Value");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("AspNetUserTokens");
-                });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Adresse", b =>
                 {
@@ -144,67 +38,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Adresse");
-                });
-
-            modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.ApplicationUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("EmailConfirmed");
-
-                    b.Property<bool>("LockoutEnabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<bool>("Newsletter");
-
-                    b.Property<string>("Nom");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NumTva");
-
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("Prenom");
-
-                    b.Property<string>("SecurityStamp");
-
-                    b.Property<string>("Tel");
-
-                    b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("Adresses");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Attribut", b =>
@@ -218,7 +52,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Attribut");
+                    b.ToTable("Attributs");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Categorie", b =>
@@ -234,7 +68,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.HasIndex("CategorieParentID");
 
-                    b.ToTable("Categorie");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Client", b =>
@@ -256,7 +90,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Client");
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Commande", b =>
@@ -265,8 +99,6 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int?>("AdresseID");
-
-                    b.Property<string>("ApplicationUserId");
 
                     b.Property<int>("ClientID");
 
@@ -280,11 +112,9 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.HasIndex("AdresseID");
 
-                    b.HasIndex("ApplicationUserId");
-
                     b.HasIndex("ClientID");
 
-                    b.ToTable("Commande");
+                    b.ToTable("Commandes");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Domicile", b =>
@@ -294,19 +124,29 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.Property<int>("AdresseID");
 
-                    b.Property<string>("ApplicationUserId");
-
                     b.Property<int>("ClientID");
 
                     b.HasKey("ID");
 
                     b.HasIndex("AdresseID");
 
-                    b.HasIndex("ApplicationUserId");
-
                     b.HasIndex("ClientID");
 
-                    b.ToTable("Domicile");
+                    b.ToTable("Domiciles");
+                });
+
+            modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Evenement", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Description");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Evenement");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Facture", b =>
@@ -325,7 +165,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
                     b.HasIndex("CommandeID")
                         .IsUnique();
 
-                    b.ToTable("Facture");
+                    b.ToTable("Factures");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Fournisseur", b =>
@@ -351,7 +191,31 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Fournisseur");
+                    b.ToTable("Fournisseurs");
+                });
+
+            modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Horraire", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Dimanche");
+
+                    b.Property<string>("Jeudi");
+
+                    b.Property<string>("Lundi");
+
+                    b.Property<string>("Mardi");
+
+                    b.Property<string>("Mercredi");
+
+                    b.Property<string>("Samedi");
+
+                    b.Property<string>("Vendredi");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Horraire");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Implantation", b =>
@@ -369,15 +233,31 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.HasIndex("FournisseurID");
 
-                    b.ToTable("Implantation");
+                    b.ToTable("Implantations");
+                });
+
+            modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Metier.Contact", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("FournisseurID");
+
+                    b.Property<int>("RepresentantID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("FournisseurID");
+
+                    b.HasIndex("RepresentantID");
+
+                    b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Metier.Panier", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ApplicationUserId");
 
                     b.Property<int?>("ClientID");
 
@@ -388,8 +268,6 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
                     b.Property<string>("RegisterViewModelID");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("ClientID");
 
@@ -407,7 +285,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("MotClef");
+                    b.ToTable("MotClefs");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Possede", b =>
@@ -427,7 +305,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.HasIndex("ProduitID");
 
-                    b.ToTable("Possede");
+                    b.ToTable("Possedes");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Produit", b =>
@@ -463,7 +341,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.HasIndex("CategorieID");
 
-                    b.ToTable("Produit");
+                    b.ToTable("Produits");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.ProduitMotClef", b =>
@@ -481,7 +359,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.HasIndex("ProduitID");
 
-                    b.ToTable("ProduitMotClef");
+                    b.ToTable("ProduitsMotClefs");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Provient", b =>
@@ -505,7 +383,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.HasIndex("ProduitID");
 
-                    b.ToTable("Provient");
+                    b.ToTable("Provients");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.RepHabite", b =>
@@ -523,7 +401,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.HasIndex("RepresentantID");
 
-                    b.ToTable("RepHabite");
+                    b.ToTable("RepHabites");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Representant", b =>
@@ -545,7 +423,25 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.HasIndex("FournisseurID");
 
-                    b.ToTable("Representant");
+                    b.ToTable("Repesentants");
+                });
+
+            modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Travail", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("FournisseurID");
+
+                    b.Property<int>("RepresentantID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("FournisseurID");
+
+                    b.HasIndex("RepresentantID");
+
+                    b.ToTable("Travails");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Valeur", b =>
@@ -568,43 +464,6 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
                     b.ToTable("Valeur");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
-                        .WithMany("Claims")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
-                {
-                    b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.ApplicationUser")
-                        .WithMany("Claims")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
-                {
-                    b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.ApplicationUser")
-                        .WithMany("Logins")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.ApplicationUser")
-                        .WithMany("Roles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Categorie", b =>
                 {
                     b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.Categorie", "CategorieParent")
@@ -618,10 +477,6 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
                         .WithMany("ListeCommande")
                         .HasForeignKey("AdresseID");
 
-                    b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.ApplicationUser")
-                        .WithMany("Commande")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.Client", "Client")
                         .WithMany("Commande")
                         .HasForeignKey("ClientID")
@@ -634,10 +489,6 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
                         .WithMany("DomicileClient")
                         .HasForeignKey("AdresseID")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.ApplicationUser")
-                        .WithMany("Domicile")
-                        .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.Client", "Client")
                         .WithMany("Domicile")
@@ -666,12 +517,21 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Metier.Contact", b =>
+                {
+                    b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.Fournisseur", "Fournisseur")
+                        .WithMany()
+                        .HasForeignKey("FournisseurID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.Representant", "Representant")
+                        .WithMany()
+                        .HasForeignKey("RepresentantID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Metier.Panier", b =>
                 {
-                    b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.ApplicationUser")
-                        .WithMany("Panier")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.Client", "Client")
                         .WithMany("Panier")
                         .HasForeignKey("ClientID");
@@ -747,6 +607,19 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
                     b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.Fournisseur")
                         .WithMany("Representant")
                         .HasForeignKey("FournisseurID");
+                });
+
+            modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Travail", b =>
+                {
+                    b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.Fournisseur", "Fournisseur")
+                        .WithMany()
+                        .HasForeignKey("FournisseurID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.Representant", "Representant")
+                        .WithMany()
+                        .HasForeignKey("RepresentantID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Valeur", b =>

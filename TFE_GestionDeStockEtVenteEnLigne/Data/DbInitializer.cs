@@ -39,7 +39,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data
             context.SaveChanges();
             var Attribut = new Attribut[]
             {
-                new Attribut{ Nom= "a",Mesure = "a"}
+                new Attribut{ Nom= "Largeur",Mesure = "cm"}
             };
             foreach (Attribut a in Attribut)
             {
@@ -49,7 +49,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data
 
             var MotClef = new MotClef[]
             {
-                new MotClef{ Valeur= "a"}
+                new MotClef{ Valeur= "Perle"}
             };
             foreach (MotClef a in MotClef)
             {
@@ -59,7 +59,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data
 
             var Fournisseur = new Fournisseur[]
             {
-                new Fournisseur{ Nom= "a",Reference="a",Mail="a",Telephone="a",Fax="a",NumCompte="a",SiteNet="a",NumTva="a" }
+                new Fournisseur{ Nom= "Forumi",Reference="a",Mail="a",Telephone="a",Fax="a",NumCompte="a",SiteNet="a",NumTva="a" }
             };
             foreach (Fournisseur a in Fournisseur)
             {
@@ -68,7 +68,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data
             context.SaveChanges();
             var cat = new Categorie[]
             {
-                new Categorie{ Nom="a" }
+                new Categorie{ Nom="Bijou" }
             };
             foreach (Categorie a in cat)
             {
@@ -85,7 +85,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data
             }
 
             // crée le compte gérant par défault
-            var user = new ApplicationUser { UserName = "michele.tinant@skynet.be", Email = "michele.tinant@skynet.be" };
+            var user = new ApplicationUser { UserName = "michele.tinant@skynet.be", Email = "michele.tinant@skynet.be"};
             await userManager.CreateAsync(user, "Rofl_1");
             IdentityRole role = new IdentityRole { Name = "gestionnaire", NormalizedName = "GESTIONNAIRE" };
             IdentityResult RoleResult = await roleManager.CreateAsync(role);

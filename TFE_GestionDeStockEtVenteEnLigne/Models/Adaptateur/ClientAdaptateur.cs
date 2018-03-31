@@ -9,6 +9,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models.Adaptateur
     {
         public Client Client { get; set; }
         public List<Adresse> ListeAdresse;
+        
 
         public ClientAdaptateur()
         {

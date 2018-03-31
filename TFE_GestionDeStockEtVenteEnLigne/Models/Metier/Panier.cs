@@ -14,5 +14,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models.Metier
         public int Quantite { get; set; }
         public Produit Produit { get; set; }
         public Client Client { get; set; }
+
+
     }
 }

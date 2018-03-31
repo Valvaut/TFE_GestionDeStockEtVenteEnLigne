@@ -31,16 +31,22 @@
         <dd>
             @Html.DisplayFor(model => model.Envoie)
         </dd>
-        
+        <dt>
+            @Html.DisplayNameFor(model => model.AdresseFacturation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AdresseFacturation.Localite)
+        </dd>
+
         @foreach (var item in Model.Possede)
-         {
-            <dt>
-               produit
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => item.Produit.Ref)
-            </dd>
-         }
+    {
+        <dt>
+            produit
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => item.Produit.Ref)
+        </dd>
+}
     </dl>
 
     

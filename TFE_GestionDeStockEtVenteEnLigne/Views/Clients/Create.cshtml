@@ -1,75 +1,153 @@
-@model TFE_GestionDeStockEtVenteEnLigne.Models.Adaptateur.ClientAdaptateur
+@model TFE_GestionDeStockEtVenteEnLigne.Models.ApplicationUser
 
 @{
     ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Create</h2>
 
 <form asp-action="Create">
     <div class="form-horizontal">
-        <h4>Client</h4>
+        <h4>ApplicationUser</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Client.Nom" class="col-md-2 control-label"></label>
+            <label asp-for="Nom" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Client.Nom" class="form-control" />
-                <span asp-validation-for="Client.Nom" class="text-danger"></span>
+                <input asp-for="Nom" class="form-control" />
+                <span asp-validation-for="Nom" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Client.Prenom" class="col-md-2 control-label"></label>
+            <label asp-for="Prenom" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Client.Prenom" class="form-control" />
-                <span asp-validation-for="Client.Prenom" class="text-danger"></span>
+                <input asp-for="Prenom" class="form-control" />
+                <span asp-validation-for="Prenom" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Client.Mail" class="col-md-2 control-label"></label>
+            <label asp-for="NumTva" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Client.Mail" class="form-control" />
-                <span asp-validation-for="Client.Mail" class="text-danger"></span>
+                <input asp-for="NumTva" class="form-control" />
+                <span asp-validation-for="NumTva" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Client.NumTva" class="col-md-2 control-label"></label>
+            <label asp-for="Tel" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Client.NumTva" class="form-control" />
-                <span asp-validation-for="Client.NumTva" class="text-danger"></span>
+                <input asp-for="Tel" class="form-control" />
+                <span asp-validation-for="Tel" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Client.Tel" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Client.Tel" class="form-control" />
-                <span asp-validation-for="Client.Tel" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Client.NumeroClient" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Client.NumeroClient" class="form-control" />
-                <span asp-validation-for="Client.NumeroClient" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Client.Domicile" class="col-md-2 control-label"></label>
-            <div class="col-md-10 multiselect">
-                <div class="tab-pane">
-                    @if (Model.ListeAdresse.Count > 0)
-                    {
-                        @foreach (var item in Model.ListeAdresse)
-                        {
-                            <input type=checkbox name="addresse" value="@item.ID"> @item.Numero @item.NumeroBoite @item.Rue  @item.Localite<br /> @item.CodePostal  @item.Comune<br />
-                            <br />
-                        }
-                    }
-                    else
-                    {
-                        <span>Aucune addresse trouver!</span>
-                    }
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="Newsletter" />
+                    <label asp-for="Newsletter"></label>
                 </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="NormalizedUserName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="NormalizedUserName" class="form-control" />
+                <span asp-validation-for="NormalizedUserName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Email" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="NormalizedEmail" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="NormalizedEmail" class="form-control" />
+                <span asp-validation-for="NormalizedEmail" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="EmailConfirmed" />
+                    <label asp-for="EmailConfirmed"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PasswordHash" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PasswordHash" class="form-control" />
+                <span asp-validation-for="PasswordHash" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SecurityStamp" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="SecurityStamp" class="form-control" />
+                <span asp-validation-for="SecurityStamp" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ConcurrencyStamp" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ConcurrencyStamp" class="form-control" />
+                <span asp-validation-for="ConcurrencyStamp" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhoneNumber" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="PhoneNumberConfirmed" />
+                    <label asp-for="PhoneNumberConfirmed"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="TwoFactorEnabled" />
+                    <label asp-for="TwoFactorEnabled"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LockoutEnd" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LockoutEnd" class="form-control" />
+                <span asp-validation-for="LockoutEnd" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="LockoutEnabled" />
+                    <label asp-for="LockoutEnabled"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AccessFailedCount" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AccessFailedCount" class="form-control" />
+                <span asp-validation-for="AccessFailedCount" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
@@ -84,6 +162,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

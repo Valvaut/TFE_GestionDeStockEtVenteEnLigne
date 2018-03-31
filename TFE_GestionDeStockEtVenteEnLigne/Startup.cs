@@ -11,6 +11,7 @@ using TFE_GestionDeStockEtVenteEnLigne.Models;
 using TFE_GestionDeStockEtVenteEnLigne.Services;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Identity;
+using TFE_GestionDeStockEtVenteEnLigne.Data.Migrations;
 
 namespace TFE_GestionDeStockEtVenteEnLigne
 {
@@ -39,8 +40,11 @@ namespace TFE_GestionDeStockEtVenteEnLigne
         public void ConfigureServices(IServiceCollection services)
         {
             //nodejs
-            services.AddNodeServices(); 
+            services.AddNodeServices();
             // Add framework services.
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -48,9 +52,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne
             services.AddDbContext<TFEContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            
             //SESSION
             services.AddMvc();
             services.AddDistributedMemoryCache();
@@ -70,7 +72,6 @@ namespace TFE_GestionDeStockEtVenteEnLigne
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,TFEContext context, ApplicationDbContext contextIdentity, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            
 
             app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
             //app.UseStatusCodePages();
@@ -105,8 +106,10 @@ namespace TFE_GestionDeStockEtVenteEnLigne
                     name: "default",
                     template: "{controller=Horraires}/{action=Index}/{id?}");
             });
+            
             DbInitializer.Initialize(context);
-            contextIdentity.Database.Migrate();
+            //contextIdentity.Database.Migrate();
+            
             DbInitializer.Initialize2(contextIdentity, userManager, roleManager);
            
         }

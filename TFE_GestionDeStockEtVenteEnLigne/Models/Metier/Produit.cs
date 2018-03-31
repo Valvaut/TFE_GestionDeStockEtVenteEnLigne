@@ -19,7 +19,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
 
         public String Denomination { get; set; }
 
-        [Range(0, int.MaxValue)]
+        [Range(0, float.MaxValue)]
         public float Prix { get; set; }
 
         [Range(0, int.MaxValue)]

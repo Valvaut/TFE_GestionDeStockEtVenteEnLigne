@@ -30,7 +30,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         {
             var IdUser = _userManager.GetUserId(User);
             var IdClient = _context.Clients.Where(c => c.RegisterViewModelID == IdUser).ToArray();
-            var listeCommande =  _context.Commandes.Where(c=>c.ClientID== IdClient[0].ID);
+            var listeCommande =  _context.Commandes.Where(c=>c.RegisterViewModelID== IdUser).ToList();
 
             return View(listeCommande);
         }
@@ -45,7 +45,10 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 
             //var commande = await _context.Commandes.Include(p=>p.Possede).ThenInclude(pr=>pr.produits)
             //    .SingleOrDefaultAsync(m => m.ID == id);
-            Commande commande = await _context.Commandes.Include(c => c.Possede).SingleOrDefaultAsync(m => m.ID == id);
+            Commande commande = await _context.Commandes
+                                        .Include(c => c.Possede)
+                                        .Include( c=>c.AdresseFacturation)
+                                        .SingleOrDefaultAsync(m => m.ID == id);
             Produit produit;
             if (commande == null)
             {
@@ -87,18 +90,20 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 await _context.SaveChangesAsync();
                 //récup des infoi utilisateur et du panier
                 var IdUser = _userManager.GetUserId(User);
-                var IdClient = _context.Clients.Where(c => c.RegisterViewModelID == IdUser);
+                //var IdClient = _context.Clients.Where(c => c.RegisterViewModelID == IdUser);
                 var tFEContext = _context.Panier.Include(p => p.Produit).Where(p => p.RegisterViewModelID == IdUser).ToArray();
-                var Client = IdClient.ToArray();
+                //var Client = IdClient.ToArray();
                 Domicile d = new Domicile();
                 d.AdresseID = Adaptateur.Adresse.ID;
-                d.ClientID = Client[0].ID;
+                //d.ClientID = Client[0].ID;
+                d.RegisterViewModelID = IdUser;
                 _context.Add(d);
                 await _context.SaveChangesAsync();
                 //création de la comande
                 Commande commande = new Commande();
                 commande.AdresseID = Adaptateur.Adresse.ID;
-                commande.ClientID = Client[0].ID;
+                //commande.ClientID = Client[0].ID;
+                commande.RegisterViewModelID = IdUser;
                 commande.DateCommade = DateTime.Now;
                 if (User.IsInRole("gestionnaire"))
                     commande.EnCours = false;

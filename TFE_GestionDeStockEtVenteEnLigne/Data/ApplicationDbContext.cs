@@ -23,5 +23,9 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data
             // Add your customizations after calling base.OnModelCreating(builder);
 
         }
+
+        public DbSet<TFE_GestionDeStockEtVenteEnLigne.Models.ApplicationUser> ApplicationUser { get; set; }
+
+        public DbSet<TFE_GestionDeStockEtVenteEnLigne.Models.Commande> Commande { get; set; }
     }
 }
