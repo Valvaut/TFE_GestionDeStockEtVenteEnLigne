@@ -38,7 +38,5 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
-        public DateTime BirthDate { get; set; }
     }
 }
