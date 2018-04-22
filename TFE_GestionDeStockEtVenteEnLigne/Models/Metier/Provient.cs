@@ -12,8 +12,8 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public int ProduitID { get; set; }
         public int FournisseurID { get; set; }
 
-        [Range(0, int.MaxValue)]
-        public int Prix { get; set; }
+        [Range(0, double.MaxValue)]
+        public Double Prix { get; set; }
 
         [Range(0, int.MaxValue)]
         public int TauxTVA { get; set; }

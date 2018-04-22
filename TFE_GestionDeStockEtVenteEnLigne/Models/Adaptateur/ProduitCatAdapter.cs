@@ -10,6 +10,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
     [Bind("Produit")]
     public class ProduitCatAdapter
     {
+        public int Categorie { get; set; }
         public List<Categorie> ListCat { get; set; }
         public Produit Produit { get; set; }
         public List<MotClef> ListMotClef { get; set; }
@@ -17,7 +18,8 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public List<Attribut> TousLesAttributs { get; set; }
         public List<Fournisseur> ListFournisseur { get; set; }
         public int FournisseurID { get; set; }
-        public List<IFormFile> Images{get; set;}
+        //public List<IFormFile> Images{get; set;}
+        public IFormFile Image { get; set; }
 
         public ProduitCatAdapter()
         {

@@ -10,7 +10,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
     {
         public int ID { get; set; }
         public int CommandeID { get; set; }
-        [Range(0, int.MaxValue)]
+
         public int ProduitID { get; set; }
         [Range(0, int.MaxValue)]
         public int Quantite { get; set; }

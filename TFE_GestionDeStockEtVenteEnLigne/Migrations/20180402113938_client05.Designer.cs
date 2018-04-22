@@ -8,9 +8,10 @@ using TFE_GestionDeStockEtVenteEnLigne.Data;
 namespace TFE_GestionDeStockEtVenteEnLigne.Migrations
 {
     [DbContext(typeof(TFEContext))]
-    partial class TFEContextModelSnapshot : ModelSnapshot
+    [Migration("20180402113938_client05")]
+    partial class client05
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.3")

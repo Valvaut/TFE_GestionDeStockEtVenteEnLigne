@@ -115,7 +115,7 @@
             </tbody>
         </table>
         @{
-            int total = 0;
+            float total = 0;
             foreach (var item in Model.Commande.Possede)
             {
                 total += (item.Produit.Prix * item.Quantite);

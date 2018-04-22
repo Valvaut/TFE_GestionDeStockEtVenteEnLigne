@@ -8,9 +8,10 @@ using TFE_GestionDeStockEtVenteEnLigne.Data;
 namespace TFE_GestionDeStockEtVenteEnLigne.Migrations
 {
     [DbContext(typeof(TFEContext))]
-    partial class TFEContextModelSnapshot : ModelSnapshot
+    [Migration("20180402111127_client04")]
+    partial class client04
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.3")
@@ -330,7 +331,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Migrations
 
                     b.Property<int>("NBPieceEmballage");
 
-                    b.Property<double>("Prix");
+                    b.Property<float>("Prix");
 
                     b.Property<int>("QuantiteEmballage");
 
@@ -372,7 +373,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Migrations
 
                     b.Property<int>("FournisseurID");
 
-                    b.Property<double>("Prix");
+                    b.Property<float>("Prix");
 
                     b.Property<int>("ProduitID");
 

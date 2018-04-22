@@ -3,9 +3,6 @@
     @{
         Layout = null;
     }
-
-
-
     <html>
     <head>
         <meta name="viewport" content="width=device-width" />
@@ -13,31 +10,18 @@
     </head>
     <body>
         <div>
+            <div>
+                <h3 >Recherche</h3>
+                <div class="">
+                    <form asp-controller="Produits" asp-action="Index" method="get">
+                        <p>
+                            Recherche: <input type="text" name="SearchStr" value="@ViewData["Filter"]" />
+                            <input type="submit" value="Search" class="btn btn-default" />
+                        </p>
+                    </form>
+                </div>
+            </div>
             <table class="table">
-                @*<thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Nom)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CategorieParent)
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Nom)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CategorieParent.Nom)
-                            </td>
-                        </tr>
-                    }
-                </tbody>*@
                 @Html.Partial("Categorie", Model)
             </table>
         </div>

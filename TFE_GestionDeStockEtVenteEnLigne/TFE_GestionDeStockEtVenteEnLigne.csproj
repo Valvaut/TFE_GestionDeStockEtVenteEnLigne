@@ -39,6 +39,12 @@
     <Compile Remove="Migrations\20180331113555_client02.Designer.cs" />
     <Compile Remove="Migrations\20180331115551_client03.cs" />
     <Compile Remove="Migrations\20180331115551_client03.Designer.cs" />
+    <Compile Remove="Migrations\20180402112213_client05.cs" />
+    <Compile Remove="Migrations\20180402112213_client05.Designer.cs" />
+    <Compile Remove="Migrations\20180402113442_client05.cs" />
+    <Compile Remove="Migrations\20180402113442_client05.Designer.cs" />
+    <Compile Remove="Migrations\20180402113717_client05.cs" />
+    <Compile Remove="Migrations\20180402113717_client05.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />

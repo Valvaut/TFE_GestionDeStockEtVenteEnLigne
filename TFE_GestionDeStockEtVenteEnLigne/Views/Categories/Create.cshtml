@@ -23,7 +23,7 @@
             <div class="col-md-10">
                 @if (Model.CategorieEnfant.Count > 0)
                 {
-                    <select  asp-for="CategorieParentID" asp-items="@(new SelectList(Model.CategorieEnfant, "ID", "Nom"))" class="selectpicker"></select>
+                    <select  asp-for="CategorieParentID" asp-items="@(new SelectList(Model.CategorieEnfant, "ID", "Nom"))" class="selectpicker"><option  >Aucune</option></select>
                 }
                 else
                 { 

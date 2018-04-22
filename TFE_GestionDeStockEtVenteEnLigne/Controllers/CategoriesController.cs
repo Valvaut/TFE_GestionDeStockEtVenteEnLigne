@@ -69,7 +69,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             {
                 _context.Add(categorie);
                 String cat= Request.Form["CategorieParentID"];
-                if(cat!=null)
+                if(cat!="Aucune")
                 {
                     int CatID = int.Parse(cat);
                     categorie.CategorieParentID = CatID;

@@ -28,6 +28,13 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         // GET: Commandes
         public  IActionResult Index()
         {
+           
+            if (User.IsInRole("gestionnaire"))
+            {
+                var listeCommande1 = _context.Commandes.ToList();
+                return View(listeCommande1);
+            }
+
             var IdUser = _userManager.GetUserId(User);
             var IdClient = _context.Clients.Where(c => c.RegisterViewModelID == IdUser).ToArray();
             var listeCommande =  _context.Commandes.Where(c=>c.RegisterViewModelID== IdUser).ToList();
@@ -47,27 +54,33 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             //    .SingleOrDefaultAsync(m => m.ID == id);
             Commande commande = await _context.Commandes
                                         .Include(c => c.Possede)
-                                        .Include( c=>c.AdresseFacturation)
+                                        .Include(c => c.AdresseFacturation)
                                         .SingleOrDefaultAsync(m => m.ID == id);
-            Produit produit;
-            if (commande == null)
+            if (User.IsInRole("gestionnaire") || _userManager.GetUserId(User)==commande.RegisterViewModelID)
             {
-                return NotFound();
-            }
-            foreach (var i in commande.Possede)
-            {
-                 produit = await _context.Produits
-                    .Include(p => p.Categorie)
-                        .ThenInclude(c => c.CategorieParent)
-                    .Include(p => p.MotClef)
-                        .ThenInclude(mp => mp.MotClef)
-                    .AsNoTracking()
-                    .SingleOrDefaultAsync(m => m.ID == i.ProduitID);
-                i.Produit = produit;
-            }
-            
 
-            return View(commande);
+
+                Produit produit;
+                if (commande == null)
+                {
+                    return NotFound();
+                }
+                foreach (var i in commande.Possede)
+                {
+                    produit = await _context.Produits
+                       .Include(p => p.Categorie)
+                           .ThenInclude(c => c.CategorieParent)
+                       .Include(p => p.MotClef)
+                           .ThenInclude(mp => mp.MotClef)
+                       .AsNoTracking()
+                       .SingleOrDefaultAsync(m => m.ID == i.ProduitID);
+                    i.Produit = produit;
+                }
+
+
+                return View(commande);
+            }
+            return NotFound();
         }
 
         // GET: Commandes/Create

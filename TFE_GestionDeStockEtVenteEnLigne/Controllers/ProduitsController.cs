@@ -106,7 +106,10 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         [Authorize(Roles = "gestionnaire")]
         public async Task<IActionResult> Create( ProduitCatAdapter produitcatAdapter)
         {
-
+            var prixvente = Request.Form["Prixvente"];
+            
+            var prixachat = Request.Form["Prix"];
+            produitcatAdapter.Produit.Prix = double.Parse(prixvente.ToString().Replace('.', ','));
             if (ModelState.IsValid)
             {
                 try
@@ -167,10 +170,10 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                       
                     }
                     //gere le fournisseur
-                    int fournisseurID = int.Parse((Request.Form["select"]).ToString().Replace(',', '.'));
+                    int fournisseurID = int.Parse((Request.Form["select"]).ToString());
                     Provient provient = new Provient
                     {
-                        Prix = int.Parse(Request.Form["Prix"]),
+                        Prix = float.Parse(prixachat.ToString().Replace('.', ',')),
                         TauxTVA = int.Parse(Request.Form["tauxTVA"]),
                         QuantiteMinCommande = int.Parse(Request.Form["quantite"]),
                         ProduitID = produitcatAdapter.Produit.ID,
@@ -201,12 +204,20 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 return NotFound();
             }
 
-            var produit = await _context.Produits.SingleOrDefaultAsync(m => m.ID == id);
-            if (produit == null)
+            ProduitCatAdapter adaptateur = new ProduitCatAdapter();
+            adaptateur.Produit = await _context.Produits
+                                        .Include(p => p.Categorie)
+                                        .SingleOrDefaultAsync(m => m.ID == id);
+            adaptateur.ListCat = await _context.Categories
+                                       .ToListAsync();
+            adaptateur.ListMotClef = await _context.MotClefs
+                                       .ToListAsync();
+
+            if (adaptateur == null)
             {
                 return NotFound();
             }
-            return View(produit);
+            return View(adaptateur);
         }
 
         // POST: Produits/Edit/5
@@ -215,7 +226,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "gestionnaire")]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Ref,Denomination,Prix,QuantiteEmballage,NBPieceEmballage,TVA,CompteCompta,Description,Marque,QuantiteStock,Image")] Produit produit)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Ref,Denomination,Prix,QuantiteEmballage,NBPieceEmballage,TVA,CompteCompta,Description,Marque,QuantiteStock,Image,CategorieID")] Produit produit)
         {
             if (id != produit.ID)
             {
@@ -226,6 +237,21 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             {
                 try
                 {
+                    var images = Request.Form.Files["Image"];
+                    if (images == null)
+                    {
+                        var produitBD = await _context.Produits
+                                .AsNoTracking()
+                                .SingleOrDefaultAsync(m => m.ID == id);
+                        produit.Image = produitBD.Image;
+                    }
+                    else
+                    {
+                        MemoryStream ms = new MemoryStream();
+            
+                        images.OpenReadStream().CopyTo(ms);
+                        produit.Image = ms.ToArray();
+                    }
                     _context.Update(produit);
                     await _context.SaveChangesAsync();
                 }

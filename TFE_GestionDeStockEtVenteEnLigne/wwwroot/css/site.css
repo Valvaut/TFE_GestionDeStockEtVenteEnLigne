@@ -177,3 +177,31 @@ input {
 .flexbox {
     display: flex;
 }
+
+.myCenter {
+    margin: auto;
+    width: 80%;
+    padding: 10px;
+}
+.myCenterCorps {
+    width: 70%;
+    text-align : center;
+}
+.myCenterSearch {
+    width: 20%;
+    border : 2px solid rgb(56,93,138);
+    border-radius : 5% ;
+    margin-bottom : auto;
+}
+
+.myCenterQuatreVin {
+    width: 80%;
+    margin: auto;
+}
+
+.marginAuto {
+    margin : auto;
+}
+
+.noBr {
+}
