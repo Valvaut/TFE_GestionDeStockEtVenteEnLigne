@@ -1,0 +1,46 @@
+@model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Categorie>
+
+    @{
+        Layout = null;
+    }
+
+
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Recherche</title>
+    </head>
+    <body>
+        <div>
+            <table class="table">
+                @*<thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Nom)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CategorieParent)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nom)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CategorieParent.Nom)
+                            </td>
+                        </tr>
+                    }
+                </tbody>*@
+                @Html.Partial("Categorie", Model)
+            </table>
+        </div>
+
+    </body>
+</html>

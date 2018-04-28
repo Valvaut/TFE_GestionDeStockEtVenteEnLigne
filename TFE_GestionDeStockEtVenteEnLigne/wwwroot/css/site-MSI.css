@@ -1,0 +1,179 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    /*background-color: #e2ffff;
+    color: #010b35;*/
+    background: linear-gradient(#d0def5,#fefeff,#ebcca5);
+    font-family: Comic Sans MS;
+}
+
+html {
+    height: 100%;
+}
+
+h3 {
+    color: #002060;
+    text-decoration: underline;
+    font-family: Comic Sans MS;
+}
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set widths on the form inputs since otherwise they're 100% wide */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* buttons and links extension to use brackets: [ click me ] */
+.btn-bracketed::before {
+    display: inline-block;
+    content: "[";
+    padding-right: 0.5em;
+}
+
+.btn-bracketed::after {
+    display: inline-block;
+    content: "]";
+    padding-left: 0.5em;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+.tab-pane {
+    height: 100px;
+    overflow-y: scroll;
+    width: 100%;
+}
+
+.multiselect {
+    height: 10em;
+    border: solid 1px #c0c0c0;
+    overflow: auto;
+    margin-bottom: 20px;
+}
+
+    .multiselect label {
+        margin-left: 10px;
+        display: block;
+    }
+
+.multiselect-on {
+    color: #ffffff;
+    background-color: #2aba67;
+}
+
+/*IMAGE popup*/
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    /*background-color: rgb(0,0,0); /* Fallback color 
+    background-color: rgba(0,0,0,100); /* Black w/ opacity */
+}
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    text-align: center;
+}
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+.imageGrande {
+    width: 80%;
+    height: 80%;
+}
+
+.imagePetite {
+    width: 200px;
+    height: 200px;
+}
+
+.entete {
+    background: #0fdbe2;
+}
+
+input {
+    background-color: #e2ffff;
+    border-color: #337ab7;
+}
+
+.grad {
+    background: linear-gradient(#d0def5,#fefeff,#ebcca5);
+}
+
+.textCenter {
+    text-align: center;
+    font-family: Comic Sans MS;
+}
+
+.colorBlue {
+    color: #002060;
+}
+
+.mymenu {
+    font-size: 25px;
+}
+
+.bienvenue {
+    text-align: center;
+    font-size: 25px;
+    padding: 5px 10px 5px 10px;
+    margin: 10px;
+}
+
+.info {
+    font-size: 20px;
+}
+
+.searchcol {
+    width: 30%;
+}
+
+.flexbox {
+    display: flex;
+}

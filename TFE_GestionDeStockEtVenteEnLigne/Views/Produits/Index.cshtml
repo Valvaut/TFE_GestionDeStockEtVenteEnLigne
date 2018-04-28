@@ -29,14 +29,14 @@
             </p>
         </div>
     </form>*@
-        <table class="table ">
+        @*<table class="table ">
             <thead>
                 <tr>
-                    @*<th>
+                    <th>
                         <a asp-action="Index" asp-route-sortOrder="@ViewBag.RefSort">
                             @Html.DisplayNameFor(model => model.Ref)
                         </a>
-                    </th>*@
+                    </th>
                     <th>
                         <a asp-action="Index" asp-route-sortOrder="@ViewBag.DenoSort">
                             @Html.DisplayNameFor(model => model.Denomination)
@@ -45,13 +45,13 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Prix)
                     </th>
-                    @*<th>
+                    <th>
                         @Html.DisplayNameFor(model => model.QuantiteEmballage)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.NBPieceEmballage)
-                    </th>*@
-                    @*<th>
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.TVA)
                     </th>
                     <th>
@@ -62,13 +62,13 @@
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Marque)
-                    </th>*@
-                    @*<th>
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.QuantiteStock)
-                    </th>*@
-                    @*<th>
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.Image)
-                    </th>*@
+                    </th>
                     <th>
                         <span>Image</span>
                     </th>
@@ -78,16 +78,16 @@
                 @foreach (var item in Model)
                  {
                     <tr>
-                        @*<td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.Ref)
-                        </td>*@
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Denomination)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Prix)
                         </td>
-                        @*<td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.QuantiteEmballage)
                         </td>
                         <td>
@@ -106,11 +106,11 @@
                             @Html.DisplayFor(modelItem => item.Marque)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.QuantiteStock)*@
-                        @*</td>*@
-                        @*<td>
+                            @Html.DisplayFor(modelItem => item.QuantiteStock)
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.Image)
-                        </td>*@
+                        </td>
                        
                         <td>
                             @{
@@ -142,7 +142,7 @@
                     </tr>
                  }
             </tbody>
-        </table>
+        </table>*@
 
         @foreach (var item in Model)
          {

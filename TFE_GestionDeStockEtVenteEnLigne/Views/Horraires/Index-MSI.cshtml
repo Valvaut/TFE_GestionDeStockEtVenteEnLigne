@@ -1,0 +1,71 @@
+@using TFE_GestionDeStockEtVenteEnLigne.Controllers
+@model TFE_GestionDeStockEtVenteEnLigne.Models.HorraireEventAdapter
+
+@{
+    ViewData["Title"] = "Accueil";
+}
+<div class="flexbox">
+    <div >
+        @await Component.InvokeAsync("Recherche")
+    </div>
+
+    <div>
+        <h2>L'Espace Du Petit Futé</h2>
+        <div class="grad colorBlue bienvenue">Nous vous souhaitons la bienvenue</div>
+        <h3>Nous rendre visite</h3>
+        <table class="colorBlue textCenter info">
+            <tbody>
+                @foreach (var item in Model.Horraire)
+            {
+                <tr>
+                    <td>
+                        Lundi @Html.DisplayFor(modelItem => item.Lundi)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Mardi @Html.DisplayFor(modelItem => item.Mardi)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Mercredi @Html.DisplayFor(modelItem => item.Mercredi)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Jeudi @Html.DisplayFor(modelItem => item.Jeudi)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Vendredi @Html.DisplayFor(modelItem => item.Vendredi)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Samedi @Html.DisplayFor(modelItem => item.Samedi)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Dimanche @Html.DisplayFor(modelItem => item.Dimanche)
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+        <div class="colorBlue info">
+            <h3>Nous Contacter</h3>
+
+            <span>A-kreides, 43 </span><br />
+            <span>6700 Toernich - Arlon</span><br />
+            <span> Belgique </span><br />
+            <br />
+            <span>Tel : 0032 (0)63 236133</span><br />
+            <span>E-mail : michele.tinant@skynet.be</span><br />
+        </div>
+    </div>
+    
+
+</div>
