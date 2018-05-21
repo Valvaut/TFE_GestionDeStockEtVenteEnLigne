@@ -14,10 +14,12 @@
                 <h3 >Recherche</h3>
                 <div class="">
                     <form asp-controller="Produits" asp-action="Index" method="get">
-                        <p>
-                            Recherche: <input type="text" name="SearchStr" value="@ViewData["Filter"]" />
+                        <div >
+                            <input  type="text" name="SearchStr" value="@ViewData["Filter"]" />
+                        </div>
+                        <div>
                             <input type="submit" value="Search" class="btn btn-default" />
-                        </p>
+                        </div>
                     </form>
                 </div>
             </div>

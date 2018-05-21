@@ -1,10 +1,10 @@
 ﻿body {
     padding-top: 50px;
-    padding-bottom: 20px;
     /*background-color: #e2ffff;
     color: #010b35;*/
     background: linear-gradient(#d0def5,#fefeff,#ebcca5);
     font-family: Comic Sans MS;
+    height : 100%;
 }
 
 html {
@@ -21,10 +21,11 @@ h3 {
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    height : 90%;
 }
 
 /* Set widths on the form inputs since otherwise they're 100% wide */
-input,
+
 select,
 textarea {
     max-width: 280px;
@@ -116,12 +117,12 @@ textarea {
     font-weight: bold;
 }
 
-    .close:hover,
-    .close:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
-    }
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
 
 .imageGrande {
     width: 80%;
@@ -140,6 +141,9 @@ textarea {
 input {
     background-color: #e2ffff;
     border-color: #337ab7;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 .grad {
@@ -179,19 +183,24 @@ input {
 }
 
 .myCenter {
-    margin: auto;
+    margin: 0px auto 0px auto ;
     width: 80%;
-    padding: 10px;
+    padding: 0px;
+    height : 90%;
 }
 .myCenterCorps {
     width: 70%;
-    text-align : center;
+    height : 100%;
+    text-align: center;
+    border-left: solid 4px #8faaff;
+    border-right: solid 4px #8faaff;
 }
 .myCenterSearch {
     width: 20%;
-    border : 2px solid rgb(56,93,138);
-    border-radius : 5% ;
-    margin-bottom : auto;
+    border: 2px solid rgb(56,93,138);
+    border-radius: 5%;
+    margin-bottom: auto;
+    height: 100%;
 }
 
 .myCenterQuatreVin {
@@ -204,4 +213,20 @@ input {
 }
 
 .noBr {
+}
+
+.borderleft {
+    border-left: solid 4px #8faaff;
+}
+.borderDown {
+    border-bottom: solid 4px #8faaff;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #002060 !important;
+}
+#navNoMargin {
+    margin-bottom : 0px !important;
+}
+footer {
 }

@@ -76,6 +76,7 @@
   <ItemGroup>
     <Folder Include="Views\Shared\Components\Recherche\" />
     <Folder Include="Views\StatusCode\" />
+    <Folder Include="wwwroot\lib\bootstrap\dist\" />
   </ItemGroup>
 
 </Project>
