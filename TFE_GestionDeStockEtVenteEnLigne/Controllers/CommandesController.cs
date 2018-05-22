@@ -84,9 +84,14 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         }
 
         // GET: Commandes/Create
-        public IActionResult Create()
+        public  IActionResult Create()
         {
-            return View();
+            var IdUser = _userManager.GetUserId(User);
+            CommandeAdresseAdaptateur addadp = new CommandeAdresseAdaptateur();
+            addadp.Adresse =  _context.Adresses.Include(a => a.DomicileClient).Where(a=>a.DomicileClient.Any(p=>p.RegisterViewModelID == IdUser)).FirstOrDefault();
+            if (addadp.Adresse == null)
+                addadp.Adresse = new Adresse();
+            return View(addadp);
         }
 
         // POST: Commandes/Create
