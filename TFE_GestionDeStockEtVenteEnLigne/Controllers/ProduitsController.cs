@@ -39,10 +39,12 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             if (!String.IsNullOrEmpty(cat))
             {
                 produits = produits.Where(f => f.Categorie.Nom.Contains(cat));
+                ViewData["cat"]= cat;
             }
             else if (!String.IsNullOrEmpty(searchStr))
             {
                 produits = produits.Where(f => f.Ref.Contains(searchStr) || f.Denomination.Contains(searchStr));
+                ViewData["recherche"] = searchStr;
             }
             switch (sortOrder)
             {
@@ -169,11 +171,17 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                         _context.Add(pm);
                       
                     }
+                    float Prix2 = 0;
+                    if (!(prixachat.ToString().Equals("")))
+                    {
+                       Prix2 = float.Parse(prixachat.ToString().Replace('.', ','));
+                    }
                     //gere le fournisseur
                     int fournisseurID = int.Parse((Request.Form["select"]).ToString());
                     Provient provient = new Provient
                     {
-                        Prix = float.Parse(prixachat.ToString().Replace('.', ',')),
+                        
+                        Prix = Prix2,
                         TauxTVA = int.Parse(Request.Form["tauxTVA"]),
                         QuantiteMinCommande = int.Parse(Request.Form["quantite"]),
                         ProduitID = produitcatAdapter.Produit.ID,

@@ -9,5 +9,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models.Adaptateur
     {
         public Commande Commande { get; set; }
         public Adresse Adresse { get; set; }
+
+        public List<Adresse> ListeAdresse { get; set; }
     }
 }

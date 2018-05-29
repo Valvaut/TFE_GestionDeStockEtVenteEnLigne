@@ -147,6 +147,14 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 
             return View(panier);
         }
+        public async Task<IActionResult> DeletePanier()
+        {
+            var IdUser = _userManager.GetUserId(User);
+            var panier =  _context.Panier.ToArray();
+            _context.Panier.RemoveRange(panier);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
 
         // POST: Paniers/Delete/5
         [HttpPost, ActionName("Delete")]

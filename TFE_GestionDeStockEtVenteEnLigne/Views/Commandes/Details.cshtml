@@ -10,9 +10,9 @@
     <h4>Commande</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dd>
+        @*<dd>
             @Html.DisplayFor(model => model.ID)
-        </dd>
+        </dd>*@
         <dt>
             @Html.DisplayNameFor(model => model.DateCommade)
         </dt>
@@ -29,24 +29,33 @@
             @Html.DisplayNameFor(model => model.Envoie)
         </dt>
         <dd>
+            @if (Model.Envoie > Model.DateCommade)
+            {
+                @Html.DisplayFor(model => model.Envoie)
+            }
+            else
+            {
+                <div>pas encore envoyé!</div>
+            }
             @Html.DisplayFor(model => model.Envoie)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.AdresseFacturation)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.AdresseFacturation.Localite)
+            @Model.AdresseFacturation.ToString()
         </dd>
 
         @foreach (var item in Model.Possede)
-    {
-        <dt>
-            produit
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => item.Produit.Ref)
-        </dd>
-}
+        {
+            <dt>
+                produit
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => item.Produit.Denomination)
+                <a asp-controller="Produits" asp-action="Details" asp-route-id="@item.Produit.ID">Details</a>
+            </dd>
+        }
     </dl>
 
     

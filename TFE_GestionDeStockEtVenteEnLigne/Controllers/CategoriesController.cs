@@ -88,7 +88,8 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 return NotFound();
             }
 
-            var categorie = await _context.Categories.SingleOrDefaultAsync(m => m.ID == id);
+            var categorie = await _context.Categories.Include(a => a.CategorieEnfant).Include(a=>a.CategorieParent).SingleOrDefaultAsync(m => m.ID == id);
+            ViewData["allCat"] = await _context.Categories.Where(a=>a.ID != id).ToListAsync();
             if (categorie == null)
             {
                 return NotFound();
@@ -101,7 +102,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Nom")] Categorie categorie)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Nom,CategorieParentID")] Categorie categorie)
         {
             if (id != categorie.ID)
             {

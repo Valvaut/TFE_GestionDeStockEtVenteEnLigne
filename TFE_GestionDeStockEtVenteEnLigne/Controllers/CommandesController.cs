@@ -31,13 +31,13 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
            
             if (User.IsInRole("gestionnaire"))
             {
-                var listeCommande1 = _context.Commandes.ToList();
+                var listeCommande1 = _context.Commandes.Include(a => a.AdresseFacturation).ToList();
                 return View(listeCommande1);
             }
 
             var IdUser = _userManager.GetUserId(User);
-            var IdClient = _context.Clients.Where(c => c.RegisterViewModelID == IdUser).ToArray();
-            var listeCommande =  _context.Commandes.Where(c=>c.RegisterViewModelID== IdUser).ToList();
+            //var IdClient = _context.Clients.Where(c => c.RegisterViewModelID == IdUser).ToArray();
+            var listeCommande =  _context.Commandes.Include(a=>a.AdresseFacturation).Where(c=>c.RegisterViewModelID== IdUser).ToList();
 
             return View(listeCommande);
         }
@@ -88,9 +88,11 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         {
             var IdUser = _userManager.GetUserId(User);
             CommandeAdresseAdaptateur addadp = new CommandeAdresseAdaptateur();
-            addadp.Adresse =  _context.Adresses.Include(a => a.DomicileClient).Where(a=>a.DomicileClient.Any(p=>p.RegisterViewModelID == IdUser)).FirstOrDefault();
-            if (addadp.Adresse == null)
-                addadp.Adresse = new Adresse();
+            addadp.ListeAdresse =  _context.Adresses.Include(a => a.DomicileClient).Where(a=>a.DomicileClient.Any(p=>p.RegisterViewModelID == IdUser)).ToList();
+            if (addadp.ListeAdresse.Count <= 0 )
+            {
+                addadp.ListeAdresse.Add(new Adresse());
+            }
             return View(addadp);
         }
 
@@ -104,8 +106,25 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             if (ModelState.IsValid)
             {
                 //ajout de l'adresse dans la bd
-                _context.Add(Adaptateur.Adresse);
-                await _context.SaveChangesAsync();
+                var listAdd = _context.Adresses.Include(a => a.DomicileClient).ToList();
+                Boolean existe = false;
+                int i = 0;
+                while (!existe && i < listAdd.Count)
+                {
+                    if (listAdd[i].Equals(Adaptateur.Adresse))
+                        existe = true;
+                    else
+                        i++;
+                }
+                if (!existe)
+                {
+                    _context.Add(Adaptateur.Adresse);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    Adaptateur.Adresse.ID = listAdd[i].ID;
+                }
                 //récup des infoi utilisateur et du panier
                 var IdUser = _userManager.GetUserId(User);
                 //var IdClient = _context.Clients.Where(c => c.RegisterViewModelID == IdUser);

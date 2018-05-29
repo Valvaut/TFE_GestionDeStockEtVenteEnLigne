@@ -13,9 +13,9 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.RegisterViewModelID)
-                </th>
+                </th>*@
                 <th>
                     @Html.DisplayNameFor(model => model.DateCommade)
                 </th>
@@ -28,18 +28,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.AdresseFacturation)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Client)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.RegisterViewModelID)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.DateCommade)
             </td>
@@ -50,11 +50,11 @@
                 @Html.DisplayFor(modelItem => item.Envoie)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AdresseFacturation.ID)
+                @item.AdresseFacturation.ToString()
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Client.ID)
-            </td>
+            </td>*@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ID">Details</a> |

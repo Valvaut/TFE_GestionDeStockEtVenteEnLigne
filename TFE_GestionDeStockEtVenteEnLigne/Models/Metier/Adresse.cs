@@ -25,5 +25,15 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public ICollection<Domicile> DomicileClient { get; set; }
         public ICollection<Implantation> Implanter { get; set; }
         public ICollection<Commande> ListeCommande { get; set; }
+
+        public Boolean Equals(Adresse adr)
+        {
+            return Localite == adr.Localite && Rue == adr.Rue && Numero == adr.Numero && NumeroBoite == adr.NumeroBoite && Pays == adr.Pays  && CodePostal == adr.CodePostal && Comune == adr.Comune;
+        }
+        
+        public override string ToString()
+        {
+            return Localite + "," + Rue + "," + Numero + "," + NumeroBoite + "," + Pays + "," + CodePostal + "," + Comune;
+        }
     }
 }

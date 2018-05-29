@@ -11,7 +11,7 @@
         <h4>Categorie</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="ID" />
+        <input type="hidden" asp-for="ID" />
         <div class="form-group">
             <label asp-for="Nom" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -25,7 +25,33 @@
             </div>
         </div>
     </div>
+    <div>
+        <h4>Catégorie Parent</h4>
+        <div>
+            <select asp-for="CategorieParentID" class="selectpicker">
+                @if (Model.CategorieParent != null)
+                {
+                    <option value="@Model.CategorieParent.ID">@Html.DisplayFor(modelItem => modelItem.CategorieParent.Nom)</option>
+                }
+
+                @foreach (var cat in ViewData["allCat"] as IEnumerable<Categorie>)
+                {
+                    <option value="@cat.ID">@cat.Nom</option>
+                }
+            </select>
+            
+        </div>
+    </div>
 </form>
+<div>
+    <h4>Catégorie(s) enfant(s)</h4>
+    @foreach (var cat in Model.CategorieEnfant)
+    { 
+        <div>
+            @Html.DisplayFor(modelItem => cat.Nom)
+        </div>
+    }
+</div>
 
 <div>
     <a asp-action="Index">Back to List</a>

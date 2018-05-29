@@ -8,13 +8,14 @@
 
 <p>
     @*<a asp-action="Create">Create New</a>*@
+    <a asp-action="DeletePanier" >Annuler panier</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.RegisterViewModelID)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Produit)
             </th>
@@ -35,9 +36,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.RegisterViewModelID)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Produit.ID)
             </td>
@@ -61,8 +62,8 @@
                 
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                @*<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |*@
+                <a asp-controller="Produits" asp-action="Details" asp-route-id="@item.ProduitID">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
             </td>
         </tr>
@@ -80,5 +81,12 @@
     total: @total
 
 <form>
-    <input asp-controller="Commandes" asp-action="Create" type="submit"  value="Valider Commande" method="get"/>
+    @if (Model.Count() <= 0)
+    {
+        <div>Panier vide, impossible de le valider</div>
+    }
+    else
+    {
+        <input asp-controller="Commandes" asp-action="Create" type="submit" value="Valider Commande" method="get" />
+    }
 </form>

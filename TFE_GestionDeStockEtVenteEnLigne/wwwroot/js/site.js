@@ -84,3 +84,34 @@ $('#cmd').click(function () {
     });
     doc.save('sample-file.pdf');
 });
+
+function selectAdresse()
+{
+    var selected = document.getElementById("selectadr").value;
+    var tab = selected.split(",");
+
+    var loc = document.getElementById("localite");
+    loc.value = tab[0];
+    var rue = document.getElementById("rue");
+    rue.value = tab[1];
+    var num = document.getElementById("numero");
+    num.value = tab[2];
+    var numboite = document.getElementById("numboite");
+    numboite.value = tab[3];
+    var pays = document.getElementById("pays");
+    pays.value = tab[4];
+    var codepostal = document.getElementById("codepostal");
+    codepostal.value = tab[5];
+    var comune = document.getElementById("comune");
+    comune.value = tab[6];
+}
+
+function afficherImage()
+{
+    var src = document.getElementById("src");
+    var target = document.getElementById("target");
+    var fr = new FileReader();
+    fr.readAsDataURL(src.files[0]);
+    fr.onload = function (e) { target.src = this.result; };
+
+}

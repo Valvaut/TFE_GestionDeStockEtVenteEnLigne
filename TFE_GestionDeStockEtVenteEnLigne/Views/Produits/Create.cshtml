@@ -28,8 +28,7 @@
         <div class="form-group">
             <label asp-for="Produit.Categorie" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select  asp-for="Produit.CategorieID" asp-items="@(new SelectList(Model.ListCat,"ID","Nom"))" class="selectpicker">
-                </select>
+                <select asp-for="Produit.CategorieID" asp-items="@(new SelectList(Model.ListCat,"ID","Nom"))" class="selectpicker"></select>
             </div>
         </div>
 
@@ -37,22 +36,22 @@
             <label asp-for="Produit.MotClef" class="col-md-2 control-label"></label>
             <div class="col-md-10 multiselect">
                 <div class="tab-pane">
-                @if (Model.ListMotClef.Count > 0)
-                {
-                    @foreach (var item in Model.ListMotClef)
+                    @if (Model.ListMotClef.Count > 0)
                     {
-                        <input type=checkbox name="MotClef" value="@item.ID" > @item.Valeur
-                        <br/>
+                        @foreach (var item in Model.ListMotClef)
+                        {
+                            <input type=checkbox name="MotClef" value="@item.ID"> @item.Valeur
+                            <br />
+                        }
                     }
-                }
-                else
-                {
-                    <span>Aucun Mot cléf trouver!</span>
-                }
+                    else
+                    {
+                        <span>Aucun Mot cléf trouver!</span>
+                    }
                 </div>
             </div>
         </div>
-       
+
 
         <div class="form-group">
             <label asp-for="Produit.Prix" class="col-md-2 control-label"></label>
@@ -71,21 +70,21 @@
         <div class="form-group">
             <label asp-for="Produit.NBPieceEmballage" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Produit.NBPieceEmballage"  min="0" step="1" class="form-control" />
+                <input asp-for="Produit.NBPieceEmballage" min="0" step="1" class="form-control" />
                 <span asp-validation-for="Produit.NBPieceEmballage" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="Produit.TVA" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Produit.TVA"  min="0" step="1" class="form-control" />
+                <input asp-for="Produit.TVA" min="0" step="1" class="form-control" />
                 <span asp-validation-for="Produit.TVA" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="Produit.CompteCompta" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Produit.CompteCompta"  class="form-control" />
+                <input asp-for="Produit.CompteCompta" class="form-control" />
                 <span asp-validation-for="Produit.CompteCompta" class="text-danger"></span>
             </div>
         </div>
@@ -106,22 +105,29 @@
         <div class="form-group">
             <label asp-for="Produit.QuantiteStock" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Produit.QuantiteStock"  min="0" step="1" class="form-control" />
+                <input asp-for="Produit.QuantiteStock" min="0" step="1" class="form-control" />
                 <span asp-validation-for="Produit.QuantiteStock" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="Produit.Image" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Produit.Image" type="file" name="Image"  />
+                <input id="src" asp-for="Produit.Image" type="file" name="Image" onchange="afficherImage()" />
                 <span asp-validation-for="Produit.Image" class="text-danger"></span>
             </div>
         </div>
-       
+        <div class="form-group">
+            <label  class="col-md-2 control-label">image selectionner</label>
+            <div class="col-md-10">
+                <img id="target" />
+            </div>
+        </div>
+        
+
         <div class="form-group">
             <label asp-for="Produit.Valeur" class="col-md-2 control-label"></label>
             <div class="col-md-10 multiselect">
-                <div class="tab-pane" >
+                <div class="tab-pane">
                     <div id="attributs">
                         <p>
                             @if (Model.TousLesAttributs.Count > 0)
@@ -132,8 +138,8 @@
                                     {
                                         <Option value="@item.ID">@item.Nom</Option>
                                     }
-                                </select><input type="Text" name="ValueAttribut"/>
-                               
+                                </select><input type="Text" name="ValueAttribut" />
+
                             }
                             else
                             {
@@ -145,17 +151,17 @@
                 <button type="button" onclick="addInputAttribut()">Ajouter Attributs</button>
             </div>
         </div>
-        
+
         <div class="form-group">
-            <label  class="col-md-2 control-label">Prix</label>
+            <label class="col-md-2 control-label">Prix</label>
             <div class="col-md-10">
-                <input type="number" name="Prix"min="0" step="0.01" class="form-control"  />
+                <input type="number" name="Prix" min="0" step="0.01" class="form-control" />
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label">Taux de TVA</label>
             <div class="col-md-10">
-                <input type="number"name="tauxTVA"  min="0" step="1" class="form-control" />
+                <input type="number" name="tauxTVA" min="0" step="1" class="form-control" />
             </div>
         </div>
         <div class="form-group">
@@ -164,14 +170,14 @@
                 <input type="number" min="0" step="1" name="quantite" class="form-control" />
             </div>
         </div>
-       
+
         <div class="form-group">
             <label asp-for="ListFournisseur" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <!--<select asp-for="FournisseurID" asp-items="@(new SelectList(Model.ListFournisseur,"ID","Nom"))" class="selectpicker"></select>-->
                 <select name="select">
                     @foreach (var item in Model.ListFournisseur)
-                    { 
+                    {
                         <option value="@item.ID">@item.Nom</option>
                     }
                 </select>

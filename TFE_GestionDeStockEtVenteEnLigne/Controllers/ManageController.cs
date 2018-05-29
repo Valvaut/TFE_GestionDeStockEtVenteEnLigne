@@ -56,6 +56,9 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             {
                 return View("Error");
             }
+            ViewData["email"] = user.Email;
+            ViewData["nom"] = user.Nom;
+            ViewData["prenom"] = user.Prenom;
             var model = new IndexViewModel
             {
                 HasPassword = await _userManager.HasPasswordAsync(user),
