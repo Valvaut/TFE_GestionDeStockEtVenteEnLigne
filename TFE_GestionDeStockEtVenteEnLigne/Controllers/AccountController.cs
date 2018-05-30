@@ -504,14 +504,18 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         }
         public async Task<IActionResult> AddPanier(int id)
         {
-            var IdUser = _userManager.GetUserId(User);
-            Panier Panier= new Panier();
-            Panier.Quantite = int.Parse(Request.Form["Quantite"]);
-            Panier.RegisterViewModelID = IdUser;
-            Panier.ProduitID = id;
-            _context.Add(Panier);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index","Produits");
+            var qte = Request.Form["Quantite"];
+            if(qte != "")
+            {
+                var IdUser = _userManager.GetUserId(User);
+                Panier Panier = new Panier();
+                Panier.Quantite = int.Parse(qte);
+                Panier.RegisterViewModelID = IdUser;
+                Panier.ProduitID = id;
+                _context.Add(Panier);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Index", "Produits");
         }
         #endregion
     }

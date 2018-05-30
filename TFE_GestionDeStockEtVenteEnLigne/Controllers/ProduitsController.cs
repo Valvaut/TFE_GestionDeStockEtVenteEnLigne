@@ -57,7 +57,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 default:
                     produits = produits.OrderBy(f => f.Ref); break;
             }
-            return View(await produits.ToListAsync());
+            return View(await produits.Where(p=>p.Visible == true).ToListAsync());
         }
 
 
@@ -122,6 +122,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                     var images = Request.Form.Files["Image"];
                     images.OpenReadStream().CopyTo(ms);
                     produitcatAdapter.Produit.Image = ms.ToArray();
+                    produitcatAdapter.Produit.Visible = true;
                     _context.Add(produitcatAdapter.Produit);//insert le produit
 
 
@@ -171,6 +172,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                         _context.Add(pm);
                       
                     }
+
                     float Prix2 = 0;
                     if (!(prixachat.ToString().Equals("")))
                     {
@@ -189,9 +191,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                     };
                     _context.Add(provient);
                     await _context.SaveChangesAsync();
-
-
-
+                  
                     return RedirectToAction("");
                 }
                 catch (Exception e)
@@ -223,7 +223,24 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             adaptateur.ListCat = await _context.Categories
                                        .ToListAsync();
             adaptateur.ListMotClef = await _context.MotClefs
+                                       .Include(mc=>mc.Produit)
                                        .ToListAsync();
+            foreach (var item in adaptateur.Produit.MotClef)
+            {
+                int i = 0;
+                while( i < adaptateur.ListMotClef.Count)
+                {
+                    var item2 = adaptateur.ListMotClef[i];
+                    if (item2.Produit.Contains(item))
+                    {
+                        adaptateur.ListMotClef.Remove(item2);
+                    }
+                    else
+                    {
+                        ++i;
+                    }
+                }
+            }
             adaptateur.ListFournisseur = await _context.Fournisseurs
                                        .ToListAsync();
             adaptateur.TousLesAttributs = await _context.Attributs
@@ -252,22 +269,101 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             {
                 try
                 {
+                    produit.Visible = false;
+                    _context.Update(produit);
+                    Produit nouveau = new Produit
+                    {
+                        Visible = true,
+                        CategorieID = produit.CategorieID,
+                        Ref = produit.Ref,
+                        Denomination = produit.Denomination,
+                        Prix = produit.Prix,
+                        QuantiteEmballage = produit.QuantiteEmballage,
+                        NBPieceEmballage = produit.NBPieceEmballage,
+                        TVA = produit.TVA,
+                        CompteCompta = produit.CompteCompta,
+                        Description = produit.Description,
+                        Marque = produit.Marque,
+                        QuantiteStock = produit.QuantiteStock,
+                    };
+                    _context.Add(nouveau);
                     var images = Request.Form.Files["Image"];
-                    if (images == null)
+                    if (images.FileName == "")
                     {
                         var produitBD = await _context.Produits
                                 .AsNoTracking()
                                 .SingleOrDefaultAsync(m => m.ID == id);
-                        produit.Image = produitBD.Image;
+                        nouveau.Image = produitBD.Image;
                     }
                     else
                     {
                         MemoryStream ms = new MemoryStream();
             
                         images.OpenReadStream().CopyTo(ms);
-                        produit.Image = ms.ToArray();
+                        nouveau.Image = ms.ToArray();
                     }
-                    _context.Update(produit);
+
+                    var tableauMotClef = Request.Form["MotClef"];
+                    List<int> ListMotClef = new List<int>();
+                    foreach (var mot in tableauMotClef)
+                    {
+                        ListMotClef.Add(int.Parse(mot));
+                    }
+                    foreach (int motClef in ListMotClef)
+                    {
+                        ProduitMotClef pm = new ProduitMotClef
+                        {
+                            MotClefId = motClef,
+                            ProduitID = nouveau.ID
+                        };
+                        _context.Add(pm);
+                    }
+                    var tableauIDAttributs = Request.Form["nameAttribut"];
+                    var tableauValeurs = Request.Form["ValueAttribut"];
+
+                    List<int> listIDAttribut = new List<int>();
+                    foreach (var NameAttribut in tableauIDAttributs)
+                    {
+                        listIDAttribut.Add(int.Parse(NameAttribut));
+                    }
+
+                    List<String> listValeur = new List<String>();
+                    foreach (var Value in tableauValeurs)
+                    {
+                        listValeur.Add(Value);
+                    }
+                    List<Valeur> ListValeurConstruit = new List<Valeur>();
+                    int i = 0;
+                    while (i < listIDAttribut.Count && i < listValeur.Count)
+                    {
+                        Valeur v = new Valeur
+                        {
+                            Valeurs = listValeur[i]
+                        };
+                        v.AttributID = listIDAttribut[i];
+                        ++i;
+                        v.ProduitID = nouveau.ID;
+                        _context.Add(v);
+
+                    }
+                    var prixachat = Request.Form["Prix"];
+                    float Prix2 = 0;
+                    if (!(prixachat.ToString().Equals("")))
+                    {
+                        Prix2 = float.Parse(prixachat.ToString().Replace('.', ','));
+                    }
+                    int fournisseurID = int.Parse((Request.Form["select"]).ToString());
+                    Provient provient = new Provient
+                    {
+
+                        Prix = Prix2,
+                        TauxTVA = int.Parse(Request.Form["tauxTVA"]),
+                        QuantiteMinCommande = int.Parse(Request.Form["quantite"]),
+                        ProduitID = nouveau.ID,
+                        FournisseurID = fournisseurID
+                    };
+                    _context.Add(provient);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

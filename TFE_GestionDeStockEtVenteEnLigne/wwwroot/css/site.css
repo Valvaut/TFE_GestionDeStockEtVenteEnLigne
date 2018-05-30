@@ -139,13 +139,6 @@ textarea {
     background: #0fdbe2;
 }
 
-input {
-    background-color: #e2ffff;
-    border-color: #337ab7;
-    width: 90%;
-    margin-left: 5%;
-    margin-right: 5%;
-}
 
 .grad {
     background: linear-gradient(#d0def5,#fefeff,#ebcca5);
@@ -230,4 +223,10 @@ input {
     margin-bottom : 0px !important;
 }
 footer {
+}
+
+.myInput {
+    /*margin-left : 10%;
+    margin-right : 10%;*/
+    width : 100%;
 }

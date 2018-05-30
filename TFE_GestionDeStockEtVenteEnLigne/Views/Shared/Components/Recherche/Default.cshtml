@@ -14,8 +14,8 @@
                 <h3 >Recherche</h3>
                 <div class="">
                     <form asp-controller="Produits" asp-action="Index" method="get">
-                        <div >
-                            <input  type="text" name="SearchStr" value="@ViewData["Filter"]" />
+                        <div>
+                            <input class="col-md-10" type="text" name="SearchStr" value="@ViewData["Filter"]" />
                         </div>
                         <div>
                             <input type="submit" value="Search" class="btn btn-default" />

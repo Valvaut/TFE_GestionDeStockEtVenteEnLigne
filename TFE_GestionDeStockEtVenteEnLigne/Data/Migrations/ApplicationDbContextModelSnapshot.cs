@@ -154,6 +154,8 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<bool>("Actif");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -268,13 +270,15 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.Property<string>("ApplicationUserId");
 
-                    b.Property<int>("ClientID");
+                    b.Property<int?>("ClientID");
 
                     b.Property<DateTime>("DateCommade");
 
                     b.Property<bool>("EnCours");
 
                     b.Property<DateTime>("Envoie");
+
+                    b.Property<string>("RegisterViewModelID");
 
                     b.HasKey("ID");
 
@@ -296,7 +300,9 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.Property<string>("ApplicationUserId");
 
-                    b.Property<int>("ClientID");
+                    b.Property<int?>("ClientID");
+
+                    b.Property<string>("RegisterViewModelID");
 
                     b.HasKey("ID");
 
@@ -449,7 +455,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.Property<int>("NBPieceEmballage");
 
-                    b.Property<float>("Prix");
+                    b.Property<double>("Prix");
 
                     b.Property<int>("QuantiteEmballage");
 
@@ -458,6 +464,8 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
                     b.Property<string>("Ref");
 
                     b.Property<int>("TVA");
+
+                    b.Property<bool>("Visible");
 
                     b.HasKey("ID");
 
@@ -491,7 +499,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.Property<int>("FournisseurID");
 
-                    b.Property<int>("Prix");
+                    b.Property<double>("Prix");
 
                     b.Property<int>("ProduitID");
 
@@ -624,8 +632,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.Client", "Client")
                         .WithMany("Commande")
-                        .HasForeignKey("ClientID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ClientID");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Domicile", b =>
@@ -641,8 +648,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data.Migrations
 
                     b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.Client", "Client")
                         .WithMany("Domicile")
-                        .HasForeignKey("ClientID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ClientID");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Facture", b =>

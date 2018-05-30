@@ -86,8 +86,75 @@
         <div class="form-group">
             <label asp-for="Produit.Image" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Produit.Image" type="file" name="Image" />
+                <input id="src" onchange="afficherImage()" asp-for="Produit.Image" type="file" name="Image" />
                 <span asp-validation-for="Produit.Image" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Produit.Image" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                @{
+                    var base64 = Convert.ToBase64String(Model.Produit.Image);
+                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                }
+                <img id="target" class="imagePetite" src="@imgSrc" id="myBtn" />
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label asp-for="ListFournisseur" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <!--<select asp-for="FournisseurID" asp-items="@(new SelectList(Model.ListFournisseur,"ID","Nom"))" class="selectpicker"></select>-->
+                <select name="select">
+                    @foreach (var item in Model.ListFournisseur)
+                    {
+                        <option value="@item.ID">@item.Nom</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+
+        @foreach (var item in Model.Produit.Provients)
+        {
+            <div class="form-group">
+                <label class="col-md-2 control-label">Prix</label>
+                <div class="col-md-10">
+                    <input type="number" min="0" step="1" name="Prix" value="@item.Prix" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Taux de TVA</label>
+                <div class="col-md-10">
+                    <input type="number" min="0" step="1" name="tauxTVA" value="@item.TauxTVA" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Quantité minimum</label>
+                <div class="col-md-10">
+                    <input type="number" min="0" step="1" name="quantite" value="@item.QuantiteMinCommande" class="form-control">
+                </div>
+            </div>
+        }
+        @*<input asp-for="Produit.Provients.GetEnumerator().Current.QuantiteMinCommande" type="number" min="0" step="1" name="quantite" class="form-control" />*@
+
+        <div class="form-group">
+            <label asp-for="Produit.MotClef" class="col-md-2 control-label"></label>
+            <div class="col-md-10 multiselect">
+                <div class="tab-pane">
+                   @foreach (var item in Model.Produit.MotClef)
+                   {
+                        <input type=checkbox name="MotClef" value="@item.MotClefId" checked> @item.MotClef.Valeur
+                        <br />
+                    }
+                    @foreach (var item in Model.ListMotClef)
+                    {
+                        <input type=checkbox name="MotClef" value="@item.ID"> @item.Valeur
+                        <br />
+                    }
+                  
+                </div>
             </div>
         </div>
         <div class="form-group">
