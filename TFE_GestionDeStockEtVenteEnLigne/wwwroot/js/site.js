@@ -29,6 +29,7 @@ function addInputAttribut()
     var input = div.getElementsByTagName('input')[0];
     var test = select.cloneNode(true);
     var test2 = input.cloneNode(true);
+    test2.value = "";
     var span = document.createElement("p");
     var ButtonDeleteSpan = document.createElement("button");
     ButtonDeleteSpan.type = "button";

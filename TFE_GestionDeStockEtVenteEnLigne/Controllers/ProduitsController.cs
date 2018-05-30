@@ -269,6 +269,9 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             {
                 try
                 {
+                    //var produitverif = await _context.Produits.Include(p => p.Possede).SingleOrDefaultAsync(m => m.ID == id);
+                    //if (produitverif.Possede.Count >= 0)
+
                     produit.Visible = false;
                     _context.Update(produit);
                     Produit nouveau = new Produit

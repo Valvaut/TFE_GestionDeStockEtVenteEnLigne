@@ -100,7 +100,52 @@
                 <img id="target" class="imagePetite" src="@imgSrc" id="myBtn" />
             </div>
         </div>
+        <div class="form-group">
+            <label asp-for="Produit.Valeur" class="col-md-2 control-label"></label>
+            <div class="col-md-10 multiselect">
+                <div class="tab-pane">
+                    <div id="attributs">
+                        @{var nb = 0; }
+                        @foreach (var item2 in Model.Produit.Valeur)
+                        {
 
+                            var idspan = "span" + nb; 
+                            <p id="@idspan">
+                                <select typeof="Text" name="nameAttribut" id="nameAttribut">
+                                    <option value="@item2.AttributID">@item2.Attribut.Nom en @item2.Attribut.Mesure</option>
+                                    @foreach (var item in Model.TousLesAttributs)
+                                    {
+                                        <Option value="@item.ID">@item.Nom en @item.Mesure </Option>
+                                    }
+                                </select><input value="@item2.Valeurs" type="Text" name="ValueAttribut" />
+                                @if(nb!= -1)
+                                {
+                                    <button class="btn btn-secondary" aria-label="Close" onclick="DeleteSpan(@nb)"></button>
+                                }
+                            </p>
+                            nb--;
+                        }
+
+                        <br />
+                        <p>
+                            @if (Model.Produit.Valeur.Count <= 0)
+                            {
+                                <select typeof="Text" name="nameAttribut" id="nameAttribut">
+
+                                    @foreach (var item in Model.TousLesAttributs)
+                                    {
+                                        <Option value="@item.ID">@item.Nom en @item.Mesure </Option>
+                                    }
+                                </select><input type="Text" name="ValueAttribut" />
+
+                            }
+                        </p>
+
+                    </div>
+                </div>
+                <button type="button" onclick="addInputAttribut()">Ajouter Attributs</button>
+            </div>
+        </div>
 
         <div class="form-group">
             <label asp-for="ListFournisseur" class="col-md-2 control-label"></label>
@@ -143,8 +188,8 @@
             <label asp-for="Produit.MotClef" class="col-md-2 control-label"></label>
             <div class="col-md-10 multiselect">
                 <div class="tab-pane">
-                   @foreach (var item in Model.Produit.MotClef)
-                   {
+                    @foreach (var item in Model.Produit.MotClef)
+                    {
                         <input type=checkbox name="MotClef" value="@item.MotClefId" checked> @item.MotClef.Valeur
                         <br />
                     }
@@ -153,7 +198,7 @@
                         <input type=checkbox name="MotClef" value="@item.ID"> @item.Valeur
                         <br />
                     }
-                  
+
                 </div>
             </div>
         </div>
