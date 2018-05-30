@@ -3,12 +3,13 @@
     /*background-color: #e2ffff;
     color: #010b35;*/
     background: linear-gradient(#d0def5,#fefeff,#ebcca5);
+    background-repeat : no-repeat;
     font-family: Comic Sans MS;
     height : 100%;
 }
 
 html {
-    height: 100%;
+
 }
 
 h3 {
@@ -21,7 +22,6 @@ h3 {
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
-    height : 90%;
 }
 
 /* Set widths on the form inputs since otherwise they're 100% wide */

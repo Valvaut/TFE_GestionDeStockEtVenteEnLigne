@@ -74,13 +74,17 @@
         </div>
     </nav>
     <div class="container body-content">
-        @RenderBody()
-        <hr />
+        <div class="col-md-12">
 
+            @RenderBody()
+            <hr />
+
+        </div>
+        <footer>
+            <div>&copy; 2017 - L'Espace Du Petit Futé</div>
+        </footer>
     </div>
-    <footer>
-        <div>&copy; 2017 - L'Espace Du Petit Futé</div>
-    </footer>
+   
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
