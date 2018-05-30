@@ -17,6 +17,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public String NumTva { get; set; }
         public String Tel { get; set; }
         public bool Newsletter { get; set; }
+        public bool Actif { get; set; }
 
         public ICollection<Domicile> Domicile { get; set; }
         public ICollection<Commande> Commande { get; set; }

@@ -3,13 +3,14 @@
     /*background-color: #e2ffff;
     color: #010b35;*/
     background: linear-gradient(#d0def5,#fefeff,#ebcca5);
-    background-repeat : no-repeat;
+    /*background-repeat : no-repeat;*/
     font-family: Comic Sans MS;
-    height : 100%;
+    background-attachment: fixed;
+    height: 100%;
 }
 
 html {
-
+    height : 100%;
 }
 
 h3 {

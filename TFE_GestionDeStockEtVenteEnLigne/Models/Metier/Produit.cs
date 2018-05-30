@@ -42,6 +42,8 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
 
         public Byte[] Image { get; set; }
 
+        public bool Visible { get; set; }
+
         public ICollection<Possede> Possede { get; set; }
         public ICollection <ProduitMotClef>MotClef { get; set; }
         public ICollection<Panier> Panier { get; set; }

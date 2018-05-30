@@ -215,12 +215,19 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             ProduitCatAdapter adaptateur = new ProduitCatAdapter();
             adaptateur.Produit = await _context.Produits
                                         .Include(p => p.Categorie)
+                                        .Include(p=>p.Valeur)
+                                            .ThenInclude(a=>a.Attribut)
+                                        .Include(p=>p.MotClef)
+                                        .Include(p => p.Provients)
                                         .SingleOrDefaultAsync(m => m.ID == id);
             adaptateur.ListCat = await _context.Categories
                                        .ToListAsync();
             adaptateur.ListMotClef = await _context.MotClefs
                                        .ToListAsync();
-
+            adaptateur.ListFournisseur = await _context.Fournisseurs
+                                       .ToListAsync();
+            adaptateur.TousLesAttributs = await _context.Attributs
+                                       .ToListAsync();
             if (adaptateur == null)
             {
                 return NotFound();
