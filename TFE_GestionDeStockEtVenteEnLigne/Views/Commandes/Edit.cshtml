@@ -7,60 +7,192 @@
 
 <h2>Edit</h2>
 
+<div class="form-group">
+    <label class="col-md-2 control-label">Vos adresse :</label>
+    <div class="col-md-10">
+        <select id="selectadr" onchange="selectAdresse()" asp-for="AdresseFacturation" class="selectpicker">
+            @foreach (var adr in ViewData["listAdd"] as IEnumerable<Adresse>)
+            {
+                <option>@adr.Localite,@adr.Rue,@adr.Numero,@adr.NumeroBoite,@adr.Pays,@adr.CodePostal,@adr.Comune</option>
+            }
+        </select>
+    </div>
+</div>
+
 <form asp-action="Edit">
     <div class="form-horizontal">
         <h4>Commande</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="ID" />
-        <div class="form-group">
-            <label asp-for="ClientID" class="control-label col-md-2"></label>
-            <div class="col-md-10">
-                <input asp-for="ClientID" class="form-control" />
-                <span asp-validation-for="ClientID" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="RegisterViewModelID" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="RegisterViewModelID" class="form-control" />
-                <span asp-validation-for="RegisterViewModelID" class="text-danger"></span>
-            </div>
-        </div>
+        <input type="hidden" asp-for="ID" />
+        @*<div class="form-group">
+                <label asp-for="ClientID" class="control-label col-md-2"></label>
+                <div class="col-md-10">
+                    <input asp-for="ClientID" class="form-control" />
+                    <span asp-validation-for="ClientID" class="text-danger"></span>
+                </div>
+            </div>*@
+        @*<div class="form-group">
+                <label asp-for="RegisterViewModelID" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="RegisterViewModelID" class="form-control" />
+                    <span asp-validation-for="RegisterViewModelID" class="text-danger"></span>
+                </div>
+            </div>*@
         <div class="form-group">
             <label asp-for="AdresseID" class="control-label col-md-2"></label>
             <div class="col-md-10">
-                <input asp-for="AdresseID" class="form-control"/>
+                <input asp-for="AdresseID" class="form-control" />
                 <span asp-validation-for="AdresseID" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="DateCommade" class="col-md-2 control-label"></label>
+            <label asp-for="AdresseFacturation.Localite" class="col-md-2 control-label">Localité*</label>
             <div class="col-md-10">
-                <input asp-for="DateCommade" class="form-control" />
-                <span asp-validation-for="DateCommade" class="text-danger"></span>
+                <input id="localite" asp-for="AdresseFacturation.Localite" class="form-control" value="@Model.AdresseFacturation.Localite" required />
+                <span asp-validation-for="AdresseFacturation.Localite" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <div class="checkbox">
-                    <input asp-for="EnCours" />
-                    <label asp-for="EnCours"></label>
+            <label asp-for="AdresseFacturation.Rue" class="col-md-2 control-label">Rue*</label>
+            <div class="col-md-10">
+                <input id="rue" asp-for="AdresseFacturation.Rue" class="form-control" value="@Model.AdresseFacturation.Rue" required />
+                <span asp-validation-for="AdresseFacturation.Rue" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AdresseFacturation.Numero" class="col-md-2 control-label">Numéro*</label>
+            <div class="col-md-10">
+                <input id="numero" asp-for="AdresseFacturation.Numero" class="form-control" value="@Model.AdresseFacturation.Numero" required />
+                <span asp-validation-for="AdresseFacturation.Numero" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AdresseFacturation.NumeroBoite" class="col-md-2 control-label">Numéro de boite</label>
+            <div class="col-md-10">
+                <input id="numboite" asp-for="AdresseFacturation.NumeroBoite" class="form-control" value="@Model.AdresseFacturation.NumeroBoite" />
+                <span asp-validation-for="AdresseFacturation.NumeroBoite" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AdresseFacturation.Pays" class="col-md-2 control-label">Pays*</label>
+            <div class="col-md-10">
+                <input id="pays" asp-for="AdresseFacturation.Pays" class="form-control" value="@Model.AdresseFacturation.Pays" required />
+                <span asp-validation-for="AdresseFacturation.Pays" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AdresseFacturation.CodePostal" class="col-md-2 control-label">Code Postal*</label>
+            <div class="col-md-10">
+                <input id="codepostal" asp-for="AdresseFacturation.CodePostal" class="form-control" value="@Model.AdresseFacturation.CodePostal" required />
+                <span asp-validation-for="AdresseFacturation.CodePostal" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AdresseFacturation.Comune" class="col-md-2 control-label">Commune*</label>
+            <div class="col-md-10">
+                <input id="comune" asp-for="AdresseFacturation.Comune" class="form-control" value="@Model.AdresseFacturation.Comune" required />
+                <span asp-validation-for="AdresseFacturation.Comune" class="text-danger"></span>
+            </div>
+        </div>
+        @*<div class="form-group">
+                <label asp-for="DateCommade" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="DateCommade" class="form-control" />
+                    <span asp-validation-for="DateCommade" class="text-danger"></span>
                 </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Envoie" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Envoie" class="form-control" />
-                <span asp-validation-for="Envoie" class="text-danger"></span>
-            </div>
-        </div>
+            </div>*@
+        @if (User.Identity.IsAuthenticated)
+        {
+            if (User.IsInRole("gestionnaire"))
+            {
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <div class="checkbox">
+                            <input asp-for="EnCours" />
+                            <label asp-for="EnCours"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Envoie" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Envoie" class="form-control" />
+                        <span asp-validation-for="Envoie" class="text-danger"></span>
+                    </div>
+                </div>
+            }
+        }
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.RegisterViewModelID)
+                        </th>*@
+                    <th>
+                        Produits
+                    </th>
+                    <th>
+                        Quantité
+                    </th>
+                    <th>
+                        Image
+                    </th>
+                    <th>
+                        Prix unitaire
+                    </th>
+                    <th>
+                        Prix
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Possede)
+                {
+                    <tr>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.RegisterViewModelID)
+                            </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Produit.ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantite)
+                        </td>
+                        <td>
+                            @{
+                                @if (item.Produit.Image != null)
+                                {
+                                    var base64 = Convert.ToBase64String(item.Produit.Image);
+                                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                    <img class="imagePetite" src="@imgSrc" id="myBtn" />
+                                }
+                            }
+                            @*@Html.DisplayFor(modelItem => item.Produit.Image)*@
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Produit.Prix)
+                        </td>
+                        <td>
+                            @{ var prixQuantite = (item.Produit.Prix * @item.Quantite); }
+                            @prixQuantite
+
+                        </td>
+                        <td>
+                            @*<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |*@
+                            <a asp-controller="Produits" asp-action="Details" asp-route-id="@item.ProduitID">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
     </div>
 </form>
 

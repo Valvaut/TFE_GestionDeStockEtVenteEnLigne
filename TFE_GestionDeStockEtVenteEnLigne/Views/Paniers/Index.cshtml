@@ -47,9 +47,12 @@
             </td>
             <td>
                 @{
-                    var base64 = Convert.ToBase64String(item.Produit.Image);
-                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-                    <img class="imagePetite" src="@imgSrc" id="myBtn" />
+                    @if (item.Produit.Image != null)
+                    {
+                        var base64 = Convert.ToBase64String(item.Produit.Image);
+                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                        <img class="imagePetite" src="@imgSrc" id="myBtn" />
+                    }
                 }
                 @*@Html.DisplayFor(modelItem => item.Produit.Image)*@
             </td>

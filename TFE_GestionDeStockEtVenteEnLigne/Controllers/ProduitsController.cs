@@ -273,6 +273,21 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                     //if (produitverif.Possede.Count >= 0)
 
                     produit.Visible = false;
+                    var images = Request.Form.Files["Image"];
+                    if (images.FileName == "")
+                    {
+                        var produitBD = await _context.Produits
+                                .AsNoTracking()
+                                .SingleOrDefaultAsync(m => m.ID == id);
+                        produit.Image = produitBD.Image;
+                    }
+                    else
+                    {
+                        MemoryStream ms = new MemoryStream();
+
+                        images.OpenReadStream().CopyTo(ms);
+                        produit.Image = ms.ToArray();
+                    }
                     _context.Update(produit);
                     Produit nouveau = new Produit
                     {
@@ -288,23 +303,24 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                         Description = produit.Description,
                         Marque = produit.Marque,
                         QuantiteStock = produit.QuantiteStock,
+                        Image = produit.Image,
                     };
                     _context.Add(nouveau);
-                    var images = Request.Form.Files["Image"];
-                    if (images.FileName == "")
-                    {
-                        var produitBD = await _context.Produits
-                                .AsNoTracking()
-                                .SingleOrDefaultAsync(m => m.ID == id);
-                        nouveau.Image = produitBD.Image;
-                    }
-                    else
-                    {
-                        MemoryStream ms = new MemoryStream();
+                    //images = Request.Form.Files["Image"];
+                    //if (images.FileName == "")
+                    //{
+                    //    var produitBD = await _context.Produits
+                    //            .AsNoTracking()
+                    //            .SingleOrDefaultAsync(m => m.ID == id);
+                    //    nouveau.Image = produitBD.Image;
+                    //}
+                    //else
+                    //{
+                    //    MemoryStream ms = new MemoryStream();
             
-                        images.OpenReadStream().CopyTo(ms);
-                        nouveau.Image = ms.ToArray();
-                    }
+                    //    images.OpenReadStream().CopyTo(ms);
+                    //    nouveau.Image = ms.ToArray();
+                    //}
 
                     var tableauMotClef = Request.Form["MotClef"];
                     List<int> ListMotClef = new List<int>();

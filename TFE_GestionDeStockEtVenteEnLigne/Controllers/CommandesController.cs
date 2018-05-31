@@ -181,7 +181,16 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 return NotFound();
             }
 
-            var commande = await _context.Commandes.SingleOrDefaultAsync(m => m.ID == id);
+            var commande = await _context.Commandes
+                .Include(c=>c.AdresseFacturation)
+                .Include(c1=>c1.Possede)
+                    .ThenInclude(p=>p.Produit)
+                .Include(c=>c.Client)
+                .SingleOrDefaultAsync(m => m.ID == id);
+
+            ViewData["listAdd"] = await _context.Adresses
+                                            .Where(a => a.DomicileClient.Any(d => d.RegisterViewModelID == commande.RegisterViewModelID))
+                                            .ToListAsync();
             if (commande == null)
             {
                 return NotFound();

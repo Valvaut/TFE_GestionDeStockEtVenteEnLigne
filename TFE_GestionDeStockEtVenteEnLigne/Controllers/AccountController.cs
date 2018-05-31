@@ -508,11 +508,27 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             if(qte != "")
             {
                 var IdUser = _userManager.GetUserId(User);
-                Panier Panier = new Panier();
-                Panier.Quantite = int.Parse(qte);
-                Panier.RegisterViewModelID = IdUser;
-                Panier.ProduitID = id;
-                _context.Add(Panier);
+                var panierUser =  _context.Panier.Where(p => p.RegisterViewModelID == IdUser).ToList();
+                int i = 0;
+                bool trouver = false;
+                while (i < panierUser.Count && !trouver)
+                {
+                    if (panierUser[i].ProduitID == id)
+                    {
+                        panierUser[i].Quantite += int.Parse(qte);
+                        trouver = true;
+                    }
+                    ++i;
+                }
+                if (!trouver)
+                {
+                    Panier Panier = new Panier();
+                    Panier.Quantite = int.Parse(qte);
+                    Panier.RegisterViewModelID = IdUser;
+                    Panier.ProduitID = id;
+                    _context.Add(Panier);
+                }
+               
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("Index", "Produits");
