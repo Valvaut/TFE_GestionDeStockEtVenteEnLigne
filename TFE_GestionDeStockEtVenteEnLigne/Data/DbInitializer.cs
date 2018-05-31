@@ -85,7 +85,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data
             }
 
             // crée le compte gérant par défault
-            var user = new ApplicationUser { UserName = "michele.tinant@skynet.be", Email = "michele.tinant@skynet.be"};
+            var user = new ApplicationUser { UserName = "michele.tinant@skynet.be", Email = "michele.tinant@skynet.be", Actif=true};
             await userManager.CreateAsync(user, "Rofl_1");
             IdentityRole role = new IdentityRole { Name = "gestionnaire", NormalizedName = "GESTIONNAIRE" };
             IdentityResult RoleResult = await roleManager.CreateAsync(role);

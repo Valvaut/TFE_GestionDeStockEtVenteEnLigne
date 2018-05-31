@@ -124,7 +124,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID,Nom,Prenom,Mail,Adresse,NumTva,Tel,NumeroClient")] ApplicationUser client)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Nom,Prenom,Tel,Newsletter,Email,EmailConfirmed,PhoneNumber,PhoneNumberConfirmed,LockoutEnd,LockoutEnabled")] ApplicationUser client)
         {
             if (id != client.Id)
             {
@@ -136,6 +136,22 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 try
                 {
                     await _userManager.UpdateAsync(client);
+                    var user = _userManager.Users.SingleOrDefault(u=>u.Id == id);
+                    user.Nom = client.Nom;
+                    user.Prenom = client.Prenom;
+                    user.Tel = client.Tel;
+                    user.Newsletter = client.Newsletter;
+                    user.Email = client.Email;
+                    user.EmailConfirmed = client.EmailConfirmed;
+                    user.NormalizedEmail = client.Email;
+                    user.UserName = client.Email;
+                    user.PhoneNumber = client.PhoneNumber;
+                    user.PhoneNumberConfirmed = client.PhoneNumberConfirmed;
+                    user.LockoutEnd = client.LockoutEnd;
+                    user.LockoutEnabled = client.LockoutEnabled;
+
+
+                    await _userManager.UpdateAsync(user);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -148,6 +164,9 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                     {
                         throw;
                     }
+                }
+                catch (Exception e)
+                {
                 }
                 return RedirectToAction("Index");
             }
