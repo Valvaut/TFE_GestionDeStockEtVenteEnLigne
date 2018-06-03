@@ -3,16 +3,17 @@
 *@
 @model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Categorie>
 
-@foreach (var category in Model)
-{
-    <tr>
-        <td>
-            <a asp-area="" asp-controller="Produits" asp-action="Index" asp-route-cat="@category.Nom">@category.Nom</a>
-        </td>
-    </tr>
-    @if (category.CategorieEnfant != null)
+<ul>
+    @foreach (var category in Model)
     {
-        @Html.Partial("Categorie", category.CategorieEnfant)
-    }
+        <li>
+            <a asp-area="" asp-controller="Produits" asp-action="Index" asp-route-cat="@category.Nom">@category.Nom</a>
+            @if (category.CategorieEnfant != null)
+            {
+                @Html.Partial("Categorie", category.CategorieEnfant)
+            }
+        </li>
 
-}
+
+        }
+</ul>

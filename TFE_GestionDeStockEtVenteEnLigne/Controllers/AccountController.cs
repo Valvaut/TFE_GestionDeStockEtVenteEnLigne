@@ -505,32 +505,44 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         public async Task<IActionResult> AddPanier(int id)
         {
             var qte = Request.Form["Quantite"];
-            if(qte != "")
+            if (qte != "")
             {
-                var IdUser = _userManager.GetUserId(User);
-                var panierUser =  _context.Panier.Where(p => p.RegisterViewModelID == IdUser).ToList();
-                int i = 0;
-                bool trouver = false;
-                while (i < panierUser.Count && !trouver)
+                var quant = int.Parse(qte);
+                var produit = _context.Produits.SingleOrDefault(p => p.ID == id);
+                if (produit.QuantiteStock >= quant)
                 {
-                    if (panierUser[i].ProduitID == id)
+                    var IdUser = _userManager.GetUserId(User);
+                    var panierUser = _context.Panier.Where(p => p.RegisterViewModelID == IdUser).ToList();
+                    int i = 0;
+                    bool trouver = false;
+                    while (i < panierUser.Count && !trouver)
                     {
-                        panierUser[i].Quantite += int.Parse(qte);
-                        trouver = true;
+                        if (panierUser[i].ProduitID == id)
+                        {
+                            panierUser[i].Quantite += quant;
+                            trouver = true;
+                        }
+                        ++i;
                     }
-                    ++i;
+                    if (!trouver)
+                    {
+                        Panier Panier = new Panier();
+                        Panier.Quantite = int.Parse(qte);
+                        Panier.RegisterViewModelID = IdUser;
+                        Panier.ProduitID = id;
+                        _context.Add(Panier);
+                    }
+
+                    await _context.SaveChangesAsync();
+                    TempData["passtock"] = "Produit : " +produit.Denomination + "ajouté au panier";
                 }
-                if (!trouver)
+                else
                 {
-                    Panier Panier = new Panier();
-                    Panier.Quantite = int.Parse(qte);
-                    Panier.RegisterViewModelID = IdUser;
-                    Panier.ProduitID = id;
-                    _context.Add(Panier);
+                    TempData["passtock"] = "Plus en stock";
+                    
                 }
-               
-                await _context.SaveChangesAsync();
             }
+           
             return RedirectToAction("Index", "Produits");
         }
         #endregion

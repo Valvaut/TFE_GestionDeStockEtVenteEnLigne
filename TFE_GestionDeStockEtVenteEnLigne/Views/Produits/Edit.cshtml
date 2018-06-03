@@ -1,4 +1,4 @@
-.@model TFE_GestionDeStockEtVenteEnLigne.Models.ProduitCatAdapter
+@model TFE_GestionDeStockEtVenteEnLigne.Models.ProduitCatAdapter
 
 @{
     ViewData["Title"] = "Edit";
@@ -10,6 +10,12 @@
     <div class="form-horizontal">
         <h4>Produit</h4>
         <hr />
+        <div class="form-group">
+            <label asp-for="Produit.Date" class="control-label col-md-2"></label>
+            <div class="col-md-10">              
+                <label class="form-control">@Model.Produit.Date</label>  
+            </div>
+        </div>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Produit.ID" />
         <div class="form-group">
@@ -29,7 +35,7 @@
         <div class="form-group">
             <label asp-for="Produit.Prix" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Produit.Prix" class="form-control" />
+                <input name="prixVente" asp-for="Produit.Prix" value="@Model.Produit.Prix.ToString().Replace(",",".")" class="form-control" />
                 <span asp-validation-for="Produit.Prix" class="text-danger"></span>
             </div>
         </div>
@@ -109,7 +115,7 @@
                         @foreach (var item2 in Model.Produit.Valeur)
                         {
 
-                            var idspan = "span" + nb; 
+                            var idspan = "span" + nb;
                             <p id="@idspan">
                                 <select typeof="Text" name="nameAttribut" id="nameAttribut">
                                     <option value="@item2.AttributID">@item2.Attribut.Nom en @item2.Attribut.Mesure</option>
@@ -118,7 +124,7 @@
                                         <Option value="@item.ID">@item.Nom en @item.Mesure </Option>
                                     }
                                 </select><input value="@item2.Valeurs" type="Text" name="ValueAttribut" />
-                                @if(nb!= -1)
+                                @if (nb != -1)
                                 {
                                     <button class="btn btn-secondary" aria-label="Close" onclick="DeleteSpan(@nb)"></button>
                                 }
@@ -166,7 +172,7 @@
             <div class="form-group">
                 <label class="col-md-2 control-label">Prix</label>
                 <div class="col-md-10">
-                    <input type="number" min="0" step="1" name="Prix" value="@item.Prix" class="form-control">
+                    <input type="number" min="0" step="1" name="Prix" value="@item.Prix.ToString().Replace(",", ".")" class="form-control">
                 </div>
             </div>
             <div class="form-group">

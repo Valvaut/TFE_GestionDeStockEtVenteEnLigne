@@ -13,11 +13,14 @@
    
     <div>
         <h2>Nos produits</h2>
+        
+        <span>@ViewData["passtock"]</span>
+        
         @if (@ViewData["cat"] != null)
         {
             <div>Catérgorie : @ViewData["cat"]</div>
         }
-        @if (@ViewData["recherche"]!=null)
+        @if (@ViewData["recherche"] != null)
         {
             <div>Recherche : @ViewData["recherche"]</div>
         }

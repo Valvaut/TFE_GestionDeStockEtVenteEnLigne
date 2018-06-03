@@ -32,6 +32,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             ViewData["RefSort"] = String.IsNullOrEmpty(sortOrder) ? "ref_desc" : "";
             ViewData["DenoSort"] = sortOrder == "Denomination" ? "deno_desc" : "Denomination";
             ViewData["Filter"] = searchStr;
+            ViewData["passtock"] = TempData["passtock"];
 
             var produits = from f in _context.Produits select f;
             var pro = _context.Produits;
@@ -92,7 +93,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         public async Task<IActionResult> Create()
         {
             ProduitCatAdapter pc = new ProduitCatAdapter();
-            pc.ListCat = await _context.Categories.ToListAsync();
+            pc.ListCat = await _context.Categories.Where(c=>c.CategorieParentID == null).ToListAsync();
             pc.ListMotClef = await _context.MotClefs.ToListAsync();
             pc.TousLesAttributs = await _context.Attributs.ToListAsync();
             pc.ListFournisseur= await _context.Fournisseurs.ToListAsync();
@@ -122,6 +123,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                     var images = Request.Form.Files["Image"];
                     images.OpenReadStream().CopyTo(ms);
                     produitcatAdapter.Produit.Image = ms.ToArray();
+                    produitcatAdapter.Produit.Date = DateTime.Now;
                     produitcatAdapter.Produit.Visible = true;
                     _context.Add(produitcatAdapter.Produit);//insert le produit
 
@@ -264,7 +266,11 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             {
                 return NotFound();
             }
-
+            var a = Request.Form["prixVente"].ToString().Replace(".",",");
+            if (produit.Prix == 0)
+            {
+                produit.Prix = double.Parse(a);
+            }
             if (ModelState.IsValid)
             {
                 try
@@ -304,6 +310,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                         Marque = produit.Marque,
                         QuantiteStock = produit.QuantiteStock,
                         Image = produit.Image,
+                        Date = DateTime.Now,
                     };
                     _context.Add(nouveau);
                     //images = Request.Form.Files["Image"];

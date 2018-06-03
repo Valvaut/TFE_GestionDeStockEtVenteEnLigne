@@ -29,6 +29,7 @@
         <h4>Catégorie Parent</h4>
         <div>
             <select asp-for="CategorieParentID" class="selectpicker">
+                <option>Aucune</option>
                 @if (Model.CategorieParent != null)
                 {
                     <option value="@Model.CategorieParent.ID">@Html.DisplayFor(modelItem => modelItem.CategorieParent.Nom)</option>
