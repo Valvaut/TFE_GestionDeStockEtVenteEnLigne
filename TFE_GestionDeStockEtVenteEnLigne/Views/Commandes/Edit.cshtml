@@ -1,4 +1,4 @@
-@model TFE_GestionDeStockEtVenteEnLigne.Models.Commande
+@model TFE_GestionDeStockEtVenteEnLigne.Models.Adaptateur.CommandeAdresseAdaptateur
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,102 +6,122 @@
 }
 
 <h2>Edit</h2>
-
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
 <div class="form-group">
     <label class="col-md-2 control-label">Vos adresse :</label>
     <div class="col-md-10">
-        <select id="selectadr" onchange="selectAdresse()" asp-for="AdresseFacturation" class="selectpicker">
-            @foreach (var adr in ViewData["listAdd"] as IEnumerable<Adresse>)
+        <select id="selectadr" onchange="selectAdresse()" asp-for="Adresse" class="selectpicker">
+            @foreach (var adr in Model.ListeAdresse)
             {
                 <option>@adr.Localite,@adr.Rue,@adr.Numero,@adr.NumeroBoite,@adr.Pays,@adr.CodePostal,@adr.Comune</option>
             }
         </select>
     </div>
 </div>
-
 <form asp-action="Edit">
     <div class="form-horizontal">
         <h4>Commande</h4>
         <hr />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="ID" />
+        <input type="hidden" id="commandeId" asp-for="Commande.ID" />
+        <input type="hidden" asp-for="Commande.RegisterViewModelID" />
+        <input type="hidden" asp-for="Commande.DateCommade" />
         @*<div class="form-group">
-                <label asp-for="ClientID" class="control-label col-md-2"></label>
-                <div class="col-md-10">
-                    <input asp-for="ClientID" class="form-control" />
-                    <span asp-validation-for="ClientID" class="text-danger"></span>
-                </div>
-            </div>*@
+            <label asp-for="ClientID" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <input asp-for="ClientID" class="form-control" />
+                <span asp-validation-for="ClientID" class="text-danger"></span>
+            </div>
+        </div>*@
         @*<div class="form-group">
-                <label asp-for="RegisterViewModelID" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="RegisterViewModelID" class="form-control" />
-                    <span asp-validation-for="RegisterViewModelID" class="text-danger"></span>
-                </div>
-            </div>*@
-        <div class="form-group">
-            <label asp-for="AdresseID" class="control-label col-md-2"></label>
+            <label asp-for="RegisterViewModelID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="AdresseID" class="form-control" />
-                <span asp-validation-for="AdresseID" class="text-danger"></span>
+                <input asp-for="RegisterViewModelID" class="form-control" />
+                <span asp-validation-for="RegisterViewModelID" class="text-danger"></span>
+            </div>
+        </div>*@
+        <div class="form-group">
+            <label class="control-label col-md-2">Client</label>
+            <div class="col-md-10">
+                @{
+                    var client2 = ViewData["client"] as ApplicationUser;
+                    if (client2.Nom != null)
+                    {
+                        <label class="form-control">@client2.Nom @client2.Prenom</label>
+                    }
+                    else
+                    {
+                        <label class="form-control">Commande passée par la gestionnaire</label>
+                    }
+
+                }
+
+            </div>
+        </div>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Commande.AdresseFacturation.Localite" class="col-md-2 control-label">Localité*</label>
+            <div class="col-md-10">
+                <input id="localite" asp-for="Commande.AdresseFacturation.Localite" class="form-control" required />
+                <span asp-validation-for="Commande.AdresseFacturation.Localite" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="AdresseFacturation.Localite" class="col-md-2 control-label">Localité*</label>
+            <label asp-for="Commande.AdresseFacturation.Rue" class="col-md-2 control-label">Rue*</label>
             <div class="col-md-10">
-                <input id="localite" asp-for="AdresseFacturation.Localite" class="form-control" value="@Model.AdresseFacturation.Localite" required />
-                <span asp-validation-for="AdresseFacturation.Localite" class="text-danger"></span>
+                <input id="rue" asp-for="Commande.AdresseFacturation.Rue" class="form-control" required />
+                <span asp-validation-for="Commande.AdresseFacturation.Rue" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="AdresseFacturation.Rue" class="col-md-2 control-label">Rue*</label>
+            <label asp-for="Commande.AdresseFacturation.Numero" class="col-md-2 control-label">Numéro*</label>
             <div class="col-md-10">
-                <input id="rue" asp-for="AdresseFacturation.Rue" class="form-control" value="@Model.AdresseFacturation.Rue" required />
-                <span asp-validation-for="AdresseFacturation.Rue" class="text-danger"></span>
+                <input id="numero" asp-for="Commande.AdresseFacturation.Numero" class="form-control" required />
+                <span asp-validation-for="Commande.AdresseFacturation.Numero" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="AdresseFacturation.Numero" class="col-md-2 control-label">Numéro*</label>
+            <label asp-for="Commande.AdresseFacturation.NumeroBoite" class="col-md-2 control-label">Numéro de boite</label>
             <div class="col-md-10">
-                <input id="numero" asp-for="AdresseFacturation.Numero" class="form-control" value="@Model.AdresseFacturation.Numero" required />
-                <span asp-validation-for="AdresseFacturation.Numero" class="text-danger"></span>
+                <input id="numboite" asp-for="Commande.AdresseFacturation.NumeroBoite" class="form-control" />
+                <span asp-validation-for="Commande.AdresseFacturation.NumeroBoite" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="AdresseFacturation.NumeroBoite" class="col-md-2 control-label">Numéro de boite</label>
+            <label asp-for="Commande.AdresseFacturation.Pays" class="col-md-2 control-label">Pays*</label>
             <div class="col-md-10">
-                <input id="numboite" asp-for="AdresseFacturation.NumeroBoite" class="form-control" value="@Model.AdresseFacturation.NumeroBoite" />
-                <span asp-validation-for="AdresseFacturation.NumeroBoite" class="text-danger"></span>
+                <input id="pays" asp-for="Commande.AdresseFacturation.Pays" class="form-control" required />
+                <span asp-validation-for="Commande.AdresseFacturation.Pays" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="AdresseFacturation.Pays" class="col-md-2 control-label">Pays*</label>
+            <label asp-for="Commande.AdresseFacturation.CodePostal" class="col-md-2 control-label">Code Postal*</label>
             <div class="col-md-10">
-                <input id="pays" asp-for="AdresseFacturation.Pays" class="form-control" value="@Model.AdresseFacturation.Pays" required />
-                <span asp-validation-for="AdresseFacturation.Pays" class="text-danger"></span>
+                <input id="codepostal" asp-for="Commande.AdresseFacturation.CodePostal" class="form-control" required />
+                <span asp-validation-for="Commande.AdresseFacturation.CodePostal" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="AdresseFacturation.CodePostal" class="col-md-2 control-label">Code Postal*</label>
+            <label asp-for="Commande.AdresseFacturation.Comune" class="col-md-2 control-label">Commune*</label>
             <div class="col-md-10">
-                <input id="codepostal" asp-for="AdresseFacturation.CodePostal" class="form-control" value="@Model.AdresseFacturation.CodePostal" required />
-                <span asp-validation-for="AdresseFacturation.CodePostal" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="AdresseFacturation.Comune" class="col-md-2 control-label">Commune*</label>
-            <div class="col-md-10">
-                <input id="comune" asp-for="AdresseFacturation.Comune" class="form-control" value="@Model.AdresseFacturation.Comune" required />
-                <span asp-validation-for="AdresseFacturation.Comune" class="text-danger"></span>
+                <input id="comune" asp-for="Commande.AdresseFacturation.Comune" class="form-control" required />
+                <span asp-validation-for="Commande.AdresseFacturation.Comune" class="text-danger"></span>
             </div>
         </div>
         @*<div class="form-group">
-                <label asp-for="DateCommade" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="DateCommade" class="form-control" />
-                    <span asp-validation-for="DateCommade" class="text-danger"></span>
-                </div>
-            </div>*@
+            <label asp-for="DateCommade" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DateCommade" class="form-control" />
+                <span asp-validation-for="DateCommade" class="text-danger"></span>
+            </div>
+        </div>*@
         @if (User.Identity.IsAuthenticated)
         {
             if (User.IsInRole("gestionnaire"))
@@ -109,31 +129,26 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <div class="checkbox">
-                            <input asp-for="EnCours" />
-                            <label asp-for="EnCours"></label>
+                            <input asp-for="Commande.EnCours" />
+                            <label asp-for="Commande.EnCours"></label>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Envoie" class="col-md-2 control-label"></label>
+                    <label asp-for="Commande.Envoie" class="col-md-2 control-label"></label>
                     <div class="col-md-10">
-                        <input asp-for="Envoie" class="form-control" />
-                        <span asp-validation-for="Envoie" class="text-danger"></span>
+                        <input asp-for="Commande.Envoie" class="form-control" />
+                        <span asp-validation-for="Commande.Envoie" class="text-danger"></span>
                     </div>
                 </div>
             }
         }
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
         <table class="table">
             <thead>
                 <tr>
                     @*<th>
-                            @Html.DisplayNameFor(model => model.RegisterViewModelID)
-                        </th>*@
+                        @Html.DisplayNameFor(model => model.RegisterViewModelID)
+                    </th>*@
                     <th>
                         Produits
                     </th>
@@ -152,17 +167,29 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Possede)
+                @{
+                    int i = 0;
+                }
+                @foreach (var item in Model.Commande.Possede)
                 {
-                    <tr>
-                        @*<td>
-                                @Html.DisplayFor(modelItem => item.RegisterViewModelID)
-                            </td>*@
+
+                    Possede p = new Possede();
+                    p.ProduitID = item.ProduitID;
+                    p.CommandeID = item.CommandeID;
+                    p.Quantite = item.Quantite;
+
+                    <tr id="@item.ProduitID">
                         <td>
+                            <input id="@i" type="hidden" name="possedeId" asp-for="Commande.Possede.ToArray()[i].ID" />
+                            <input id="@i" type="hidden" name="produitId" asp-for="Commande.Possede.ToArray()[i].ProduitID" />
+                            <input id="@i" type="hidden" name="CommandeId" asp-for="Commande.Possede.ToArray()[i].CommandeID" />
+                           
                             @Html.DisplayFor(modelItem => item.Produit.ID)
+
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Quantite)
+                            @*<input id="@i" type="text" name="quantite" asp-for="Commande.Possede.ToArray()[i].Quantite" />*@
                         </td>
                         <td>
                             @{
@@ -185,18 +212,21 @@
                         </td>
                         <td>
                             @*<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |*@
-                            <a asp-controller="Produits" asp-action="Details" asp-route-id="@item.ProduitID">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                            <a asp-controller="Produits" asp-action="Details" asp-route-id="@item.ProduitID">Details</a>
+                            @*<a asp-action="DeleteArticleDemande" asp-route-id="@item.ID" asp-route-idcomm="@Model.Commande.ID">Delete</a>*@
+                            @*<button onclick="deleteProdCom(@item.ProduitID)">Delete</button>*@
                         </td>
                     </tr>
+
+                    ++i;
+
                 }
 
             </tbody>
         </table>
+
     </div>
 </form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 

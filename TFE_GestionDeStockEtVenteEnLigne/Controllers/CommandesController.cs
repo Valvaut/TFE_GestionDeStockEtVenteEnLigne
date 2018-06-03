@@ -180,22 +180,23 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             {
                 return NotFound();
             }
-
-            var commande = await _context.Commandes
+            CommandeAdresseAdaptateur data = new CommandeAdresseAdaptateur();
+            data.Commande = await _context.Commandes
                 .Include(c=>c.AdresseFacturation)
                 .Include(c1=>c1.Possede)
                     .ThenInclude(p=>p.Produit)
                 .Include(c=>c.Client)
                 .SingleOrDefaultAsync(m => m.ID == id);
+            ViewData["client"] = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == data.Commande.RegisterViewModelID);
 
-            ViewData["listAdd"] = await _context.Adresses
-                                            .Where(a => a.DomicileClient.Any(d => d.RegisterViewModelID == commande.RegisterViewModelID))
+            data.ListeAdresse = await _context.Adresses
+                                            .Where(a => a.DomicileClient.Any(d => d.RegisterViewModelID == data.Commande.RegisterViewModelID))
                                             .ToListAsync();
-            if (commande == null)
+            if (data.Commande == null)
             {
                 return NotFound();
             }
-            return View(commande);
+            return View(data);
         }
 
         // POST: Commandes/Edit/5
@@ -203,23 +204,87 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,dateCommade,EnCours,Envoie")] Commande commande)
+        public async Task<IActionResult> Edit(int id, CommandeAdresseAdaptateur Adaptateur)
         {
-            if (id != commande.ID)
+            if (id != Adaptateur.Commande.ID)
             {
                 return NotFound();
             }
+
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(commande);
+                    var possedeId = Request.Form["possedeId"];
+                    
+                    List<int> listPossedeId = new List<int>();
+                    foreach (var idposs in possedeId)
+                    {
+                        listPossedeId.Add(int.Parse(idposs));
+                    }
+                    var quantite = Request.Form["quantite"];
+                    List<int> listQuant = new List<int>();
+                    foreach (var quant in quantite)
+                    {
+                        listQuant.Add(int.Parse(quant));
+                    }
+                    var Produitid = Request.Form["produitId"];
+                    List<int> ListproduitId = new List<int>();
+                    foreach (var prodid in Produitid)
+                    {
+                        ListproduitId.Add(int.Parse(prodid));
+                    }
+                    var commandeid = Request.Form["CommandeId"];
+                    List<int> listcomid = new List<int>();
+                    foreach (var com in commandeid)
+                    {
+                        listcomid.Add(int.Parse(com));
+                    }
+                    List<Possede> listPoss = new List<Possede>();
+                    for (int j = 0; j < listPossedeId.Count; j++)
+                    {
+                        listPoss.Add(new Possede()
+                        {
+                            ProduitID = ListproduitId[j],
+                            CommandeID = listcomid[j],
+                            Quantite = listQuant[j],
+                        });
+                    }
+
+                    Adaptateur.Commande.Possede = listPoss;
+
+
+                    var aRemove= _context.Possedes.Where(p=>p.CommandeID == Adaptateur.Commande.ID).ToList();
+                    _context.Possedes.RemoveRange(aRemove);
+
+
+                    var listAdd = _context.Adresses.Include(a => a.DomicileClient).ToList();
+                    Boolean existe = false;
+                    int i = 0;
+                    while (!existe && i < listAdd.Count)
+                    {
+                        if (listAdd[i].Equals(Adaptateur.Commande.AdresseFacturation))
+                            existe = true;
+                        else
+                            i++;
+                    }
+                    if (!existe)
+                    {
+                        _context.Add(Adaptateur.Commande.AdresseFacturation);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        Adaptateur.Commande.AdresseID = listAdd[i].ID;
+                    }
+
+                    _context.Update(Adaptateur.Commande);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CommandeExists(commande.ID))
+                    if (!CommandeExists(Adaptateur.Commande.ID))
                     {
                         return NotFound();
                     }
@@ -230,9 +295,20 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return View(commande);
+            return View(Adaptateur.Commande);
         }
+        public async Task<IActionResult> DeleteArticleDemande(int? id, int? idcomm)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var p = await _context.Possedes.SingleOrDefaultAsync(c=>c.ID == id);
+            _context.Possedes.Remove(p);
+            await _context.SaveChangesAsync();
 
+            return RedirectToAction("Edit", new { id = idcomm });
+        }
         // GET: Commandes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -266,5 +342,6 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         {
             return _context.Commandes.Any(e => e.ID == id);
         }
+
     }
 }

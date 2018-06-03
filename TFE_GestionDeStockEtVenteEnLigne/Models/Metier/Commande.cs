@@ -19,5 +19,10 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public Adresse AdresseFacturation { get; set; }
         public Client Client{ get; set; }
         public ICollection<Possede> Possede { get; set; }
+
+        public Commande()
+        {
+            Possede = new List<Possede>();
+        }
     }
 }

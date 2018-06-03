@@ -50,7 +50,10 @@
                 @Html.DisplayFor(modelItem => item.Envoie)
             </td>
             <td>
-                @item.AdresseFacturation.ToString()
+                @if (item.AdresseFacturation != null)
+                {
+                    @item.AdresseFacturation.ToString()
+                }
             </td>
             @*<td>
                 @Html.DisplayFor(modelItem => item.Client.ID)

@@ -11,5 +11,12 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models.Adaptateur
         public Adresse Adresse { get; set; }
 
         public List<Adresse> ListeAdresse { get; set; }
+
+        //public CommandeAdresseAdaptateur()
+        //{
+        //    Commande = new Commande();
+        //    ListeAdresse = new List<Adresse>();
+        //    Adresse = new Adresse();
+        //}
     }
 }

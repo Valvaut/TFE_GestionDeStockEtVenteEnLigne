@@ -116,3 +116,9 @@ function afficherImage()
     fr.onload = function (e) { target.src = this.result; };
 
 }
+
+function deleteProdCom(id)
+{
+    var tr = document.getElementById(id);
+    tr.remove();
+}
