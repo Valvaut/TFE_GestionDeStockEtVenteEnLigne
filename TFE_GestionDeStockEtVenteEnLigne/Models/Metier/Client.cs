@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using TFE_GestionDeStockEtVenteEnLigne.Models.AccountViewModels;
@@ -12,9 +13,11 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public int ID { get; set; }
         public String RegisterViewModelID { get; set; }
         public String Nom { get; set; }
+        [Display(Name = "Prénom")]
         public String Prenom { get; set; }
-
+        [Display(Name = "Numéro de TVA")]
         public String NumTva { get; set; }
+        [Display(Name = "Téléphone")]
         public String Tel { get; set; }
         public bool Newsletter { get; set; }
 

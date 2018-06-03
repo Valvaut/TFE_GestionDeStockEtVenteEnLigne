@@ -28,7 +28,12 @@
         <div class="form-group">
             <label asp-for="Produit.Categorie" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select asp-for="Produit.CategorieID" asp-items="@(new SelectList(Model.ListCat,"ID","Nom"))" class="selectpicker"></select>
+                @{ 
+                    Model.ListCat.Insert(0,new Categorie {ID = 0 ,Nom = "Acune"});
+                }
+                <select asp-for="Produit.CategorieID" asp-items="@(new SelectList(Model.ListCat,"ID","Nom"))" class="selectpicker">
+                    
+                </select>
             </div>
         </div>
 

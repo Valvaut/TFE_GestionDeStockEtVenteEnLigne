@@ -13,6 +13,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
 
         [Range(0, int.MaxValue)]
         public int Numero { get; set; }
+        [Display(Name = "Date de paiement")]
         public DateTime DatePaiement{ get; set; }
 
         public Commande Commande { get; set; }

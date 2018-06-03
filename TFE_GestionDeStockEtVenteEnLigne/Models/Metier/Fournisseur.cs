@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,6 +14,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public String Mail { get; set; }
         public String Telephone { get; set; }
         public String Fax { get; set; }
+        [Display(Name = "numéro de compte")]
         public String NumCompte { get; set; }
         public String NumTva { get; set; }
         public String SiteNet { get; set; }

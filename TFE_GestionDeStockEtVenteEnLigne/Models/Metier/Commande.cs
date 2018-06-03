@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,11 +12,15 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public int? ClientID { get; set; }
         public String RegisterViewModelID { get; set; }
         public int? AdresseID { get; set; }
+        [Display(Name = "Date de coommande")]
         public DateTime DateCommade{ get; set; }
+        [Display(Name = "Commande en cours")]
         public bool EnCours { get; set; }
+        [Display(Name = "Commande envoyer")]
         public DateTime Envoie { get; set; }
 
         public virtual Facture Facture { get; set; }
+        [Display(Name = "adresse de facturation")]
         public Adresse AdresseFacturation { get; set; }
         public Client Client{ get; set; }
         public ICollection<Possede> Possede { get; set; }

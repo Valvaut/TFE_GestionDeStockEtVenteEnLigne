@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,7 +13,9 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public String Nom { get; set; }
 
         public ICollection<Produit> Produits { get; set; }
+        [Display(Name = "Catégories Enfants")]
         public ICollection<Categorie> CategorieEnfant { get; set; }
+        [Display(Name = "Catégorie Parents")]
         public virtual Categorie CategorieParent { get; set; }
 
 

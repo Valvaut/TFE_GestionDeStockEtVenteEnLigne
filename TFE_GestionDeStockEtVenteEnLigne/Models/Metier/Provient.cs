@@ -16,9 +16,11 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public Double Prix { get; set; }
 
         [Range(0, int.MaxValue)]
+        [Display(Name = "Taux de TVA")]
         public int TauxTVA { get; set; }
 
         [Range(0, int.MaxValue)]
+        [Display(Name = "Quantité a commandé au mminimum")]
         public int QuantiteMinCommande { get; set; }
 
         public Produit Produit { get; set; }

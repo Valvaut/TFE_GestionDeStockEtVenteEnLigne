@@ -18,7 +18,9 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public String Pays { get; set; }
 
         [Range(0, int.MaxValue)]
+        [Display(Name = "Code Postal")]
         public int CodePostal { get; set; }
+        [Display(Name = "Commune")]
         public string Comune { get; set; }
 
         public ICollection<RepHabite> RepHabite { get; set; }
