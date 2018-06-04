@@ -1,21 +1,21 @@
-@model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Metier.Panier>
+﻿@model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Metier.Panier>
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <h2>Index</h2>
-
+<div>@ViewData["prodNotDispo"]</div>
 <p>
     @*<a asp-action="Create">Create New</a>*@
-    <a asp-action="DeletePanier" >Annuler panier</a>
+    <a asp-action="DeletePanier">Annuler panier</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             @*<th>
-                @Html.DisplayNameFor(model => model.RegisterViewModelID)
-            </th>*@
+                    @Html.DisplayNameFor(model => model.RegisterViewModelID)
+                </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Produit)
             </th>
@@ -34,62 +34,63 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.RegisterViewModelID)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.Produit.ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantite)
-            </td>
-            <td>
-                @{
-                    @if (item.Produit.Image != null)
-                    {
-                        var base64 = Convert.ToBase64String(item.Produit.Image);
-                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-                        <img class="imagePetite" src="@imgSrc" id="myBtn" />
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.RegisterViewModelID)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Produit.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantite)
+                </td>
+                <td>
+                    @{
+                        @if (item.Produit.Image != null)
+                        {
+                            var base64 = Convert.ToBase64String(item.Produit.Image);
+                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                            <img class="imagePetite" src="@imgSrc" id="myBtn" />
+                        }
                     }
-                }
-                @*@Html.DisplayFor(modelItem => item.Produit.Image)*@
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Produit.Prix)
-            </td>
-            <td>
-                @{ var prixQuantite = (item.Produit.Prix * @item.Quantite); } 
-                @prixQuantite
-                
-            </td>
-            <td>
-                @*<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |*@
-                <a asp-controller="Produits" asp-action="Details" asp-route-id="@item.ProduitID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
-       
+                    @*@Html.DisplayFor(modelItem => item.Produit.Image)*@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Produit.Prix)�
+                </td>
+                <td>
+                    @{ var prixQuantite = (item.Produit.Prix * @item.Quantite); }
+                    @prixQuantite�
+
+                </td>
+                <td>
+                    @*<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |*@
+                    <a asp-controller="Produits" asp-action="Details" asp-route-id="@item.ProduitID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
+
     </tbody>
 </table>
-@{ 
-    double total=0;
+@{
+    double total = 0;
     foreach (var item in Model)
     {
         total += (item.Produit.Prix * item.Quantite);
     }
 }
-    total: @total
+    total: @total�
 
-<form>
-    @if (Model.Count() <= 0)
-    {
-        <div>Panier vide, impossible de le valider</div>
-    }
-    else
-    {
-        <input asp-controller="Commandes" asp-action="Create" type="submit" value="Valider Commande" method="get" />
-    }
-</form>
+    <form>
+        @if (Model.Count() <= 0)
+        {
+            <div>Panier vide, impossible de le valider</div>
+        }
+        else
+        {
+            <input asp-controller="Commandes" asp-action="Create" type="submit" value="Valider Commande" method="get" />
+        }
+    </form>

@@ -3,10 +3,10 @@
 *@
 @model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Categorie>
 
-<ul>
+<ul class="myUl">
     @foreach (var category in Model)
     {
-        <li>
+        <li class="myli">
             <a asp-area="" asp-controller="Produits" asp-action="Index" asp-route-cat="@category.Nom">@category.Nom</a>
             @if (category.CategorieEnfant != null)
             {

@@ -30,6 +30,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         {
             var IdUser = _userManager.GetUserId(User);
             var tFEContext = _context.Panier.Include(p => p.Produit).Where(p=>p.RegisterViewModelID == IdUser);
+            ViewData["prodNotDispo"] = TempData["prodNotDispo"];
             return View(await tFEContext.ToListAsync());
         }
 

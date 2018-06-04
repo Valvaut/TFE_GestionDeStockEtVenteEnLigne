@@ -18,6 +18,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         [Display(Name = "Catégorie Parents")]
         public virtual Categorie CategorieParent { get; set; }
 
+      
 
     }
 }

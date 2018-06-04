@@ -219,6 +219,9 @@ textarea {
 .navbar-inverse .navbar-nav > li > a {
     color: #002060 !important;
 }
+.navbar-inverse .navbar-nav > li > button {
+    color: #002060 !important;
+}
 #navNoMargin {
     margin-bottom : 0px !important;
 }
@@ -229,4 +232,17 @@ footer {
     /*margin-left : 10%;
     margin-right : 10%;*/
     width : 100%;
+}
+
+.transparance {
+    background-color: rgba(255,255,255, 0);
+}
+.myUl {
+    padding-left : 0px;
+    list-style-type : none; 
+    list-style-position : outside;
+}
+.myli {
+    padding-left : 15px;
+    
 }

@@ -54,6 +54,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             //    .SingleOrDefaultAsync(m => m.ID == id);
             Commande commande = await _context.Commandes
                                         .Include(c => c.Possede)
+                                            .ThenInclude(p=>p.Produit)
                                         .Include(c => c.AdresseFacturation)
                                         .SingleOrDefaultAsync(m => m.ID == id);
             if (User.IsInRole("gestionnaire") || _userManager.GetUserId(User)==commande.RegisterViewModelID)
@@ -87,6 +88,20 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         public  IActionResult Create()
         {
             var IdUser = _userManager.GetUserId(User);
+            var panier = _context.Panier.Where(p=>p.RegisterViewModelID == IdUser).ToArray();
+            TempData["prodNotDispo"] = "";
+            foreach (var prod in panier)
+            {
+                var produit = _context.Produits.SingleOrDefault(p=>p.ID == prod.ProduitID);
+                if (produit.QuantiteEmballage < prod.Quantite)
+                {
+                    TempData["prodNotDispo"] += "Produit : " + produit.Denomination + " plus suffisament en stock,";
+                }
+            }
+            if (!(TempData["prodNotDispo"].Equals("")))
+            {
+                return RedirectToAction("Index","Paniers");
+            }
             CommandeAdresseAdaptateur addadp = new CommandeAdresseAdaptateur();
             addadp.ListeAdresse =  _context.Adresses.Include(a => a.DomicileClient).Where(a=>a.DomicileClient.Any(p=>p.RegisterViewModelID == IdUser)).ToList();
             if (addadp.ListeAdresse.Count <= 0 )
@@ -155,7 +170,8 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                     Possede p = new Possede();
                     p.CommandeID = idCommande;
                     p.ProduitID = e.ProduitID;
-                    e.Produit.QuantiteStock = e.Produit.QuantiteStock -e.Quantite;
+                    e.Produit.QuantiteEmballage -= e.Quantite;
+                    e.Produit.QuantiteStockTotal = e.Produit.QuantiteEmballage * e.Produit.NBPieceEmballage + e.Produit.QuantiteStock;
                     p.Quantite = e.Quantite;
                     _context.Add(p);
                 }

@@ -14,9 +14,10 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models.AccountViewModels
 
         [Required]
         [DataType(DataType.Password)]
+        [Display(Name="Mot de passe")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "souvenir des informations")]
         public bool RememberMe { get; set; }
     }
 }

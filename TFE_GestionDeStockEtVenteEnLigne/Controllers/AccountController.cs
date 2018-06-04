@@ -509,7 +509,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             {
                 var quant = int.Parse(qte);
                 var produit = _context.Produits.SingleOrDefault(p => p.ID == id);
-                if (produit.QuantiteStock >= quant)
+                if (produit.QuantiteEmballage >= quant)
                 {
                     var IdUser = _userManager.GetUserId(User);
                     var panierUser = _context.Panier.Where(p => p.RegisterViewModelID == IdUser).ToList();
@@ -534,7 +534,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                     }
 
                     await _context.SaveChangesAsync();
-                    TempData["passtock"] = "Produit : " +produit.Denomination + "ajouté au panier";
+                    TempData["passtock"] = "Produit : " +produit.Denomination + " ajouté au panier";
                 }
                 else
                 {

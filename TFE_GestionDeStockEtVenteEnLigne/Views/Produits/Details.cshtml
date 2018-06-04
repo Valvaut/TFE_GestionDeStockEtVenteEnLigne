@@ -1,10 +1,10 @@
-@model TFE_GestionDeStockEtVenteEnLigne.Models.Produit
+﻿@model TFE_GestionDeStockEtVenteEnLigne.Models.Produit
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2>Détails</h2>
 
 <div>
     <h4>Produit</h4>
@@ -36,7 +36,7 @@
                     @NonValeur[i].Attribut.Nom
                 </dt>
                 <dd>
-                    @NonValeur[i].Valeurs
+                    @NonValeur[i].Valeurs @NonValeur[i].Attribut.Mesure
                 </dd>
             }
         }
@@ -56,7 +56,7 @@
                 }
             }   
         </dd>*@
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.MotClef)
         </dt>
 
@@ -71,7 +71,7 @@
                         @:,
                     }
                 }
-            }
+            }*@
             @*@foreach (var item in Model.MotClef)
             {
                 @Html.DisplayFor(model => item.MotClef.Valeur)@:,
@@ -81,7 +81,7 @@
             @Html.DisplayNameFor(model => model.Prix)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Prix)
+            @Html.DisplayFor(model => model.Prix)€
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.QuantiteEmballage)
@@ -96,23 +96,23 @@
             @Html.DisplayFor(model => model.NBPieceEmballage)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.TVA)
+            @Html.DisplayNameFor(model => model.TVA) incluse
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.TVA)
-        </dd>
+            @Html.DisplayFor(model => model.TVA)% 
+        @*</dd>
         <dt>
             @Html.DisplayNameFor(model => model.CompteCompta)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.CompteCompta)
-        </dd>
-        <dt>
+        </dd>*@
+        @*<dt>
             @Html.DisplayNameFor(model => model.Description)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Description)
-        </dd>
+        </dd>*@
         <dt>
             @Html.DisplayNameFor(model => model.Marque)
         </dt>
@@ -120,7 +120,7 @@
             @Html.DisplayFor(model => model.Marque)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.QuantiteStock)
+            @Html.DisplayFor(model => model.QuantiteStock)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.QuantiteStock)
@@ -148,11 +148,12 @@
 </div>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @*<a asp-action="Edit" asp-route-id="@Model.ID">Edit</a>*@ 
+    <a asp-action="Index">Retour à la liste</a>
 </div>
 
 <script>
+//image
 // Get the modal
 var modal = document.getElementById('myModal');
 

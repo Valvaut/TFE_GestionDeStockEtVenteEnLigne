@@ -8,9 +8,10 @@ using TFE_GestionDeStockEtVenteEnLigne.Data;
 namespace TFE_GestionDeStockEtVenteEnLigne.Migrations
 {
     [DbContext(typeof(TFEContext))]
-    partial class TFEContextModelSnapshot : ModelSnapshot
+    [Migration("20180604125116_quntitetotal")]
+    partial class quntitetotal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.3")
@@ -255,28 +256,6 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Migrations
                     b.HasIndex("RepresentantID");
 
                     b.ToTable("Contacts");
-                });
-
-            modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Metier.Historique", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Action");
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<int>("ProduitID");
-
-                    b.Property<int>("QteMouv");
-
-                    b.Property<int>("QteStock");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ProduitID");
-
-                    b.ToTable("Historique");
                 });
 
             modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Metier.Panier", b =>
@@ -556,14 +535,6 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Migrations
                     b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.Representant", "Representant")
                         .WithMany()
                         .HasForeignKey("RepresentantID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("TFE_GestionDeStockEtVenteEnLigne.Models.Metier.Historique", b =>
-                {
-                    b.HasOne("TFE_GestionDeStockEtVenteEnLigne.Models.Produit", "Produit")
-                        .WithMany()
-                        .HasForeignKey("ProduitID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

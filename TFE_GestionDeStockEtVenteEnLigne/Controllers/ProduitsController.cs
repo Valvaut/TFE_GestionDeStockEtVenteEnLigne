@@ -35,28 +35,46 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             ViewData["passtock"] = TempData["passtock"];
 
             var produits = from f in _context.Produits select f;
+            //var produits = _context.Produits.ToArray();
             var pro = _context.Produits;
 
             if (!String.IsNullOrEmpty(cat))
             {
-                produits = produits.Where(f => f.Categorie.Nom.Contains(cat));
+                //produits = produits.Where(f => f.Categorie.Nom.Contains(cat));
+                var categorie = _context.Categories
+                    .Include(c=>c.CategorieEnfant)
+                        .ThenInclude(p=>p.Produits)
+                    .Include(c=>c.Produits)
+                    .SingleOrDefault(c => c.Nom.Equals(cat));
+                var prods = GetProdRecu(categorie);
+                //List<Produit> prods = cate.Produits.ToList();
+                //while (cate.CategorieParent != null)
+                //{
+                //    cate = _context.Categories
+                //        .Include(c=>c.Produits)
+                //        .SingleOrDefault(cp=>cp.ID == cate.CategorieParentID);
+                //    prods.AddRange(cate.Produits);
+                //}
+                int i = 0;
+                while (i< prods.Count)
+                {
+                    if (prods[i].Visible)
+                    {
+                        ++i;
+                    }
+                    else
+                    {
+                        prods.RemoveAt(i);
+                        prods.RemoveAll(Produit.PredicatDelNotVisible);
+                    }
+                }
                 ViewData["cat"]= cat;
+                return View(prods);
             }
             else if (!String.IsNullOrEmpty(searchStr))
             {
                 produits = produits.Where(f => f.Ref.Contains(searchStr) || f.Denomination.Contains(searchStr));
                 ViewData["recherche"] = searchStr;
-            }
-            switch (sortOrder)
-            {
-                case "ref_desc":
-                    produits = produits.OrderByDescending(f => f.Ref); break;
-                case "Denomination":
-                    produits = produits.OrderBy(f => f.Denomination); break;
-                case "deno_desc":
-                    produits = produits.OrderByDescending(f => f.Denomination); break;
-                default:
-                    produits = produits.OrderBy(f => f.Ref); break;
             }
             return View(await produits.Where(p=>p.Visible == true).ToListAsync());
         }
@@ -93,7 +111,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         public async Task<IActionResult> Create()
         {
             ProduitCatAdapter pc = new ProduitCatAdapter();
-            pc.ListCat = await _context.Categories.Where(c=>c.CategorieParentID == null).ToListAsync();
+            pc.ListCat = await _context.Categories.Where(c=>!(c.CategorieEnfant.Any())).ToListAsync();
             pc.ListMotClef = await _context.MotClefs.ToListAsync();
             pc.TousLesAttributs = await _context.Attributs.ToListAsync();
             pc.ListFournisseur= await _context.Fournisseurs.ToListAsync();
@@ -125,6 +143,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                     produitcatAdapter.Produit.Image = ms.ToArray();
                     produitcatAdapter.Produit.Date = DateTime.Now;
                     produitcatAdapter.Produit.Visible = true;
+                    produitcatAdapter.Produit.QuantiteStockTotal = produitcatAdapter.Produit.QuantiteEmballage * produitcatAdapter.Produit.NBPieceEmballage + produitcatAdapter.Produit.QuantiteStock;
                     _context.Add(produitcatAdapter.Produit);//insert le produit
 
 
@@ -222,7 +241,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                                         .Include(p=>p.MotClef)
                                         .Include(p => p.Provients)
                                         .SingleOrDefaultAsync(m => m.ID == id);
-            adaptateur.ListCat = await _context.Categories
+            adaptateur.ListCat = await _context.Categories.Where(c => !(c.CategorieEnfant.Any()))
                                        .ToListAsync();
             adaptateur.ListMotClef = await _context.MotClefs
                                        .Include(mc=>mc.Produit)
@@ -260,14 +279,14 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "gestionnaire")]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Ref,Denomination,Prix,QuantiteEmballage,NBPieceEmballage,TVA,CompteCompta,Description,Marque,QuantiteStock,Image,CategorieID")] Produit produit)
+        public async Task<IActionResult> Edit(int id, [Bind("Ref,Denomination,Prix,QuantiteEmballage,NBPieceEmballage,TVA,CompteCompta,Description,Marque,QuantiteStock,Image,CategorieID")] Produit produit)
         {
-            if (id != produit.ID)
-            {
-                return NotFound();
-            }
+            //if (id != produit.ID)
+            //{
+            //    return NotFound();
+            //}
             var a = Request.Form["prixVente"].ToString().Replace(".",",");
-            if (produit.Prix == 0)
+            if (produit.Prix == 0)//si nombre a virgule
             {
                 produit.Prix = double.Parse(a);
             }
@@ -275,16 +294,16 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             {
                 try
                 {
+                    var produitBD = await _context.Produits
+                               .AsNoTracking()
+                               .SingleOrDefaultAsync(m => m.ID == id);
                     //var produitverif = await _context.Produits.Include(p => p.Possede).SingleOrDefaultAsync(m => m.ID == id);
                     //if (produitverif.Possede.Count >= 0)
 
-                    produit.Visible = false;
+                    produitBD.Visible = false;
                     var images = Request.Form.Files["Image"];
-                    if (images.FileName == "")
+                    if (images.FileName == "")//si pas chois d'image, prend l'ancienne
                     {
-                        var produitBD = await _context.Produits
-                                .AsNoTracking()
-                                .SingleOrDefaultAsync(m => m.ID == id);
                         produit.Image = produitBD.Image;
                     }
                     else
@@ -294,25 +313,29 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                         images.OpenReadStream().CopyTo(ms);
                         produit.Image = ms.ToArray();
                     }
-                    _context.Update(produit);
-                    Produit nouveau = new Produit
-                    {
-                        Visible = true,
-                        CategorieID = produit.CategorieID,
-                        Ref = produit.Ref,
-                        Denomination = produit.Denomination,
-                        Prix = produit.Prix,
-                        QuantiteEmballage = produit.QuantiteEmballage,
-                        NBPieceEmballage = produit.NBPieceEmballage,
-                        TVA = produit.TVA,
-                        CompteCompta = produit.CompteCompta,
-                        Description = produit.Description,
-                        Marque = produit.Marque,
-                        QuantiteStock = produit.QuantiteStock,
-                        Image = produit.Image,
-                        Date = DateTime.Now,
-                    };
-                    _context.Add(nouveau);
+                    _context.Update(produitBD);
+                    produit.QuantiteStockTotal = produit.QuantiteEmballage * produit.NBPieceEmballage + produit.QuantiteStock;
+                    produit.Visible = true;
+                    produit.Date =DateTime.Now;
+                    //Produit nouveau = new Produit
+                    //{
+                    //    Visible = true,
+                    //    CategorieID = produit.CategorieID,
+                    //    Ref = produit.Ref,
+                    //    Denomination = produit.Denomination,
+                    //    Prix = produit.Prix,
+                    //    QuantiteEmballage = produit.QuantiteEmballage,
+                    //    NBPieceEmballage = produit.NBPieceEmballage,
+                    //    TVA = produit.TVA,
+                    //    CompteCompta = produit.CompteCompta,
+                    //    Description = produit.Description,
+                    //    Marque = produit.Marque,
+                    //    QuantiteStock = produit.QuantiteStock,
+                    //    Image = produit.Image,
+                    //    Date = DateTime.Now,
+                    //    QuantiteStockTotal = produit.QuantiteEmballage * produit.NBPieceEmballage + produit.QuantiteStock,
+                    //};
+                    _context.Add(produit);
                     //images = Request.Form.Files["Image"];
                     //if (images.FileName == "")
                     //{
@@ -340,7 +363,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                         ProduitMotClef pm = new ProduitMotClef
                         {
                             MotClefId = motClef,
-                            ProduitID = nouveau.ID
+                            ProduitID = produit.ID
                         };
                         _context.Add(pm);
                     }
@@ -368,7 +391,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                         };
                         v.AttributID = listIDAttribut[i];
                         ++i;
-                        v.ProduitID = nouveau.ID;
+                        v.ProduitID = produit.ID;
                         _context.Add(v);
 
                     }
@@ -385,7 +408,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                         Prix = Prix2,
                         TauxTVA = int.Parse(Request.Form["tauxTVA"]),
                         QuantiteMinCommande = int.Parse(Request.Form["quantite"]),
-                        ProduitID = nouveau.ID,
+                        ProduitID = produit.ID,
                         FournisseurID = fournisseurID
                     };
                     _context.Add(provient);
@@ -442,6 +465,27 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         private bool ProduitExists(int id)
         {
             return _context.Produits.Any(e => e.ID == id);
+        }
+
+        private List<Produit> GetProdRecu(Categorie c)
+        {
+             c.CategorieEnfant = _context.Categories
+                    .Include(ca => ca.CategorieEnfant)
+                    .Include(ca => ca.Produits)
+                    .Where(ca=>ca.CategorieParentID == c.ID)
+                    .ToList();
+            List<Produit> res = new List<Produit>();
+            if(c.CategorieEnfant != null)
+            { 
+                foreach (var cat in c.CategorieEnfant)
+                {
+                    res.AddRange(GetProdRecu(cat));
+              
+                }
+            }
+            if (c.Produits != null)
+                res.AddRange(c.Produits);
+            return res;
         }
 
     }

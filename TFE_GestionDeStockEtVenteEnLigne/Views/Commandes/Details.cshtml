@@ -11,8 +11,8 @@
     <hr />
     <dl class="dl-horizontal">
         @*<dd>
-            @Html.DisplayFor(model => model.ID)
-        </dd>*@
+                @Html.DisplayFor(model => model.ID)
+            </dd>*@
         <dt>
             @Html.DisplayNameFor(model => model.DateCommade)
         </dt>
@@ -37,7 +37,7 @@
             {
                 <div>pas encore envoyé!</div>
             }
-            @Html.DisplayFor(model => model.Envoie)
+            @*@Html.DisplayFor(model => model.Envoie)*@
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.AdresseFacturation)
@@ -46,7 +46,7 @@
             @Model.AdresseFacturation.ToString()
         </dd>
 
-        @foreach (var item in Model.Possede)
+        @*@foreach (var item in Model.Possede)
         {
             <dt>
                 produit
@@ -55,14 +55,94 @@
                 @Html.DisplayFor(model => item.Produit.Denomination)
                 <a asp-controller="Produits" asp-action="Details" asp-route-id="@item.Produit.ID">Details</a>
             </dd>
-        }
+        }*@
     </dl>
+    <table class="table">
+        <thead>
+            <tr>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.RegisterViewModelID)
+                    </th>*@
+                <th>
+                    Produits
+                </th>
+                <th>
+                    Quantité
+                </th>
+                <th>
+                    Image
+                </th>
+                <th>
+                    Prix unitaire
+                </th>
+                <th>
+                    Prix
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int i = 0;
+            }
+            @foreach (var item in Model.Possede)
+            {
 
-    
+                Possede p = new Possede();
+                p.ProduitID = item.ProduitID;
+                p.CommandeID = item.CommandeID;
+                p.Quantite = item.Quantite;
+
+                <tr id="@item.ProduitID">
+                    <td>
+                        <input id="@i" type="hidden" name="possedeId" asp-for="Possede.ToArray()[i].ID" />
+                        <input id="@i" type="hidden" name="produitId" asp-for="Possede.ToArray()[i].ProduitID" />
+                        <input id="@i" type="hidden" name="CommandeId" asp-for="Possede.ToArray()[i].CommandeID" />
+
+                        @Html.DisplayFor(modelItem => item.Produit.ID)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantite)
+                        @*<input id="@i" type="text" name="quantite" asp-for="Commande.Possede.ToArray()[i].Quantite" />*@
+                    </td>
+                    <td>
+                        @{
+                            @if (item.Produit.Image != null)
+                            {
+                                var base64 = Convert.ToBase64String(item.Produit.Image);
+                                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                <img class="imagePetite" src="@imgSrc" id="myBtn" />
+                            }
+                        }
+                        @*@Html.DisplayFor(modelItem => item.Produit.Image)*@
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Produit.Prix)
+                    </td>
+                    <td>
+                        @{ var prixQuantite = (item.Produit.Prix * @item.Quantite); }
+                        @prixQuantite
+
+                    </td>
+                    <td>
+                        @*<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |*@
+                        <a asp-controller="Produits" asp-action="Details" asp-route-id="@item.ProduitID">Details</a>
+                        @*<a asp-action="DeleteArticleDemande" asp-route-id="@item.ID" asp-route-idcomm="@Model.Commande.ID">Delete</a>*@
+                        @*<button onclick="deleteProdCom(@item.ProduitID)">Delete</button>*@
+                    </td>
+                </tr>
+
+                ++i;
+
+            }
+
+        </tbody>
+    </table>
+
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a> |
+    @*<a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |*@
+    <a asp-action="Index">Retour à la liste</a> 
     <form asp-action="Details" asp-controller="Factures" asp-route-id="@Model.ID">
         <input type="submit" value="Voir la facture" class="btn btn-default" />
     </form>

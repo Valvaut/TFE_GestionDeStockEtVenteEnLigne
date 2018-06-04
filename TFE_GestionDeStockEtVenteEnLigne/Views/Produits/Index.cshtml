@@ -1,24 +1,26 @@
-@model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Produit>
+﻿@model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Produit>
 
 @{
     ViewData["Title"] = "Index";
 }
 
 
-<div class="flexbox myCenter">
+<div class="flexbox "> @*myCenter*@
 
     <div class="myCenterSearch">
         @await Component.InvokeAsync("Recherche")
     </div>
    
-    <div>
+    <div class="col-lg-12">
         <h2>Nos produits</h2>
+        <div class="row">
+            @ViewData["passtock"]
+        </div>
         
-        <span>@ViewData["passtock"]</span>
-        
+
         @if (@ViewData["cat"] != null)
         {
-            <div>Cat�rgorie : @ViewData["cat"]</div>
+            <div>Catérgorie : @ViewData["cat"]</div>
         }
         @if (@ViewData["recherche"] != null)
         {
@@ -159,7 +161,42 @@
 
         @foreach (var item in Model)
         {
-            <div class="col-lg-4 col-sm-12">
+
+            <div class="panel panel-default col-lg-3 col-md-6 col-sm-12">
+                <div class="panel-heading">Nom : @Html.DisplayFor(modelItem => item.Denomination)</div>
+                <div class="panel-body">
+                    
+                    <div class="row">Prix: @Html.DisplayFor(modelItem => item.Prix)€</div>
+                    
+
+                    @{
+                        var base64 = Convert.ToBase64String(item.Image);
+                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                    }
+                    <img class="imagePetite row " src="@imgSrc" id="myBtn" />
+                    <div id="myModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <img src="@imgSrc" class="imageGrande" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <a asp-action="Details" asp-route-id="@item.ID">Détails</a>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            if (User.IsInRole("gestionnaire"))
+                            {
+                                <span> |</span> <a asp-action="Edit" asp-route-id="@item.ID">Editer</a>
+                            }
+                            <form asp-controller="Account" asp-action="AddPanier" asp-route-id="@item.ID" method="post">
+                                <input class="col-lg-12" type="number" name="Quantite" min="1" />
+                                <input class="col-lg-12 btn btn-default" type="submit" value="Ajouter au panier" />
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-lg-4 col-sm-12">
                 Nom : @Html.DisplayFor(modelItem => item.Denomination)
 
                 Prix: @Html.DisplayFor(modelItem => item.Prix)
@@ -176,21 +213,50 @@
                     </div>
                 </div>
 
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a>
+                <a asp-action="Details" asp-route-id="@item.ID">Détails</a>
                 @if (User.Identity.IsAuthenticated)
                 {
                     if (User.IsInRole("gestionnaire"))
                     {
-                        <span> |</span> <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
+                        <span> |</span> <a asp-action="Edit" asp-route-id="@item.ID">Editer</a>
                     }
                     <form asp-controller="Account" asp-action="AddPanier" asp-route-id="@item.ID" method="post">
                         <input type="number" name="Quantite" min="1" />
                         <input type="submit" value="Ajouter au panier" class="btn btn-default" />
                     </form>
                 }
-            </div>
+            </div>*@
         }
 
 
     </div>
 </div>
+
+<script>
+//image
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>

@@ -23,7 +23,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public double Prix { get; set; }
 
         [Range(0, int.MaxValue)]
-        [Display(Name = "Quantité  en stock")]
+        [Display(Name = "Quantité d'emballage en stock")]
         public int QuantiteEmballage { get; set; }
 
         [Range(0, int.MaxValue)]
@@ -40,8 +40,12 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public String Marque { get; set; }
 
         [Range(0, int.MaxValue)]
-        [Display(Name = "Quantité en stock")]
+        [Display(Name = "Quantité envrack")]
         public int QuantiteStock { get; set; }
+
+        [Range(0, int.MaxValue)]
+        [Display(Name = "Quantité Total")]
+        public int QuantiteStockTotal { get; set; }
 
         public Byte[] Image { get; set; }
 
@@ -50,10 +54,17 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public DateTime Date { get; set; }
 
         public ICollection<Possede> Possede { get; set; }
+        [Display(Name = "Mots clés")]
         public ICollection <ProduitMotClef>MotClef { get; set; }
         public ICollection<Panier> Panier { get; set; }
+        [Display(Name = "Catégorie")]
         public Categorie Categorie { get; set; }
         public ICollection<Valeur> Valeur { get; set; }
         public ICollection<Provient> Provients { get; set; }
+
+        public static bool PredicatDelNotVisible(Produit p)
+        {
+            return !p.Visible;
+        }
     }
 }

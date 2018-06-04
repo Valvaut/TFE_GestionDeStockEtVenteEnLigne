@@ -1,4 +1,4 @@
-@model TFE_GestionDeStockEtVenteEnLigne.Models.Facture
+﻿@model TFE_GestionDeStockEtVenteEnLigne.Models.Facture
 
 @{
     ViewData["Title"] = "Details";
@@ -69,13 +69,13 @@
                         Quantite
                     </th>
                     @*<th>
-                            @Html.DisplayNameFor(model => model.Image)
-                        </th>*@
+                        @Html.DisplayNameFor(model => model.Image)
+                    </th>*@
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.Commande.Possede)
-            {
+                {
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.Produit.Ref)
@@ -108,8 +108,8 @@
                             @Html.DisplayFor(modelItem => item.Quantite)
                         </td>
                         @*<td>
-                                @Html.DisplayFor(modelItem => item.Image)
-                            </td>*@
+                            @Html.DisplayFor(modelItem => item.Image)
+                        </td>*@
                     </tr>
                 }
             </tbody>
@@ -121,11 +121,11 @@
                 total += (item.Produit.Prix * item.Quantite);
             }
         }
-        total: @total
+        total: @total€
     </div>
 </div><div class="veutpas"></div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+    @*<a asp-action="Edit" asp-route-id="@Model.ID">Edit</a>*@ 
     <a asp-action="Index">Back to List</a>
 </div>
 <div>
