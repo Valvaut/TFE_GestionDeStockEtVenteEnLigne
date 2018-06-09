@@ -16,7 +16,7 @@ html {
 h3 {
     color: #002060;
     text-decoration: underline;
-    font-family: Comic Sans MS;
+    font-family: Comic Sans MS !important;
 }
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
@@ -68,19 +68,20 @@ textarea {
     height: 100px;
     overflow-y: scroll;
     width: 100%;
+    padding-left : 15px;
 }
 
 .multiselect {
-    height: 10em;
+
     border: solid 1px #c0c0c0;
     overflow: auto;
     margin-bottom: 20px;
 }
 
-    .multiselect label {
-        margin-left: 10px;
-        display: block;
-    }
+.multiselect label {
+    margin-left: 10px;
+    display: block;
+}
 
 .multiselect-on {
     color: #ffffff;
@@ -146,7 +147,7 @@ textarea {
 
 .textCenter {
     text-align: center;
-    font-family: Comic Sans MS;
+    font-family: Comic Sans MS !important;
 }
 
 .colorBlue {
@@ -154,7 +155,7 @@ textarea {
 }
 
 .mymenu {
-    font-size: 25px;
+    font-size: 25px !important;
 }
 
 .bienvenue {
@@ -244,5 +245,33 @@ footer {
 }
 .myli {
     padding-left : 15px;
-    
+}
+
+.textover {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.textRed {
+    color : red !important;
+}
+
+@media (min-width: 768px) {
+    .myHidden {
+        display: normal;
+    }
+}
+@media (max-width: 768px) {
+    .myHidden {
+        display: none;
+    }
+}
+.mypopup {
+    background-color : white;
+    padding-left : 25%;
+}
+
+.myFamilly {
+    font-family: Comic Sans MS !important;
 }

@@ -1,32 +1,58 @@
 @model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Categorie>
 
-    @{
-        Layout = null;
-    }
-    <html>
-    <head>
-        <meta name="viewport" content="width=device-width" />
-        <title>Recherche</title>
-    </head>
-    <body>
-        <div>
-            <div>
-                <h3 >Recherche</h3>
-                <div class="">
-                    <form asp-controller="Produits" asp-action="Index" method="get">
-                        <div>
-                            <input class="col-md-10" type="text" name="SearchStr" value="@ViewData["Filter"]" />
-                        </div>
-                        <div>
-                            <input type="submit" value="Search" class="btn btn-default" />
-                        </div>
-                    </form>
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Recherche</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+</head>
+<body>
+    <div class=""> @*SMALL SCREEN*@
+        @*<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">*@
+        <h3 class="myHidden">Recherche</h3>
+        <div class="">
+            <!--Visible on mobile device only-->
+            <a class="visible-xs btn navbar-brand pull-right" data-toggle="modal" href="#searchModal">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+            <!--Hidden on mobile device only-->
+            <form asp-controller="Produits" asp-action="Index" method="get" class="hidden-xs navbar-form navbar-left">
+                <div>
+                    <input class="col-md-10" type="text" name="SearchStr" value="@ViewData["Filter"]" />
                 </div>
-            </div>
-            <table class="table">
-                @Html.Partial("Categorie", Model)
-            </table>
+                <div>
+                    <input type="submit" value="Search" class="btn btn-default" />
+                </div>
+            </form>
         </div>
+    </div>
+    <div class="myHidden ">
+        <table class="table">
+            @Html.Partial("Categorie", Model)
+        </table>
+    </div>
 
-    </body>
+
+    <!--Visible on mobile device only-->
+    <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <form asp-controller="Produits" asp-action="Index" method="get" role="search">
+            <div class="iput-group input-group-lg" style="margin-top:20px;margin-left:10px;margin-right:10px;">
+                <input type="search" class="form-control" name="SearchStr" placeholder="Search....." value="@ViewData["Filter"]">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                </span>
+            </div>
+        </form>
+        <div class="mypopup">
+            @Html.Partial("Categorie", Model)
+        </div>
+    </div>
+</body>
 </html>
+

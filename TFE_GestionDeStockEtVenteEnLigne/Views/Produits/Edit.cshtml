@@ -10,212 +10,284 @@
     <div class="form-horizontal">
         <h4>Produit</h4>
         <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Produit.ID" />
         <div class="form-group">
             <label asp-for="Produit.Date" class="control-label col-md-2"></label>
             <div class="col-md-10">
                 <label class="form-control">@Model.Produit.Date</label>
             </div>
         </div>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="Produit.ID" />
-        <div class="form-group">
-            <label asp-for="Produit.Ref" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <label  class="form-control" value="@Model.Produit.Ref">@Model.Produit.Ref</label>
-                <input type="hidden" asp-for="Produit.Ref" class="form-control" />
-                <span asp-validation-for="Produit.Ref" class="text-danger"></span>
+        <div class="row">
+            <div class="panel panel-default col-lg-3 col-md-3 col-sm-12">
+                @*<div class="panel-heading">Image </div>*@
+                <div class="panel-body">
+                    <div class="form-group">
+                        @*<label asp-for="Produit.Image" class="col-md-2 control-label"></label>*@
+                        <div class="col-md-12">
+                            @{
+                                var base64 = Convert.ToBase64String(Model.Produit.Image);
+                                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                            }
+                            <img id="target" class="imagePetite" src="@imgSrc" /> @*id="myBtn"*@
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @*<label asp-for="Produit.Image" class="col-md-2 control-label"></label>*@
+                        <div class="col-md-12">
+                            <input id="src" onchange="afficherImage()" class="col-lg-12" asp-for="Produit.Image" type="file" name="Image" />
+                            <span asp-validation-for="Produit.Image" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default col-lg-9 col-md-9 col-sm-12">
+                @*<div class="panel-heading"> Caractéristiques du produit </div>*@
+                <div class="form-group">
+                    <label asp-for="Produit.Denomination" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Produit.Denomination" class="form-control" />
+                        <span asp-validation-for="Produit.Denomination" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Produit.Ref" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <label class="form-control" value="@Model.Produit.Ref">@Model.Produit.Ref</label>
+                        <input type="hidden" asp-for="Produit.Ref" class="form-control" />
+                        <span asp-validation-for="Produit.Ref" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Produit.Marque" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Produit.Marque" class="form-control" />
+                        <span asp-validation-for="Produit.Marque" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label asp-for="ListFournisseur" class="col-md-2 control-label"></label>
+                    <div class="col-lg-4">
+                        <!--<select asp-for="FournisseurID" asp-items="@(new SelectList(Model.ListFournisseur, "ID", "Nom"))" class="selectpicker"></select>-->
+                        <select name="select">
+                            @foreach (var item in Model.ListFournisseur)
+                            {
+                                <option value="@item.ID">@item.Nom</option>
+
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label col-md-2">Réf. fournisseur</label>
+                        <div class="col-md-10"><label class="form-control">@Model.Produit.Provients.ToArray()[0].Fournisseur.Reference</label></div>
+                    </div>
+                </div>
+                <div class="row">
+                    @*<div class="form-group">*@
+                        <label asp-for="Produit.Categorie" class="control-label col-md-2"></label>
+                        <div class="col-md-10">
+                            <select asp-for="Produit.CategorieID" class="selectpicker" asp-items="@(new SelectList(Model.ListCat, "ID", "Nom"))"></select>
+                            <span asp-validation-for="Produit.CategorieID" class="text-danger"></span>
+                        </div>
+                    @*</div>*@
+                </div>    
+                <div class="row">
+                    @*<div class="form-group">*@
+                    <label asp-for="Produit.MotClef" class="col-md-2 control-label"></label>
+                    <div class="col-md-10 multiselect">
+                        <div class="tab-pane">
+                            @foreach (var item in Model.Produit.MotClef)
+                            {
+                                <input type=checkbox name="MotClef" value="@item.MotClefId" checked> @item.MotClef.Valeur
+                                <br />
+                            }
+                            @foreach (var item in Model.ListMotClef)
+                            {
+                                <input type=checkbox name="MotClef" value="@item.ID"> @item.Valeur
+                                <br />
+                            }
+
+                        </div>
+                    </div>
+                    @*</div>*@
+                </div>
+
             </div>
         </div>
-        <div class="form-group">
-            <label asp-for="Produit.Denomination" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Produit.Denomination" class="form-control" />
-                <span asp-validation-for="Produit.Denomination" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Produit.Prix" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input name="prixVente" asp-for="Produit.Prix" value="@Model.Produit.Prix.ToString().Replace(",",".")" class="form-control" />
-                <span asp-validation-for="Produit.Prix" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Produit.QuantiteEmballage" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Produit.QuantiteEmballage" class="form-control" />
-                <span asp-validation-for="Produit.QuantiteEmballage" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Produit.NBPieceEmballage" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Produit.NBPieceEmballage" class="form-control" />
-                <span asp-validation-for="Produit.NBPieceEmballage" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Produit.Categorie" class="control-label col-md-2"></label>
-            <div class="col-md-10">
-                <select asp-for="Produit.CategorieID" class="selectpicker" asp-items="@(new SelectList(Model.ListCat, "ID", "Nom"))"></select>
-                <span asp-validation-for="Produit.CategorieID" class="text-danger"></span>
+        <div class="row">
+            <div class="panel panel-default col-lg-12 col-md-12 col-sm-12">
+                <div class="panel-heading"> Caractéristiques du produit </div>
+                <label asp-for="Produit.Valeur" class="col-md-2 control-label"></label>
+                <div class="col-md-10 multiselect">
+                    <div class="tab-pane">
+                        <div id="attributs">
+                            @{var nb = 0; }
+                            @foreach (var item2 in Model.Produit.Valeur)
+                            {
+
+                                var idspan = "span" + nb;
+                                <p id="@idspan">
+                                    <select typeof="Text" name="nameAttribut" id="nameAttribut">
+                                        <option value="@item2.AttributID">@item2.Attribut.Nom en @item2.Attribut.Mesure</option>
+                                        @foreach (var item in Model.TousLesAttributs)
+                                        {
+                                            <Option value="@item.ID">@item.Nom en @item.Mesure </Option>
+                                        }
+                                    </select><input value="@item2.Valeurs" type="Text" name="ValueAttribut" />
+                                    @if (nb != -1)
+                                    {
+                                        <button class="btn btn-secondary" aria-label="Close" onclick="DeleteSpan(@nb)"></button>
+                                    }
+                                </p>
+                                nb--;
+                            }
+
+                            <br />
+                            <p>
+                                @if (Model.Produit.Valeur.Count <= 0)
+                                {
+                                    <select typeof="Text" name="nameAttribut" id="nameAttribut">
+
+                                        @foreach (var item in Model.TousLesAttributs)
+                                        {
+                                            <Option value="@item.ID">@item.Nom en @item.Mesure </Option>
+                                        }
+                                    </select><input type="Text" name="ValueAttribut" />
+
+                                }
+                            </p>
+
+                        </div>
+                    </div>
+                    <button type="button" onclick="addInputAttribut()">Ajouter Attributs</button>
+                </div>
             </div>
         </div>
 
-        <div class="form-group">
-            <label asp-for="Produit.TVA" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Produit.TVA" class="form-control" />
-                <span asp-validation-for="Produit.TVA" class="text-danger"></span>
+        <div class="row"> @*VENTE*@
+            <div class="panel panel-default col-lg-12 col-md-12 col-sm-12">
+               <div class="panel-heading"> Caractéristiques de vente </div>
+               <div>
+                   <div class="row">
+                       <div class="form-group col-lg-4">
+                           <label asp-for="Produit.QuantiteEmballage" class="col-md-6 control-label">Emballage en stock</label>
+                           <div class="col-md-6">
+                               <input type="hidden" asp-for="Produit.QuantiteEmballage" class="form-control" />
+                               <label class="form-control">@Model.Produit.QuantiteEmballage </label>
+                               <span asp-validation-for="Produit.QuantiteEmballage" class="text-danger"></span>
+                           </div>
+                       </div>
+                       <div class="form-group col-md-4">
+                           <label asp-for="Produit.QuantiteStock" class="col-md-6 control-label"></label>
+                           <div class="col-md-6">
+                               <input asp-for="Produit.QuantiteStock" class="form-control" />
+                               <span asp-validation-for="Produit.QuantiteStock" class="text-danger"></span>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="row">
+                       <div class="form-group col-lg-4">
+                           <label asp-for="Produit.NBPieceEmballage" class="col-md-6 control-label">Qté par emball</label>
+                           <div class="col-md-6">
+                               <input asp-for="Produit.NBPieceEmballage" class="form-control" />
+                               <span asp-validation-for="Produit.NBPieceEmballage" class="text-danger"></span>
+                           </div>
+                       </div>
+                       <div class="form-group col-lg-4">
+
+                       </div>
+                       <div class="form-group col-lg-4">
+                           <label asp-for="Produit.CompteCompta" class="col-md-6 control-label"></label>
+                           <div class="col-md-6">
+                               <input asp-for="Produit.CompteCompta" class="form-control" />
+                               <span asp-validation-for="Produit.CompteCompta" class="text-danger"></span>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="row">
+                       <div class="form-group col-lg-4">
+                           <label class="col-md-6 control-label">Quantité Reçu</label>
+                           <div class="col-md-6">
+                               <input name="qteRecu" type="number" class="form-control" />
+                           </div>
+                       </div>
+                       <div class="form-group col-lg-4">
+                           <label asp-for="Produit.Prix" class="col-md-6 control-label"></label>
+                           <div class="col-md-6">
+                               <input name="prixVente" asp-for="Produit.Prix" value="@Model.Produit.Prix.ToString().Replace(",", ".")" class="form-control" />
+                               <span asp-validation-for="Produit.Prix" class="text-danger"></span>
+                           </div>
+                       </div>
+                       <div class="form-group  col-lg-4">
+                           <label asp-for="Produit.TVA" class="col-md-6 control-label"></label>
+                           <div class="col-md-6">
+                               @*<select asp-for="Produit.TauxTVA" class="selectpicker" asp-items="@(new SelectList(Model.TauxTVA, "ID", "Valeur"))"></select>*@
+                               <select asp-for="Produit.TauxTVAID" class="selectpicker">
+                                   <option value="@Model.Produit.TauxTVA.ID">@Model.Produit.TauxTVA.Valeur</option>
+                                   @foreach (var tva in Model.TauxTVA)
+                                   {
+                                       @if (Model.Produit.TauxTVAID != tva.ID)
+                                       {
+                                           <option value="@tva.ID">@tva.Valeur</option>
+                                       }
+
+                                   }
+                               </select> @*asp-items="@(new SelectList(Model.TauxTVA, "ID", "Valeur"))"*@
+                               @*<input asp-for="Produit.TVA" class="form-control" />*@
+                               <span asp-validation-for="Produit.TauxTVAID" class="text-danger"></span>
+                           </div>
+                       </div>
+                   </div>
+                   @foreach (var item in Model.Produit.Provients)
+                   {
+                       <div class="row">
+                           <div class="form-group col-lg-4">
+                               <label class="col-md-6 control-label">Prix</label>
+                               <div class="col-md-6">
+                                   <input type="number" min="0" step="1" name="Prix" value="@item.Prix.ToString().Replace(",", ".")" class="form-control">
+                               </div>
+                           </div>
+                           <div class="form-group col-lg-4">
+                               <label class="col-md-6 control-label">Taux de TVA</label>
+                               <div class="col-md-6">
+                                   <select name="tauxTVA">
+                                       <option value="@item.TauxTVAID">@item.TauxTVAObjet.Valeur</option>
+                                       @foreach (var tva in Model.TauxTVA)
+                                       {
+                                           @if (item.TauxTVAID != tva.ID)
+                                           {
+                                               <option value="@tva.ID">@tva.Valeur</option>
+                                           }
+                                       }
+                                   </select>
+                                   @*<input type="number" min="0" step="1"  value="@item.TauxTVA" class="form-control">*@
+                               </div>
+                           </div>
+                           <div class="form-group col-lg-4">
+                               <label class="col-md-6 control-label">Quantité minimum</label>
+                               <div class="col-md-6">
+                                   <input type="number" min="0" step="1" name="quantite" value="@item.QuantiteMinCommande" class="form-control">
+                               </div>
+                           </div>
+                       </div>
+                    }
+                      
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            <label asp-for="Produit.CompteCompta" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Produit.CompteCompta" class="form-control" />
-                <span asp-validation-for="Produit.CompteCompta" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
+        @*<div class="form-group">
             <label asp-for="Produit.Description" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <input asp-for="Produit.Description" class="form-control" />
                 <span asp-validation-for="Produit.Description" class="text-danger"></span>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Produit.Marque" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Produit.Marque" class="form-control" />
-                <span asp-validation-for="Produit.Marque" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Produit.QuantiteStock" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Produit.QuantiteStock" class="form-control" />
-                <span asp-validation-for="Produit.QuantiteStock" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Produit.Image" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input id="src" onchange="afficherImage()" asp-for="Produit.Image" type="file" name="Image" />
-                <span asp-validation-for="Produit.Image" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Produit.Image" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                @{
-                    var base64 = Convert.ToBase64String(Model.Produit.Image);
-                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-                }
-                <img id="target" class="imagePetite" src="@imgSrc" id="myBtn" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Produit.Valeur" class="col-md-2 control-label"></label>
-            <div class="col-md-10 multiselect">
-                <div class="tab-pane">
-                    <div id="attributs">
-                        @{var nb = 0; }
-                        @foreach (var item2 in Model.Produit.Valeur)
-                        {
+        </div>*@
+        @*<div class="form-group">
 
-                            var idspan = "span" + nb;
-                            <p id="@idspan">
-                                <select typeof="Text" name="nameAttribut" id="nameAttribut">
-                                    <option value="@item2.AttributID">@item2.Attribut.Nom en @item2.Attribut.Mesure</option>
-                                    @foreach (var item in Model.TousLesAttributs)
-                                    {
-                                        <Option value="@item.ID">@item.Nom en @item.Mesure </Option>
-                                    }
-                                </select><input value="@item2.Valeurs" type="Text" name="ValueAttribut" />
-                                @if (nb != -1)
-                                {
-                                    <button class="btn btn-secondary" aria-label="Close" onclick="DeleteSpan(@nb)"></button>
-                                }
-                            </p>
-                            nb--;
-                        }
-
-                        <br />
-                        <p>
-                            @if (Model.Produit.Valeur.Count <= 0)
-                            {
-                                <select typeof="Text" name="nameAttribut" id="nameAttribut">
-
-                                    @foreach (var item in Model.TousLesAttributs)
-                                    {
-                                        <Option value="@item.ID">@item.Nom en @item.Mesure </Option>
-                                    }
-                                </select><input type="Text" name="ValueAttribut" />
-
-                            }
-                        </p>
-
-                    </div>
-                </div>
-                <button type="button" onclick="addInputAttribut()">Ajouter Attributs</button>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="ListFournisseur" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <!--<select asp-for="FournisseurID" asp-items="@(new SelectList(Model.ListFournisseur,"ID","Nom"))" class="selectpicker"></select>-->
-                <select name="select">
-                    @foreach (var item in Model.ListFournisseur)
-                    {
-                        <option value="@item.ID">@item.Nom</option>
-                    }
-                </select>
-            </div>
-        </div>
-
-
-        @foreach (var item in Model.Produit.Provients)
-        {
-            <div class="form-group">
-                <label class="col-md-2 control-label">Prix</label>
-                <div class="col-md-10">
-                    <input type="number" min="0" step="1" name="Prix" value="@item.Prix.ToString().Replace(",", ".")" class="form-control">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-2 control-label">Taux de TVA</label>
-                <div class="col-md-10">
-                    <input type="number" min="0" step="1" name="tauxTVA" value="@item.TauxTVA" class="form-control">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-2 control-label">Quantité minimum</label>
-                <div class="col-md-10">
-                    <input type="number" min="0" step="1" name="quantite" value="@item.QuantiteMinCommande" class="form-control">
-                </div>
-            </div>
-        }
+        </div>*@
         @*<input asp-for="Produit.Provients.GetEnumerator().Current.QuantiteMinCommande" type="number" min="0" step="1" name="quantite" class="form-control" />*@
-
-        <div class="form-group">
-            <label asp-for="Produit.MotClef" class="col-md-2 control-label"></label>
-            <div class="col-md-10 multiselect">
-                <div class="tab-pane">
-                    @foreach (var item in Model.Produit.MotClef)
-                    {
-                        <input type=checkbox name="MotClef" value="@item.MotClefId" checked> @item.MotClef.Valeur
-                        <br />
-                    }
-                    @foreach (var item in Model.ListMotClef)
-                    {
-                        <input type=checkbox name="MotClef" value="@item.ID"> @item.Valeur
-                        <br />
-                    }
-
-                </div>
-            </div>
-        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />

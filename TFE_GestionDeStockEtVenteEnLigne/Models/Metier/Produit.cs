@@ -14,12 +14,15 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public int ID { get; set; }
 
         public int CategorieID { get; set; }
+        public int TauxTVAID { get; set; }
+
         [Display(Name = "Référence")]
         public String Ref { get; set; }
         [Display(Name = "Dénomination")]
         public String Denomination { get; set; }
 
         [Range(0, double.MaxValue)]
+        [Display(Name = "Prix TTC")]
         public double Prix { get; set; }
 
         [Range(0, int.MaxValue)]
@@ -32,6 +35,8 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
 
         [Range(0, int.MaxValue)]
         public int TVA { get; set; }
+        [Display(Name = "Taux TVA")]
+        public TauxTVA TauxTVA  { get; set; }
         [Display(Name = "Compte comptable")]
         public String CompteCompta{ get; set; }
 

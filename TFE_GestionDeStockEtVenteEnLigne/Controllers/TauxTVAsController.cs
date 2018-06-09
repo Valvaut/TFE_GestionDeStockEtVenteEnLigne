@@ -6,33 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TFE_GestionDeStockEtVenteEnLigne.Data;
-using TFE_GestionDeStockEtVenteEnLigne.Models;
-using Microsoft.AspNetCore.Authorization;
+using TFE_GestionDeStockEtVenteEnLigne.Models.Metier;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
-   
-    public class HorrairesController : Controller
+    public class TauxTVAsController : Controller
     {
         private readonly TFEContext _context;
 
-        public HorrairesController(TFEContext context)
+        public TauxTVAsController(TFEContext context)
         {
             _context = context;    
         }
 
-        // GET: Horraires
-        public IActionResult Index()
+        // GET: TauxTVAs
+        public async Task<IActionResult> Index()
         {
-            HorraireEventAdapter Adapter = new HorraireEventAdapter();
-
-            Adapter.ListEvent=  _context.Evenement.ToList();
-            Adapter.Horraire = _context.Horraire.ToList();
-            return View( Adapter);
+            return View(await _context.TVA.ToListAsync());
         }
 
-        // GET: Horraires/Details/5
-        [Authorize(Roles = "gestionnaire")]
+        // GET: TauxTVAs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -40,42 +33,39 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 return NotFound();
             }
 
-            var horraire = await _context.Horraire
+            var tauxTVA = await _context.TVA
                 .SingleOrDefaultAsync(m => m.ID == id);
-            if (horraire == null)
+            if (tauxTVA == null)
             {
                 return NotFound();
             }
 
-            return View(horraire);
+            return View(tauxTVA);
         }
 
-        // GET: Horraires/Create
-        [Authorize(Roles = "gestionnaire")]
+        // GET: TauxTVAs/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Horraires/Create
+        // POST: TauxTVAs/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "gestionnaire")]
-        public async Task<IActionResult> Create([Bind("ID,Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi,Dimanche")] Horraire horraire)
+        public async Task<IActionResult> Create([Bind("ID,Valeur")] TauxTVA tauxTVA)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(horraire);
+                _context.Add(tauxTVA);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(horraire);
+            return View(tauxTVA);
         }
 
-        // GET: Horraires/Edit/5
-        [Authorize(Roles = "gestionnaire")]
+        // GET: TauxTVAs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,23 +73,22 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 return NotFound();
             }
 
-            var horraire = await _context.Horraire.SingleOrDefaultAsync(m => m.ID == id);
-            if (horraire == null)
+            var tauxTVA = await _context.TVA.SingleOrDefaultAsync(m => m.ID == id);
+            if (tauxTVA == null)
             {
                 return NotFound();
             }
-            return View(horraire);
+            return View(tauxTVA);
         }
 
-        // POST: Horraires/Edit/5
+        // POST: TauxTVAs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "gestionnaire")]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi,Dimanche")] Horraire horraire)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Valeur")] TauxTVA tauxTVA)
         {
-            if (id != horraire.ID)
+            if (id != tauxTVA.ID)
             {
                 return NotFound();
             }
@@ -108,12 +97,12 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             {
                 try
                 {
-                    _context.Update(horraire);
+                    _context.Update(tauxTVA);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HorraireExists(horraire.ID))
+                    if (!TauxTVAExists(tauxTVA.ID))
                     {
                         return NotFound();
                     }
@@ -124,11 +113,10 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return View(horraire);
+            return View(tauxTVA);
         }
 
-        // GET: Horraires/Delete/5
-        [Authorize(Roles = "gestionnaire")]
+        // GET: TauxTVAs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,31 +124,30 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 return NotFound();
             }
 
-            var horraire = await _context.Horraire
+            var tauxTVA = await _context.TVA
                 .SingleOrDefaultAsync(m => m.ID == id);
-            if (horraire == null)
+            if (tauxTVA == null)
             {
                 return NotFound();
             }
 
-            return View(horraire);
+            return View(tauxTVA);
         }
 
-        // POST: Horraires/Delete/5
+        // POST: TauxTVAs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "gestionnaire")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var horraire = await _context.Horraire.SingleOrDefaultAsync(m => m.ID == id);
-            _context.Horraire.Remove(horraire);
+            var tauxTVA = await _context.TVA.SingleOrDefaultAsync(m => m.ID == id);
+            _context.TVA.Remove(tauxTVA);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool HorraireExists(int id)
+        private bool TauxTVAExists(int id)
         {
-            return _context.Horraire.Any(e => e.ID == id);
+            return _context.TVA.Any(e => e.ID == id);
         }
     }
 }

@@ -11,183 +11,286 @@
         <h4>Produit</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="Produit.Ref" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Produit.Ref" class="form-control" required/>
-                <span asp-validation-for="Produit.Ref" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Produit.Denomination" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Produit.Denomination" class="form-control" required />
-                <span asp-validation-for="Produit.Denomination" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Produit.Categorie" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                @*@{ 
-                    Model.ListCat.Insert(0,new Categorie {ID = 0 ,Nom = "Acune"});
-                }*@
-                <select asp-for="Produit.CategorieID" asp-items="@(new SelectList(Model.ListCat,"ID","Nom"))" class="selectpicker">
-                    
-                </select>
-            </div>
-        </div>
+        <div class="row">
+            <div class="panel panel-default col-lg-3 col-md-3 col-sm-12">
+                @*<div class="panel-heading">Image </div>*@
+                <div class="panel-body">
+                    @*IMAGE*@
+                    @*<div class="form-group">*@
+                        @*<label class="col-md-6 control-label">image selectionner</label>*@
+                        <div class="row">
+                            <img class="col-lg-12" id="target" />
+                        </div>
+                    @*</div>*@
+                    <div class="form-group">
+                        @*<label asp-for="Produit.Image" class="col-md-6 control-label"></label>*@
+                        <div class="row">
+                            <input class="col-lg-12" id="src" asp-for="Produit.Image" type="file" name="Image" onchange="afficherImage()" />
+                            <span asp-validation-for="Produit.Image" class="text-danger"></span>
+                        </div>
+                    </div>
 
-        <div class="form-group">
-            <label asp-for="Produit.MotClef" class="col-md-2 control-label"></label>
-            <div class="col-md-10 multiselect">
-                <div class="tab-pane">
-                    @if (Model.ListMotClef.Count > 0)
-                    {
-                        @foreach (var item in Model.ListMotClef)
-                        {
-                            <input type=checkbox name="MotClef" value="@item.ID"> @item.Valeur
-                            <br />
-                        }
-                    }
-                    else
-                    {
-                        <span>Aucun Mot cléf trouver!</span>
-                    }
+
+                </div>
+            </div>
+            <div class="panel panel-default col-lg-9 col-md-9 col-sm-12">
+                @*1ERE ZONE*@
+                @*<div class="panel-heading"> Caractéristiques du produit </div>*@
+                <div class="form-group">
+                    @*DENOMINAS*@
+                    <label asp-for="Produit.Denomination" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Produit.Denomination" class="form-control" required />
+                        <span asp-validation-for="Produit.Denomination" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @*REF*@
+                    <label asp-for="Produit.Ref" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Produit.Ref" class="form-control" required />
+                        <span asp-validation-for="Produit.Ref" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @*MARQUE*@
+                    <label asp-for="Produit.Marque" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Produit.Marque" class="form-control" required />
+                        <span asp-validation-for="Produit.Marque" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    @*FOURNISSEUR*@
+                    @*<div class="form-group">*@
+                        <label asp-for="ListFournisseur" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <!--<select asp-for="FournisseurID" asp-items="@(new SelectList(Model.ListFournisseur,"ID","Nom"))" class="selectpicker"></select>-->
+                            <select name="select">
+                                @foreach (var item in Model.ListFournisseur)
+                                {
+                                    <option value="@item.ID">@item.Nom</option>
+                                }
+                            </select>
+                        </div>
+                    @*</div>*@
+
+                </div>
+                <div class="row">
+                    @*CATEGORIE*@
+                    @*<div class="form-group">*@
+                        <label asp-for="Produit.Categorie" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            @*@{
+                                Model.ListCat.Insert(0,new Categorie {ID = 0 ,Nom = "Acune"});
+                            }*@
+                            <select asp-for="Produit.CategorieID" asp-items="@(new SelectList(Model.ListCat,"ID","Nom"))" class="selectpicker"></select>
+                        </div>
+                    @*</div>*@
+
+                </div>
+                <div class="row">
+                    @*MOT CLE*@
+                    @*<div class="form-group">*@
+                        <label asp-for="Produit.MotClef" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <div class="  multiselect">
+                                <div class="tab-pane">
+                                    @if (Model.ListMotClef.Count > 0)
+                                    {
+                                        @foreach (var item in Model.ListMotClef)
+                                        {
+                                            <input type=checkbox name="MotClef" value="@item.ID"> @item.Valeur
+                                            <br />
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span>Aucun Mot cléf trouver!</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    @*</div>*@
                 </div>
             </div>
         </div>
 
+        <div class="row">
+            @*CARACTERISTIQUES*@
+            <div class="panel panel-default col-lg-12 col-md-12 col-sm-12">
+                <div class="panel-heading"> Caractéristiques du produit </div>
+                <div class="form-group">
+                    <label asp-for="Produit.Valeur" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <div class="multiselect">
+                            <div class="tab-pane">
+                                <div id="attributs">
+                                    <p>
+                                        @if (Model.TousLesAttributs.Count > 0)
+                                        {
+                                            <select typeof="Text" name="nameAttribut" id="nameAttribut">
 
-        <div class="form-group">
-            <label asp-for="Produit.Prix" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Produit.Prix" min="0" step="0.01" type="number" class="form-control" name="Prixvente" required/>
-                <span asp-validation-for="Produit.Prix" class="text-danger"></span>
+                                                @foreach (var item in Model.TousLesAttributs)
+                                                {
+                                                    <Option value="@item.ID">@item.Nom en @item.Mesure </Option>
+                                                }
+                                            </select><input type="Text" name="ValueAttribut" />
+
+                                        }
+                                        else
+                                        {
+                                            <span>Aucun attributs trouver</span>
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                            <button type="button" onclick="addInputAttribut()">Ajouter Attributs</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            <label asp-for="Produit.QuantiteEmballage" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Produit.QuantiteEmballage" min="0" step="1" class="form-control" required/>
-                <span asp-validation-for="Produit.QuantiteEmballage" class="text-danger"></span>
+
+        <div class="row">
+            @*VENTE*@
+            <div class="panel panel-default col-lg-12 col-md-12 col-sm-12">
+                <div class="panel-heading"> Caractéristiques de vente </div>
+                <div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            @*EMBA*@
+                            @*<div class="form-group">*@
+                                <label asp-for="Produit.QuantiteEmballage" class="col-md-6 control-label"></label>
+                                <div class="col-md-6">
+                                    <input asp-for="Produit.QuantiteEmballage" min="0" step="1" class="form-control" required />
+                                    <span asp-validation-for="Produit.QuantiteEmballage" class="text-danger"></span>
+                                </div>
+                            @*</div>*@
+                        </div>
+                        <div class="form-group col-md-4">
+                            @*PIECE STOCK*@
+                            @*<div class="form-group">*@
+                                <label asp-for="Produit.QuantiteStock" class="col-md-6 control-label"></label>
+                                <div class="col-md-6">
+                                    <input asp-for="Produit.QuantiteStock" min="0" step="1" class="form-control" required />
+                                    <span asp-validation-for="Produit.QuantiteStock" class="text-danger"></span>
+                                </div>
+                            @*</div>*@
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            @*NBPieceEmballage*@
+                            @*<div class="form-group">*@
+                                <label asp-for="Produit.NBPieceEmballage" class="col-md-6 control-label"></label>
+                                <div class="col-md-6">
+                                    <input asp-for="Produit.NBPieceEmballage" min="0" step="1" class="form-control" required />
+                                    <span asp-validation-for="Produit.NBPieceEmballage" class="text-danger"></span>
+                                </div>
+                            @*</div>*@
+                        </div>
+                        <div class="form-group col-lg-4">
+
+                        </div>
+                        <div class="form-group col-lg-4">
+                            @*CompteCompta*@
+                            @*<div class="form-group">*@
+                                <label asp-for="Produit.CompteCompta" class="col-md-6 control-label"></label>
+                                <div class="col-md-6">
+                                    <input asp-for="Produit.CompteCompta" class="form-control" required />
+                                    <span asp-validation-for="Produit.CompteCompta" class="text-danger"></span>
+                                </div>
+                            @*</div>*@
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            @*qteRecu*@
+
+                        </div>
+                        <div class="form-group col-lg-4">
+                            @*PRIX*@
+                            @*<div class="form-group">*@
+                                <label asp-for="Produit.Prix" class="col-md-6 control-label"></label>
+                                <div class="col-md-6">
+                                    <input asp-for="Produit.Prix" min="0" step="0.01" type="number" class="form-control" name="Prixvente" required />
+                                    <span asp-validation-for="Produit.Prix" class="text-danger"></span>
+                                </div>
+                            @*</div>*@
+                        </div>
+                        <div class="form-group  col-lg-4">
+                            @*TVA*@
+                            @*<div class="form-group">*@
+                                <label asp-for="Produit.TVA" class="col-md-6 control-label"></label>
+                                <div class="col-md-6">
+                                    @*<input asp-for="Produit.TVA" min="0" step="1" class="form-control" required/>*@
+                                    <select asp-for="Produit.TauxTVAID" asp-items="@(new SelectList(Model.TauxTVA,"ID","Valeur"))" class="selectpicker"></select>
+                                    @*<select asp-for="Produit.TVA">
+                            <option value="21">21%</option>
+                            <option value="0">0%</option>
+                        </select>*@
+                                    <span asp-validation-for="Produit.TVA" class="text-danger"></span>
+                                </div>
+                            @*</div>*@
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label class="col-md-6 control-label">Prix</label>
+                            <div class="col-md-6">
+                                <input type="number" name="Prix" min="0" step="0.01" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label class="col-md-6 control-label">Taux de TVA</label>
+                            <div class="col-md-6">
+                                @*<input type="number" name="tauxTVA" min="0" step="1" class="form-control" required/>*@
+                                <select name="tauxTVA">
+                                    @foreach (var taux in Model.TauxTVA)
+                                    {
+                                        <option value="@taux.ID">@taux.Valeur</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label class="col-md-6 control-label">Quantité minimum</label>
+                            <div class="col-md-6">
+                                <input type="number" min="0" step="1" name="quantite" class="form-control" required />
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            <label asp-for="Produit.NBPieceEmballage" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Produit.NBPieceEmballage" min="0" step="1" class="form-control" required/>
-                <span asp-validation-for="Produit.NBPieceEmballage" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Produit.TVA" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Produit.TVA" min="0" step="1" class="form-control" required/>
-                <span asp-validation-for="Produit.TVA" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Produit.CompteCompta" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Produit.CompteCompta" class="form-control" required/>
-                <span asp-validation-for="Produit.CompteCompta" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
+        
+        
+
+
+
+        @*<div class="form-group">
             <label asp-for="Produit.Description" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <input asp-for="Produit.Description" class="form-control" required/>
                 <span asp-validation-for="Produit.Description" class="text-danger"></span>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Produit.Marque" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Produit.Marque" class="form-control" required />
-                <span asp-validation-for="Produit.Marque" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Produit.QuantiteStock" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Produit.QuantiteStock" min="0" step="1" class="form-control" required/>
-                <span asp-validation-for="Produit.QuantiteStock" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Produit.Image" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input id="src" asp-for="Produit.Image" type="file" name="Image" onchange="afficherImage()" />
-                <span asp-validation-for="Produit.Image" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label  class="col-md-2 control-label">image selectionner</label>
-            <div class="col-md-10">
-                <img id="target" />
-            </div>
-        </div>
-        
+        </div>*@
 
-        <div class="form-group">
-            <label asp-for="Produit.Valeur" class="col-md-2 control-label"></label>
-            <div class="col-md-10 multiselect">
-                <div class="tab-pane">
-                    <div id="attributs">
-                        <p>
-                            @if (Model.TousLesAttributs.Count > 0)
-                            {
-                                <select typeof="Text" name="nameAttribut" id="nameAttribut">
 
-                                    @foreach (var item in Model.TousLesAttributs)
-                                    {
-                                    <Option value="@item.ID">@item.Nom en @item.Mesure </Option>
-                                    }
-                                </select><input type="Text" name="ValueAttribut" />
 
-                            }
-                            else
-                            {
-                                <span>Aucun attributs trouver</span>
-                            }
-                        </p>
-                    </div>
-                </div>
-                <button type="button" onclick="addInputAttribut()">Ajouter Attributs</button>
-            </div>
-        </div>
 
-        <div class="form-group">
-            <label class="col-md-2 control-label">Prix</label>
-            <div class="col-md-10">
-                <input type="number" name="Prix" min="0" step="0.01" class="form-control" required />
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-2 control-label">Taux de TVA</label>
-            <div class="col-md-10">
-                <input type="number" name="tauxTVA" min="0" step="1" class="form-control" required/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-2 control-label">Quantité minimum</label>
-            <div class="col-md-10">
-                <input type="number" min="0" step="1" name="quantite" class="form-control" required/>
-            </div>
-        </div>
 
-        <div class="form-group">
-            <label asp-for="ListFournisseur" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <!--<select asp-for="FournisseurID" asp-items="@(new SelectList(Model.ListFournisseur,"ID","Nom"))" class="selectpicker"></select>-->
-                <select name="select">
-                    @foreach (var item in Model.ListFournisseur)
-                    {
-                        <option value="@item.ID">@item.Nom</option>
-                    }
-                </select>
-            </div>
-        </div>
+
+
+
+
+
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

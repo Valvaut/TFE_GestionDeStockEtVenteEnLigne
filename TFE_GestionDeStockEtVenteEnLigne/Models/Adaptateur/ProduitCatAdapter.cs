@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TFE_GestionDeStockEtVenteEnLigne.Models.Metier;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Models
 {
@@ -21,11 +22,14 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         //public List<IFormFile> Images{get; set;}
         public IFormFile Image { get; set; }
 
+        public ICollection<TauxTVA> TauxTVA { get; set; }
+
         public ProduitCatAdapter()
         {
             Produit = new Produit();
             ListMotClef = new List<MotClef>();
             ListFournisseur = new List<Fournisseur>();
+            TauxTVA = new List<TauxTVA>();
         }
 
     }

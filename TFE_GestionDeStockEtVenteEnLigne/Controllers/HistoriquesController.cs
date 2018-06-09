@@ -2,37 +2,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TFE_GestionDeStockEtVenteEnLigne.Data;
-using TFE_GestionDeStockEtVenteEnLigne.Models;
-using Microsoft.AspNetCore.Authorization;
+using TFE_GestionDeStockEtVenteEnLigne.Models.Metier;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
-   
-    public class HorrairesController : Controller
+    [Authorize(Roles = "gestionnaire")]
+    public class HistoriquesController : Controller
     {
         private readonly TFEContext _context;
 
-        public HorrairesController(TFEContext context)
+        public HistoriquesController(TFEContext context)
         {
             _context = context;    
         }
 
-        // GET: Horraires
-        public IActionResult Index()
+        // GET: Historiques
+        public async Task<IActionResult> Index()
         {
-            HorraireEventAdapter Adapter = new HorraireEventAdapter();
-
-            Adapter.ListEvent=  _context.Evenement.ToList();
-            Adapter.Horraire = _context.Horraire.ToList();
-            return View( Adapter);
+            var tFEContext = _context.Historique.Include(h => h.Produit);
+            return View(await tFEContext.ToListAsync());
         }
 
-        // GET: Horraires/Details/5
-        [Authorize(Roles = "gestionnaire")]
+        // GET: Historiques/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -40,42 +36,42 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 return NotFound();
             }
 
-            var horraire = await _context.Horraire
+            var historique = await _context.Historique
+                .Include(h => h.Produit)
                 .SingleOrDefaultAsync(m => m.ID == id);
-            if (horraire == null)
+            if (historique == null)
             {
                 return NotFound();
             }
 
-            return View(horraire);
+            return View(historique);
         }
 
-        // GET: Horraires/Create
-        [Authorize(Roles = "gestionnaire")]
+        // GET: Historiques/Create
         public IActionResult Create()
         {
+            ViewData["ProduitID"] = new SelectList(_context.Produits, "ID", "ID");
             return View();
         }
 
-        // POST: Horraires/Create
+        // POST: Historiques/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "gestionnaire")]
-        public async Task<IActionResult> Create([Bind("ID,Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi,Dimanche")] Horraire horraire)
+        public async Task<IActionResult> Create([Bind("ID,Date,ProduitID,QteStock,Action,QteMouv")] Historique historique)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(horraire);
+                _context.Add(historique);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(horraire);
+            ViewData["ProduitID"] = new SelectList(_context.Produits, "ID", "ID", historique.ProduitID);
+            return View(historique);
         }
 
-        // GET: Horraires/Edit/5
-        [Authorize(Roles = "gestionnaire")]
+        // GET: Historiques/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,23 +79,23 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 return NotFound();
             }
 
-            var horraire = await _context.Horraire.SingleOrDefaultAsync(m => m.ID == id);
-            if (horraire == null)
+            var historique = await _context.Historique.SingleOrDefaultAsync(m => m.ID == id);
+            if (historique == null)
             {
                 return NotFound();
             }
-            return View(horraire);
+            ViewData["ProduitID"] = new SelectList(_context.Produits, "ID", "ID", historique.ProduitID);
+            return View(historique);
         }
 
-        // POST: Horraires/Edit/5
+        // POST: Historiques/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "gestionnaire")]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi,Dimanche")] Horraire horraire)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Date,ProduitID,QteStock,Action,QteMouv")] Historique historique)
         {
-            if (id != horraire.ID)
+            if (id != historique.ID)
             {
                 return NotFound();
             }
@@ -108,12 +104,12 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             {
                 try
                 {
-                    _context.Update(horraire);
+                    _context.Update(historique);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HorraireExists(horraire.ID))
+                    if (!HistoriqueExists(historique.ID))
                     {
                         return NotFound();
                     }
@@ -124,11 +120,11 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return View(horraire);
+            ViewData["ProduitID"] = new SelectList(_context.Produits, "ID", "ID", historique.ProduitID);
+            return View(historique);
         }
 
-        // GET: Horraires/Delete/5
-        [Authorize(Roles = "gestionnaire")]
+        // GET: Historiques/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,31 +132,31 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 return NotFound();
             }
 
-            var horraire = await _context.Horraire
+            var historique = await _context.Historique
+                .Include(h => h.Produit)
                 .SingleOrDefaultAsync(m => m.ID == id);
-            if (horraire == null)
+            if (historique == null)
             {
                 return NotFound();
             }
 
-            return View(horraire);
+            return View(historique);
         }
 
-        // POST: Horraires/Delete/5
+        // POST: Historiques/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "gestionnaire")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var horraire = await _context.Horraire.SingleOrDefaultAsync(m => m.ID == id);
-            _context.Horraire.Remove(horraire);
+            var historique = await _context.Historique.SingleOrDefaultAsync(m => m.ID == id);
+            _context.Historique.Remove(historique);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool HorraireExists(int id)
+        private bool HistoriqueExists(int id)
         {
-            return _context.Horraire.Any(e => e.ID == id);
+            return _context.Historique.Any(e => e.ID == id);
         }
     }
 }

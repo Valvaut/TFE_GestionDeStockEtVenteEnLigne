@@ -8,8 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using System;
-
-
+using TFE_GestionDeStockEtVenteEnLigne.Models.Metier;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
@@ -27,7 +26,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         //{
         //    return View(await _context.Produits.ToListAsync());
         //}
-        public async Task<IActionResult> Index(string sortOrder, string searchStr, string cat)
+        public async Task<IActionResult> Index(string sortOrder, string searchStr, string cat,string qte)
         {
             ViewData["RefSort"] = String.IsNullOrEmpty(sortOrder) ? "ref_desc" : "";
             ViewData["DenoSort"] = sortOrder == "Denomination" ? "deno_desc" : "Denomination";
@@ -42,9 +41,9 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             {
                 //produits = produits.Where(f => f.Categorie.Nom.Contains(cat));
                 var categorie = _context.Categories
-                    .Include(c=>c.CategorieEnfant)
-                        .ThenInclude(p=>p.Produits)
-                    .Include(c=>c.Produits)
+                    .Include(c => c.CategorieEnfant)
+                        .ThenInclude(p => p.Produits)
+                    .Include(c => c.Produits)
                     .SingleOrDefault(c => c.Nom.Equals(cat));
                 var prods = GetProdRecu(categorie);
                 //List<Produit> prods = cate.Produits.ToList();
@@ -56,7 +55,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 //    prods.AddRange(cate.Produits);
                 //}
                 int i = 0;
-                while (i< prods.Count)
+                while (i < prods.Count)
                 {
                     if (prods[i].Visible)
                     {
@@ -68,13 +67,17 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                         prods.RemoveAll(Produit.PredicatDelNotVisible);
                     }
                 }
-                ViewData["cat"]= cat;
+                ViewData["cat"] = cat;
                 return View(prods);
             }
             else if (!String.IsNullOrEmpty(searchStr))
             {
                 produits = produits.Where(f => f.Ref.Contains(searchStr) || f.Denomination.Contains(searchStr));
                 ViewData["recherche"] = searchStr;
+            }
+            else if (!String.IsNullOrEmpty(qte))
+            {
+                produits = produits.Where(qte0 => qte0.QuantiteEmballage == 0);
             }
             return View(await produits.Where(p=>p.Visible == true).ToListAsync());
         }
@@ -94,6 +97,8 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                     .ThenInclude(mp => mp.MotClef)
                 .Include(p=>p.Valeur)
                     .ThenInclude(v=>v.Attribut)
+                .Include(p=>p.Provients)
+                    .ThenInclude(f=>f.Fournisseur)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.ID == id);
             //produit.MotClef = from produitMotClef in ProduitMotClef where produit.ID== ProduitMotClef.id select produitMotClef;
@@ -115,6 +120,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             pc.ListMotClef = await _context.MotClefs.ToListAsync();
             pc.TousLesAttributs = await _context.Attributs.ToListAsync();
             pc.ListFournisseur= await _context.Fournisseurs.ToListAsync();
+            pc.TauxTVA = await _context.TVA.OrderByDescending(t=>t.Valeur).ToListAsync();
             return View(pc);
         }
 
@@ -144,6 +150,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                     produitcatAdapter.Produit.Date = DateTime.Now;
                     produitcatAdapter.Produit.Visible = true;
                     produitcatAdapter.Produit.QuantiteStockTotal = produitcatAdapter.Produit.QuantiteEmballage * produitcatAdapter.Produit.NBPieceEmballage + produitcatAdapter.Produit.QuantiteStock;
+                    produitcatAdapter.Produit.TauxTVAID = int.Parse(Request.Form["Produit.TauxTVAID"]); 
                     _context.Add(produitcatAdapter.Produit);//insert le produit
 
 
@@ -191,26 +198,36 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                             ProduitID = produitcatAdapter.Produit.ID
                         };
                         _context.Add(pm);
-                      
+
                     }
 
                     float Prix2 = 0;
                     if (!(prixachat.ToString().Equals("")))
                     {
-                       Prix2 = float.Parse(prixachat.ToString().Replace('.', ','));
+                        Prix2 = float.Parse(prixachat.ToString().Replace('.', ','));
                     }
                     //gere le fournisseur
                     int fournisseurID = int.Parse((Request.Form["select"]).ToString());
                     Provient provient = new Provient
                     {
-                        
+
                         Prix = Prix2,
-                        TauxTVA = int.Parse(Request.Form["tauxTVA"]),
+                        //TauxTVA = int.Parse(Request.Form["tauxTVA"]),
+                        TauxTVAID = int.Parse(Request.Form["tauxTVA"]),
                         QuantiteMinCommande = int.Parse(Request.Form["quantite"]),
                         ProduitID = produitcatAdapter.Produit.ID,
                         FournisseurID = fournisseurID
                     };
                     _context.Add(provient);
+                    Historique h = new Historique
+                    {
+                        Date = DateTime.Now,
+                        ProduitID = produitcatAdapter.Produit.ID,
+                        Action = "Creation",
+                        QteStock = produitcatAdapter.Produit.QuantiteStockTotal,
+                        QteMouv = produitcatAdapter.Produit.QuantiteStockTotal,
+                    };
+                    _context.Add(h);
                     await _context.SaveChangesAsync();
                   
                     return RedirectToAction("");
@@ -240,12 +257,15 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                                             .ThenInclude(a=>a.Attribut)
                                         .Include(p=>p.MotClef)
                                         .Include(p => p.Provients)
+                                            .ThenInclude(tva => tva.TauxTVAObjet)
+                                        .Include(p=>p.TauxTVA)
                                         .SingleOrDefaultAsync(m => m.ID == id);
             adaptateur.ListCat = await _context.Categories.Where(c => !(c.CategorieEnfant.Any()))
                                        .ToListAsync();
             adaptateur.ListMotClef = await _context.MotClefs
                                        .Include(mc=>mc.Produit)
                                        .ToListAsync();
+            adaptateur.TauxTVA = await _context.TVA.ToListAsync();
             foreach (var item in adaptateur.Produit.MotClef)
             {
                 int i = 0;
@@ -279,7 +299,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "gestionnaire")]
-        public async Task<IActionResult> Edit(int id, [Bind("Ref,Denomination,Prix,QuantiteEmballage,NBPieceEmballage,TVA,CompteCompta,Description,Marque,QuantiteStock,Image,CategorieID")] Produit produit)
+        public async Task<IActionResult> Edit(int id, [Bind("Ref,Denomination,Prix,QuantiteEmballage,NBPieceEmballage,TVA,CompteCompta,Description,Marque,QuantiteStock,Image,CategorieID,TauxTVA")] Produit produit)
         {
             //if (id != produit.ID)
             //{
@@ -294,6 +314,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
             {
                 try
                 {
+                    produit.TauxTVAID = int.Parse(Request.Form["Produit.TauxTVAID"]);
                     var produitBD = await _context.Produits
                                .AsNoTracking()
                                .SingleOrDefaultAsync(m => m.ID == id);
@@ -314,43 +335,34 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                         produit.Image = ms.ToArray();
                     }
                     _context.Update(produitBD);
+                    int qteMouv = produit.QuantiteStockTotal;
+                    var qterecus = Request.Form["qteRecu"];
+                    String action = "Edit";
+                    if (qterecus !="")
+                    {
+                        var qteRecu = int.Parse(qterecus);
+                        produit.QuantiteEmballage += qteRecu;
+                        action = "Reasortir";
+                        qteMouv = qteRecu;
+                    }
+
                     produit.QuantiteStockTotal = produit.QuantiteEmballage * produit.NBPieceEmballage + produit.QuantiteStock;
                     produit.Visible = true;
                     produit.Date =DateTime.Now;
-                    //Produit nouveau = new Produit
-                    //{
-                    //    Visible = true,
-                    //    CategorieID = produit.CategorieID,
-                    //    Ref = produit.Ref,
-                    //    Denomination = produit.Denomination,
-                    //    Prix = produit.Prix,
-                    //    QuantiteEmballage = produit.QuantiteEmballage,
-                    //    NBPieceEmballage = produit.NBPieceEmballage,
-                    //    TVA = produit.TVA,
-                    //    CompteCompta = produit.CompteCompta,
-                    //    Description = produit.Description,
-                    //    Marque = produit.Marque,
-                    //    QuantiteStock = produit.QuantiteStock,
-                    //    Image = produit.Image,
-                    //    Date = DateTime.Now,
-                    //    QuantiteStockTotal = produit.QuantiteEmballage * produit.NBPieceEmballage + produit.QuantiteStock,
-                    //};
+                   
                     _context.Add(produit);
-                    //images = Request.Form.Files["Image"];
-                    //if (images.FileName == "")
-                    //{
-                    //    var produitBD = await _context.Produits
-                    //            .AsNoTracking()
-                    //            .SingleOrDefaultAsync(m => m.ID == id);
-                    //    nouveau.Image = produitBD.Image;
-                    //}
-                    //else
-                    //{
-                    //    MemoryStream ms = new MemoryStream();
-            
-                    //    images.OpenReadStream().CopyTo(ms);
-                    //    nouveau.Image = ms.ToArray();
-                    //}
+                    if(qterecus != "")
+                    {
+                        Historique h = new Historique
+                        {
+                            Date = DateTime.Now,
+                            ProduitID = produit.ID,
+                            Action = action,
+                            QteMouv = qteMouv,
+                            QteStock = produitBD.QuantiteStockTotal,
+                        };
+                        _context.Add(h);
+                    }
 
                     var tableauMotClef = Request.Form["MotClef"];
                     List<int> ListMotClef = new List<int>();
@@ -406,13 +418,14 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                     {
 
                         Prix = Prix2,
-                        TauxTVA = int.Parse(Request.Form["tauxTVA"]),
+                        //TauxTVA = int.Parse(Request.Form["tauxTVA"]),
+                        TauxTVAID = int.Parse(Request.Form["tauxTVA"]),
                         QuantiteMinCommande = int.Parse(Request.Form["quantite"]),
                         ProduitID = produit.ID,
                         FournisseurID = fournisseurID
                     };
                     _context.Add(provient);
-
+                    
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

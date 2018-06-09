@@ -8,6 +8,7 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment names="Staging,Production">
@@ -30,7 +31,7 @@
                 </button>
 
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="navbar-collapse collapse myFamilly">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Horraires" asp-action="Index">Accueil</a></li>
 
@@ -50,9 +51,11 @@
                                     <li><a asp-area="" asp-controller="Commandes" asp-action="Index">Commandes</a></li>
                                     <li><a asp-area="" asp-controller="Factures" asp-action="Index">Factures</a></li>
                                     <li><a asp-area="" asp-controller="Fournisseurs" asp-action="Index">Fournisseurs</a></li>
+                                    <li><a asp-area="" asp-controller="Historiques" asp-action="Index">Historique</a></li>
                                     <li><a asp-area="" asp-controller="MotClefs" asp-action="Index">Mot Clefs</a></li>
                                     <li><a asp-area="" asp-controller="Representants" asp-action="Index">Representants</a></li>
                                     <li><a asp-area="" asp-controller="Produits" asp-action="Index">Produits</a></li>
+                                    <li><a asp-area="" asp-controller="TauxTVAs" asp-action="Index">Taux TVA</a></li>
                                 </ul>
                             </li>
                         }

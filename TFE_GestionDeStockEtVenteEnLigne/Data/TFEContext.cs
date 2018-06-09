@@ -36,6 +36,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data
         public DbSet<Evenement> Evenement { get; set; }
         public DbSet<Panier> Panier { get; set; }
         public DbSet<Historique> Historique { get; set; }
+        public DbSet<TauxTVA> TVA { get; set; }
         public object HttpContext { get; internal set; }
     }
 }

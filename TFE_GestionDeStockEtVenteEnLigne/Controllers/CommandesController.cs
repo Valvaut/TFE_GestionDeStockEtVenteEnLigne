@@ -10,6 +10,7 @@ using TFE_GestionDeStockEtVenteEnLigne.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using TFE_GestionDeStockEtVenteEnLigne.Models.Adaptateur;
+using TFE_GestionDeStockEtVenteEnLigne.Models.Metier;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
@@ -174,11 +175,21 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                     e.Produit.QuantiteStockTotal = e.Produit.QuantiteEmballage * e.Produit.NBPieceEmballage + e.Produit.QuantiteStock;
                     p.Quantite = e.Quantite;
                     _context.Add(p);
+                    Historique h = new Historique
+                    {
+                        ProduitID = e.ProduitID,
+                        Action = "Vente",
+                        Date = DateTime.Now,
+                        QteMouv = e.Quantite,
+                        QteStock = e.Produit.QuantiteStockTotal
+                    };
+                    _context.Add(h);
                 }
                 await _context.SaveChangesAsync();
                 //creation de la facture
                 Facture f = new Facture();
                 f.CommandeID = idCommande;
+                f.Numero = int.Parse(DateTime.Now.Year.ToString() + _context.Factures.Count()); 
                 _context.Add(f);
                 await _context.SaveChangesAsync();
                 //vidage du panier

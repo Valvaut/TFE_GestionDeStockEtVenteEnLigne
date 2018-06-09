@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Détails</h2>
+<h2>Details</h2>
 
 <div>
     <h4>Produit</h4>
@@ -23,46 +23,52 @@
             @Html.DisplayFor(model => model.Denomination)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.Marque)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Marque)
+        </dd>
+        @*<dt>
             @Html.DisplayNameFor(model => model.Categorie)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Categorie.Nom)
-        </dd>
+        </dd>*@
         @{
-            var NonValeur=Model.Valeur.ToArray();
+            var NonValeur = Model.Valeur.ToArray();
             @for (int i = 0; i < Model.Valeur.Count; i++)
             {
                 <dt>
                     @NonValeur[i].Attribut.Nom
                 </dt>
                 <dd>
-                    @NonValeur[i].Valeurs @NonValeur[i].Attribut.Mesure
+                    @NonValeur[i].Valeurs
                 </dd>
             }
         }
         @*<dt>
             @Html.DisplayNameFor(model => model.Valeur)
         </dt>
-       
+
         <dd>
             @foreach (var item in Model.Valeur)
             {
-               
+
                 @Html.DisplayFor(model => item.Valeurs)
                 @Html.DisplayFor(model => item.Attribut.Mesure)
                 if (!(Model.Valeur.Last().Equals(item)))
                 {
                     @:,
                 }
-            }   
+            }
         </dd>*@
         @*<dt>
             @Html.DisplayNameFor(model => model.MotClef)
         </dt>
 
         <dd>
-            @{ 
-                var a =Model.MotClef.ToArray();
+            @{
+                var a = Model.MotClef.ToArray();
                 @for (int i = 0; i < Model.MotClef.Count; i++)
                 {
                     @a[i].MotClef.Valeur;
@@ -72,19 +78,25 @@
                     }
                 }
             }*@
-            @*@foreach (var item in Model.MotClef)
-            {
-                @Html.DisplayFor(model => item.MotClef.Valeur)@:,
-            }*@
-        </dd>
+        @*@foreach (var item in Model.MotClef)
+        {
+            @Html.DisplayFor(model => item.MotClef.Valeur)@:,
+        }*@
+        @*</dd>*@
         <dt>
             @Html.DisplayNameFor(model => model.Prix)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Prix)€
+            @Html.DisplayFor(model => model.Prix)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.QuantiteEmballage)
+            @Html.DisplayNameFor(model => model.TauxTVA)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TauxTVA.Valeur)
+        </dd>
+        <dt>
+            @*@Html.DisplayNameFor(model => model.QuantiteEmballage)*@Qté Emball en stock
         </dt>
         <dd>
             @Html.DisplayFor(model => model.QuantiteEmballage)
@@ -95,13 +107,8 @@
         <dd>
             @Html.DisplayFor(model => model.NBPieceEmballage)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.TVA) incluse
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.TVA)% 
-        @*</dd>
-        <dt>
+
+        @*<dt>
             @Html.DisplayNameFor(model => model.CompteCompta)
         </dt>
         <dd>
@@ -113,18 +120,13 @@
         <dd>
             @Html.DisplayFor(model => model.Description)
         </dd>*@
-        <dt>
-            @Html.DisplayNameFor(model => model.Marque)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Marque)
-        </dd>
-        <dt>
-            @Html.DisplayFor(model => model.QuantiteStock)
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.QuantiteStock)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.QuantiteStock)
-        </dd>
+        </dd>*@
         @*<dt>
             @Html.DisplayNameFor(model => model.Image)
         </dt>*@
@@ -141,42 +143,45 @@
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <img src="@imgSrc" class="imageGrande"/>
+            <img src="@imgSrc" class="imageGrande" />
         </div>
     </div>
 
 </div>
 
 <div>
-    @*<a asp-action="Edit" asp-route-id="@Model.ID">Edit</a>*@ 
-    <a asp-action="Index">Retour à la liste</a>
+    <form asp-controller="Account" asp-action="AddPanier" asp-route-id="@Model.ID" method="post">
+        <input class="col-lg-12 " type="number" name="Quantite" min="1" placeholder="Qté emballages voulue" />
+        <input class="col-lg-12 btn btn-default textRed" type="submit" value="Ajouter au panier" />
+    </form>
+    @*<a asp-action="Edit" asp-route-id="@Model.ID">Editer</a> |*@
+    <a asp-action="Index">Retour</a>
 </div>
 
 <script>
-//image
-// Get the modal
-var modal = document.getElementById('myModal');
+    // Get the modal
+    var modal = document.getElementById('myModal');
 
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks the button, open the modal
-btn.onclick = function() {
-    modal.style.display = "block";
-}
+    // When the user clicks the button, open the modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
         modal.style.display = "none";
     }
-}
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
 </script>
