@@ -58,10 +58,8 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                                             .ThenInclude(p=>p.Produit)
                                         .Include(c => c.AdresseFacturation)
                                         .SingleOrDefaultAsync(m => m.ID == id);
-            if (User.IsInRole("gestionnaire") || _userManager.GetUserId(User)==commande.RegisterViewModelID)
+            if (commande!=null && (User.IsInRole("gestionnaire") || _userManager.GetUserId(User)==commande.RegisterViewModelID))
             {
-
-
                 Produit produit;
                 if (commande == null)
                 {
@@ -77,9 +75,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                        .AsNoTracking()
                        .SingleOrDefaultAsync(m => m.ID == i.ProduitID);
                     i.Produit = produit;
-                }
-
-
+                }   
                 return View(commande);
             }
             return NotFound();

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.NodeServices;
 using System.Net.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Identity;
 
 namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 {
@@ -18,10 +19,12 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
     public class FacturesController : Controller
     {
         private readonly TFEContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public FacturesController(TFEContext context)
+        public FacturesController(UserManager<ApplicationUser> userManager, TFEContext context)
         {
-            _context = context;    
+            _context = context;
+            _userManager = userManager;
         }
 
         // GET: Factures
@@ -43,7 +46,10 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
                 .Include(f => f.Commande)
                     .ThenInclude(c=>c.Possede)
                         .ThenInclude(p=>p.Produit)
+                        .Include(c=>c.Commande)
+                            .ThenInclude(add=>add.AdresseFacturation)
                 .SingleOrDefaultAsync(m => m.ID == id);
+            ViewData["client"] = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == facture.Commande.RegisterViewModelID);
             if (facture == null)
             {
                 return NotFound();
@@ -53,30 +59,31 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         }
 
         // GET: Factures/Create
-        public IActionResult Create()
-        {
-            ViewData["ID"] = new SelectList(_context.Set<Commande>(), "ID", "ID");
-            return View();
-        }
+        //public IActionResult Create()
+        //{
+        //    ViewData["ID"] = new SelectList(_context.Set<Commande>(), "ID", "ID");
+        //    return View();
+        //}
 
         // POST: Factures/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Numero,DatePaiement")] Facture facture)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(facture);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            ViewData["ID"] = new SelectList(_context.Set<Commande>(), "ID", "ID", facture.ID);
-            return View(facture);
-        }
+        //public async Task<IActionResult> Create([Bind("ID,Numero,DatePaiement")] Facture facture)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(facture);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction("Index");
+        //    }
+        //    ViewData["ID"] = new SelectList(_context.Set<Commande>(), "ID", "ID", facture.ID);
+        //    return View(facture);
+        //}
 
         // GET: Factures/Edit/5
+        [Authorize(Roles = "gestionnaire")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -98,6 +105,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "gestionnaire")]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Numero,DatePaiement")] Facture facture)
         {
             if (id != facture.ID)
@@ -130,34 +138,34 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         }
 
         // GET: Factures/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var facture = await _context.Factures
-                .Include(f => f.Commande)
-                .SingleOrDefaultAsync(m => m.ID == id);
-            if (facture == null)
-            {
-                return NotFound();
-            }
+        //    var facture = await _context.Factures
+        //        .Include(f => f.Commande)
+        //        .SingleOrDefaultAsync(m => m.ID == id);
+        //    if (facture == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(facture);
-        }
+        //    return View(facture);
+        //}
 
         // POST: Factures/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var facture = await _context.Factures.SingleOrDefaultAsync(m => m.ID == id);
-            _context.Factures.Remove(facture);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var facture = await _context.Factures.SingleOrDefaultAsync(m => m.ID == id);
+        //    _context.Factures.Remove(facture);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction("Index");
+        //}
 
         private bool FactureExists(int id)
         {

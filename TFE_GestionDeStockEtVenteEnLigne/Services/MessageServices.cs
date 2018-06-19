@@ -41,10 +41,9 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Services
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("lespacedupetitfuté@skynet.be", "L'espace du petit futé"),
+                From = new EmailAddress("antoine.debernardi@skynet.be", "antoine de bernardi"),
                 Subject = subject,
                 PlainTextContent = message,
-                HtmlContent = message
             };
             msg.AddTo(new EmailAddress(email));
             return client.SendEmailAsync(msg);

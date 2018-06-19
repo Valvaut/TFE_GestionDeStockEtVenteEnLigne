@@ -293,3 +293,17 @@ footer {
 #Livraison {
     display: inline-block;
 }
+.infoboutique {
+    text-align : center;
+}
+.clientfacture {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 2px solid black;
+    border-radius: 8px;
+    text-align :center;
+    background-color : white;
+}
+.dateCommande {
+    text-align : right;
+}

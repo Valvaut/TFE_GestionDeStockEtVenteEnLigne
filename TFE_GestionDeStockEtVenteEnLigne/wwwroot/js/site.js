@@ -130,11 +130,11 @@ function afficherAdd()
     if (document.getElementById("enlevementMagasin").checked)
     {
         div.setAttribute("hidden", "false");
-        Livraison.textContent= "En magasin"
+        //Livraison.textContent= "En magasin"
     }
     else
     {
         div.removeAttribute("hidden");
-        Livraison.textContent = "Livraison";
+        //Livraison.textContent = "Livraison";
     }
 }

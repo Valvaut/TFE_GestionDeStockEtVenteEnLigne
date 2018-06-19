@@ -3,73 +3,103 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+<h2>Facture</h2>
 <div class="factureContenu">
-    <h2>Facture</h2>
+
+
     <div id="content">
-        <div>
-            <hr />
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.Numero)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Numero)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.DatePaiement)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.DatePaiement)
-                </dd>
-                @*<dt>
-                    @Html.DisplayNameFor(model => model.Commande)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Commande.ID)
-                </dd>*@
-            </dl>
+        <div class="row">
+            <div class="col-lg-4 infoboutique">
+                <h4>L'Espace du Petit Futé</h4>
+                <div>Matériel de loisirrs créatifs</div><br />
+                <div>
+                    A-kreides,43<br />
+                    B-6700 Toernich (Arlon)<br />
+                    Tél : 063 23 61 33<br />
+                </div>
+                @*Fax : 063 23 79 21*@
+            </div>
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+                <div class="clientfacture">
+                    @{
+                        var client = ViewData["client"] as ApplicationUser;
+                    }
+                    @client.Nom @client.Prenom <br />
+                    <div>@Html.DisplayFor(model => model.Commande.AdresseFacturation.Rue) @Html.DisplayFor(model => model.Commande.AdresseFacturation.Numero) @Html.DisplayFor(model => model.Commande.AdresseFacturation.NumeroBoite)</div>
+                    <div clas>@Html.DisplayFor(model => model.Commande.AdresseFacturation.CodePostal) @Html.DisplayFor(model => model.Commande.AdresseFacturation.Localite)</div>
+                </div>
+            </div>
         </div>
+        <br />
+        <div class="row monPanier">
+            <div class="col-lg-4">Facture : @Html.DisplayFor(model => model.Numero)</div>
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4 dateCommande">Date : @Html.DisplayFor(model => model.Commande.DateCommade)</div>
+        </div>
+        @*<div>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Numero)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Numero)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.DatePaiement)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.DatePaiement)
+                    </dd>
+                    @*<dt>
+                        @Html.DisplayNameFor(model => model.Commande)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Commande.ID)
+                    </dd>
+                </dl>
+            </div>*@
         <table class="table">
             <thead>
                 <tr>
                     <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.RefSort">
-                            @Html.DisplayNameFor(model => model.Commande.Possede.SingleOrDefault().Produit.Ref)
-                        </a>
+                        @*<a asp-action="Index" asp-route-sortOrder="@ViewBag.RefSort">*@
+                        @Html.DisplayNameFor(model => model.Commande.Possede.SingleOrDefault().Produit.Ref)
+                        @*</a>*@
                     </th>
                     <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.DenoSort">
-                            @Html.DisplayNameFor(model => model.Commande.Possede.SingleOrDefault().Produit.Denomination)
-                        </a>
+                        @*<a asp-action="Index" asp-route-sortOrder="@ViewBag.DenoSort">*@
+                        @Html.DisplayNameFor(model => model.Commande.Possede.SingleOrDefault().Produit.Denomination)
+                        @*</a>*@
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Commande.Possede.SingleOrDefault().Produit.Prix)
                     </th>
                     @*<th>
-                        @Html.DisplayNameFor(model => model.Commande.Possede.SingleOrDefault().Produit.QuantiteEmballage)
-                    </th>*@
+                            @Html.DisplayNameFor(model => model.Commande.Possede.SingleOrDefault().Produit.QuantiteEmballage)
+                        </th>*@
                     <th>
                         @Html.DisplayNameFor(model => model.Commande.Possede.SingleOrDefault().Produit.NBPieceEmballage)
                     </th>
                     @*<th>
-                        TVA
-                    </th>*@
+                            TVA
+                        </th>*@
                     @*<th>
-                        CompteCompta
-                    </th>*@
+                            CompteCompta
+                        </th>*@
                     @*<th>
-                        Description
-                    </th>
-                    <th>
-                        Marque
-                    </th>*@
+                            Description
+                        </th>
+                        <th>
+                            Marque
+                        </th>*@
                     <th>
                         @Html.DisplayNameFor(model => model.Commande.Possede.SingleOrDefault().Quantite)
                     </th>
                     @*<th>
-                        @Html.DisplayNameFor(model => model.Image)
-                    </th>*@
+                            @Html.DisplayNameFor(model => model.Image)
+                        </th>*@
                 </tr>
             </thead>
             <tbody>
@@ -86,29 +116,29 @@
                             @Html.DisplayFor(modelItem => item.Produit.Prix)
                         </td>
                         @*<td>
-                            @Html.DisplayFor(modelItem => item.Produit.QuantiteEmballage)
-                        </td>*@
+                                @Html.DisplayFor(modelItem => item.Produit.QuantiteEmballage)
+                            </td>*@
                         <td>
                             @Html.DisplayFor(modelItem => item.Produit.NBPieceEmballage)
                         </td>
                         @*<td>
-                            @Html.DisplayFor(modelItem => item.Produit.TVA)
-                        </td>*@
+                                @Html.DisplayFor(modelItem => item.Produit.TVA)
+                            </td>*@
                         @*<td>
-                            @Html.DisplayFor(modelItem => item.Produit.CompteCompta)
-                        </td>*@
+                                @Html.DisplayFor(modelItem => item.Produit.CompteCompta)
+                            </td>*@
                         @*<td>
-                            @Html.DisplayFor(modelItem => item.Produit.Description)
-                        </td>*@
+                                @Html.DisplayFor(modelItem => item.Produit.Description)
+                            </td>*@
                         @*<td>
-                            @Html.DisplayFor(modelItem => item.Produit.Marque)
-                        </td>*@
+                                @Html.DisplayFor(modelItem => item.Produit.Marque)
+                            </td>*@
                         <td>
                             @Html.DisplayFor(modelItem => item.Quantite)
                         </td>
                         @*<td>
-                            @Html.DisplayFor(modelItem => item.Image)
-                        </td>*@
+                                @Html.DisplayFor(modelItem => item.Image)
+                            </td>*@
                     </tr>
                 }
             </tbody>
@@ -120,12 +150,12 @@
                 total += (item.Produit.Prix * item.Quantite);
             }
         }
-        total: @total€
+        <div class="total">total: @total€</div>
     </div>
 </div><div class="veutpas"></div>
 <div>
-    @*<a asp-action="Edit" asp-route-id="@Model.ID">Edit</a>*@ 
-    <a asp-action="Index">Back to List</a>
+    @*<a asp-action="Edit" asp-route-id="@Model.ID">Edit</a>*@
+    <a asp-action="Details" asp-controller="Commandes" asp-route-id="@Model.CommandeID">Retourà la commande</a>
 </div>
 <div>
     @*<button id="cmd">Generate PDF</button>*@
