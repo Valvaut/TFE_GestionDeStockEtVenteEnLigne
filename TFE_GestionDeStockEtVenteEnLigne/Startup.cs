@@ -12,6 +12,7 @@ using TFE_GestionDeStockEtVenteEnLigne.Services;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Identity;
 using TFE_GestionDeStockEtVenteEnLigne.Data.Migrations;
+using TFE_GestionDeStockEtVenteEnLigne.Models.mail;
 
 namespace TFE_GestionDeStockEtVenteEnLigne
 {
@@ -68,12 +69,14 @@ namespace TFE_GestionDeStockEtVenteEnLigne
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
-           // services.AddIdentity<ApplicationUser, IdentityRole>(config =>
-           // {
-           //     config.SignIn.RequireConfirmedEmail = true;
-           // })
-           //.AddEntityFrameworkStores<ApplicationDbContext>()
-           //.AddDefaultTokenProviders();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+            {
+                config.SignIn.RequireConfirmedEmail = true;
+            })
+           .AddEntityFrameworkStores<ApplicationDbContext>()
+           .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

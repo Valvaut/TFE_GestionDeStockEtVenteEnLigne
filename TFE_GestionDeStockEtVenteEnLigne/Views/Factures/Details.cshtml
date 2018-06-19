@@ -5,10 +5,9 @@
 }
 
 <div class="factureContenu">
-    <h2>Details</h2>
+    <h2>Facture</h2>
     <div id="content">
         <div>
-            <h4>Facture</h4>
             <hr />
             <dl class="dl-horizontal">
                 <dt>
@@ -23,12 +22,12 @@
                 <dd>
                     @Html.DisplayFor(model => model.DatePaiement)
                 </dd>
-                <dt>
+                @*<dt>
                     @Html.DisplayNameFor(model => model.Commande)
                 </dt>
                 <dd>
                     @Html.DisplayFor(model => model.Commande.ID)
-                </dd>
+                </dd>*@
             </dl>
         </div>
         <table class="table">
@@ -36,37 +35,37 @@
                 <tr>
                     <th>
                         <a asp-action="Index" asp-route-sortOrder="@ViewBag.RefSort">
-                            Ref
+                            @Html.DisplayNameFor(model => model.Commande.Possede.SingleOrDefault().Produit.Ref)
                         </a>
                     </th>
                     <th>
                         <a asp-action="Index" asp-route-sortOrder="@ViewBag.DenoSort">
-                            Denomination
+                            @Html.DisplayNameFor(model => model.Commande.Possede.SingleOrDefault().Produit.Denomination)
                         </a>
                     </th>
                     <th>
-                        Prix
+                        @Html.DisplayNameFor(model => model.Commande.Possede.SingleOrDefault().Produit.Prix)
                     </th>
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.Commande.Possede.SingleOrDefault().Produit.QuantiteEmballage)
+                    </th>*@
                     <th>
-                        QuantiteEmballage
+                        @Html.DisplayNameFor(model => model.Commande.Possede.SingleOrDefault().Produit.NBPieceEmballage)
                     </th>
-                    <th>
-                        NBPieceEmballage
-                    </th>
-                    <th>
+                    @*<th>
                         TVA
-                    </th>
-                    <th>
+                    </th>*@
+                    @*<th>
                         CompteCompta
-                    </th>
-                    <th>
+                    </th>*@
+                    @*<th>
                         Description
                     </th>
                     <th>
                         Marque
-                    </th>
+                    </th>*@
                     <th>
-                        Quantite
+                        @Html.DisplayNameFor(model => model.Commande.Possede.SingleOrDefault().Quantite)
                     </th>
                     @*<th>
                         @Html.DisplayNameFor(model => model.Image)
@@ -86,24 +85,24 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Produit.Prix)
                         </td>
-                        <td>
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.Produit.QuantiteEmballage)
-                        </td>
+                        </td>*@
                         <td>
                             @Html.DisplayFor(modelItem => item.Produit.NBPieceEmballage)
                         </td>
-                        <td>
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.Produit.TVA)
-                        </td>
-                        <td>
+                        </td>*@
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.Produit.CompteCompta)
-                        </td>
-                        <td>
+                        </td>*@
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.Produit.Description)
-                        </td>
-                        <td>
+                        </td>*@
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.Produit.Marque)
-                        </td>
+                        </td>*@
                         <td>
                             @Html.DisplayFor(modelItem => item.Quantite)
                         </td>

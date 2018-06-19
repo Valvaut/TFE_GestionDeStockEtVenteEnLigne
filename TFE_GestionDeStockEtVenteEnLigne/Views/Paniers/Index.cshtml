@@ -1,21 +1,18 @@
 ﻿@model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Metier.Panier>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "panier";
 }
 
-<h2>Index</h2>
+<h2>Mon panier</h2>
 <div>@ViewData["prodNotDispo"]</div>
 <p>
     @*<a asp-action="Create">Create New</a>*@
     <a asp-action="DeletePanier">Annuler panier</a>
 </p>
-<table class="table">
+@*<table class="table">
     <thead>
         <tr>
-            @*<th>
-                    @Html.DisplayNameFor(model => model.RegisterViewModelID)
-                </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Produit)
             </th>
@@ -33,15 +30,12 @@
             </th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                @*<td>
-                        @Html.DisplayFor(modelItem => item.RegisterViewModelID)
-                    </td>*@
+    <tbody>*@
+        @*@foreach (var item in Model)
+        {*@
+            @*<tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Produit.ID)
+                    @Html.DisplayFor(modelItem => item.Produit.Denomination)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Quantite)
@@ -55,42 +49,83 @@
                             <img class="imagePetite" src="@imgSrc" id="myBtn" />
                         }
                     }
-                    @*@Html.DisplayFor(modelItem => item.Produit.Image)*@
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Produit.Prix)�
+                    @Html.DisplayFor(modelItem => item.Produit.Prix)€
                 </td>
                 <td>
                     @{ var prixQuantite = (item.Produit.Prix * @item.Quantite); }
-                    @prixQuantite�
+                    @prixQuantite€
 
                 </td>
-                <td>
-                    @*<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |*@
+                <td>    
                     <a asp-controller="Produits" asp-action="Details" asp-route-id="@item.ProduitID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    <a asp-action="Delete" asp-route-id="@item.ID">Retirer du panier</a>
                 </td>
-            </tr>
-        }
+            </tr>*@
+        @*}*@
 
-    </tbody>
-</table>
-@{
-    double total = 0;
-    foreach (var item in Model)
-    {
-        total += (item.Produit.Prix * item.Quantite);
-    }
-}
-    total: @total�
+    @*</tbody>
+</table>*@
+<div class="col-lg-12 monPanier">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="panel panel-default col-lg-3 col-md-6 col-sm-12">
+                <div class="panel-heading textover" data-toggle="tooltip" title="@item.Produit.Denomination">@Html.DisplayFor(modelItem => item.Produit.Denomination)</div>
+                <div class="panel-body">
+                    <div class="row">Prix: @Html.DisplayFor(modelItem => item.Produit.Prix)€</div>
+                    <div class="row">Référence: @Html.DisplayFor(modelItem => item.Produit.Ref)</div>
+                    @{
+                        var base64 = Convert.ToBase64String(item.Produit.Image);
+                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                    }
+                    <img class="imagePetite row " src="@imgSrc" id="myBtn" />
+                    <div id="myModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <img src="@imgSrc" class="imageGrande" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        @*<a asp-action="Details" asp-route-id="@item.ID">Détails</a>*@
+                        <a asp-controller="Produits" asp-route-source="panier" asp-action="Details" asp-route-id="@item.ProduitID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID">Retirer du panier</a>
+                        @*<form asp-controller="Account" asp-action="AddPanier" asp-route-id="@item.ID" method="post">*@
+                        @*<input asp-for="@item.Quantite" class="col-lg-12 " type="number" min="1" placeholder="Qté emballages voulue" required />*@
 
-    <form>
-        @if (Model.Count() <= 0)
-        {
-            <div>Panier vide, impossible de le valider</div>
+                        @*<input class="col-lg-12 btn btn-default textRed" type="submit" value="Ajouter au panier" />*@
+                        @*</form>*@
+                    </div>
+                    <div class="row">Quantité : @Html.DisplayFor(modelItem => item.Quantite)</div>
+                </div>
+            </div>
         }
-        else
-        {
-            <input asp-controller="Commandes" asp-action="Create" type="submit" value="Valider Commande" method="get" />
+    </div>
+    <div class="row">
+        @{
+            double total = 0;
+            foreach (var item in Model)
+            {
+                total += (item.Produit.Prix * item.Quantite);
+            }
         }
-    </form>
+        <div class="total">total: @total€</div>
+    </div>
+
+    <div class="row">
+        <form>
+            @if (Model.Count() <= 0)
+            {
+                <div>Panier vide, impossible de le valider</div>
+            }
+            else
+            {
+                <input asp-controller="Commandes"  asp-action="Create" type="submit" value="Valider Commande" method="get" />
+            }
+        </form>
+        @*<form asp-action="Edit" method="post" asp-route-id="@Model.FirstOrDefault().RegisterViewModelID">
+            <input type="submit" value="valider changement quantité" />
+        </form>*@
+    </div>
+</div>

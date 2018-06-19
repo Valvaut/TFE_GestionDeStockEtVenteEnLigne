@@ -84,13 +84,14 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
 
 
         // GET: Produits/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, String source )
         {
             if (id == null)
             {
                 return NotFound();
             }
 
+            ViewData["source"] = source;
             var produit = await _context.Produits.Include(p => p.Categorie)
                     .ThenInclude(c => c.CategorieParent)
                 .Include(p => p.MotClef)

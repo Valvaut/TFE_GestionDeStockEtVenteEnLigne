@@ -151,11 +151,21 @@
 
 <div>
     <form asp-controller="Account" asp-action="AddPanier" asp-route-id="@Model.ID" method="post">
-        <input class="col-lg-12 " type="number" name="Quantite" min="1" placeholder="Qté emballages voulue" />
+        <input class="col-lg-12 " type="number" name="Quantite" min="1" placeholder="Qté emballages voulue" required />
         <input class="col-lg-12 btn btn-default textRed" type="submit" value="Ajouter au panier" />
     </form>
     @*<a asp-action="Edit" asp-route-id="@Model.ID">Editer</a> |*@
-    <a asp-action="Index">Retour</a>
+    @if (ViewData["source"] != null && ViewData["source"].ToString() == "panier")
+    {
+
+        <a asp-controller="Paniers" asp-action="Index">Retour</a>
+    }
+    else
+    {
+        <a asp-action="Index">Retour</a>
+    }
+
+
 </div>
 
 <script>

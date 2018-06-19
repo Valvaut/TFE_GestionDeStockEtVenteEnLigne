@@ -121,37 +121,39 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         {
             if (ModelState.IsValid)
             {
-                //ajout de l'adresse dans la bd
-                var listAdd = _context.Adresses.Include(a => a.DomicileClient).ToList();
-                Boolean existe = false;
-                int i = 0;
-                while (!existe && i < listAdd.Count)
-                {
-                    if (listAdd[i].Equals(Adaptateur.Adresse))
-                        existe = true;
-                    else
-                        i++;
-                }
-                if (!existe)
-                {
-                    _context.Add(Adaptateur.Adresse);
-                    await _context.SaveChangesAsync();
-                }
-                else
-                {
-                    Adaptateur.Adresse.ID = listAdd[i].ID;
-                }
+                var enlevement = Request.Form["enlevementMagasin"];
                 //récup des infoi utilisateur et du panier
                 var IdUser = _userManager.GetUserId(User);
-                //var IdClient = _context.Clients.Where(c => c.RegisterViewModelID == IdUser);
                 var tFEContext = _context.Panier.Include(p => p.Produit).Where(p => p.RegisterViewModelID == IdUser).ToArray();
-                //var Client = IdClient.ToArray();
-                Domicile d = new Domicile();
-                d.AdresseID = Adaptateur.Adresse.ID;
-                //d.ClientID = Client[0].ID;
-                d.RegisterViewModelID = IdUser;
-                _context.Add(d);
-                await _context.SaveChangesAsync();
+                if (enlevement != "true")
+                {
+                    //ajout de l'adresse dans la bd
+                    var listAdd = _context.Adresses.Include(a => a.DomicileClient).ToList();
+                    Boolean existe = false;
+                    int i = 0;
+                    while (!existe && i < listAdd.Count)
+                    {
+                        if (listAdd[i].Equals(Adaptateur.Adresse))
+                            existe = true;
+                        else
+                            i++;
+                    }
+                    if (!existe)
+                    {
+                        _context.Add(Adaptateur.Adresse);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        Adaptateur.Adresse.ID = listAdd[i].ID;
+                    }
+                    Domicile d = new Domicile();
+                    d.AdresseID = Adaptateur.Adresse.ID;
+                    //d.ClientID = Client[0].ID;
+                    d.RegisterViewModelID = IdUser;
+                    _context.Add(d);
+                    await _context.SaveChangesAsync();
+                }
                 //création de la comande
                 Commande commande = new Commande();
                 commande.AdresseID = Adaptateur.Adresse.ID;

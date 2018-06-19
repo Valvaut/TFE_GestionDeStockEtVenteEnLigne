@@ -1,4 +1,4 @@
-@model TFE_GestionDeStockEtVenteEnLigne.Models.ProduitCatAdapter
+ï»¿@model TFE_GestionDeStockEtVenteEnLigne.Models.ProduitCatAdapter
 
 @{
     ViewData["Title"] = "Edit";
@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="panel panel-default col-lg-9 col-md-9 col-sm-12">
-                @*<div class="panel-heading"> Caractéristiques du produit </div>*@
+                @*<div class="panel-heading"> CaractÃ©ristiques du produit </div>*@
                 <div class="form-group">
                     <label asp-for="Produit.Denomination" class="col-md-2 control-label"></label>
                     <div class="col-md-10">
@@ -78,7 +78,7 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="control-label col-md-2">Réf. fournisseur</label>
+                        <label class="control-label col-md-2">Rï¿½f. fournisseur</label>
                         <div class="col-md-10"><label class="form-control">@Model.Produit.Provients.ToArray()[0].Fournisseur.Reference</label></div>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
         </div>
         <div class="row">
             <div class="panel panel-default col-lg-12 col-md-12 col-sm-12">
-                <div class="panel-heading"> Caractéristiques du produit </div>
+                <div class="panel-heading"> Caractï¿½ristiques du produit </div>
                 <label asp-for="Produit.Valeur" class="col-md-2 control-label"></label>
                 <div class="col-md-10 multiselect">
                     <div class="tab-pane">
@@ -166,7 +166,7 @@
 
         <div class="row"> @*VENTE*@
             <div class="panel panel-default col-lg-12 col-md-12 col-sm-12">
-               <div class="panel-heading"> Caractéristiques de vente </div>
+               <div class="panel-heading"> Caractï¿½ristiques de vente </div>
                <div>
                    <div class="row">
                        <div class="form-group col-lg-4">
@@ -188,7 +188,7 @@
 
                    <div class="row">
                        <div class="form-group col-lg-4">
-                           <label asp-for="Produit.NBPieceEmballage" class="col-md-6 control-label">Qté par emball</label>
+                           <label asp-for="Produit.NBPieceEmballage" class="col-md-6 control-label">Qtï¿½ par emball</label>
                            <div class="col-md-6">
                                <input asp-for="Produit.NBPieceEmballage" class="form-control" />
                                <span asp-validation-for="Produit.NBPieceEmballage" class="text-danger"></span>
@@ -208,7 +208,7 @@
 
                    <div class="row">
                        <div class="form-group col-lg-4">
-                           <label class="col-md-6 control-label">Quantité Reçu</label>
+                           <label class="col-md-6 control-label">Quantitï¿½ Reï¿½u</label>
                            <div class="col-md-6">
                                <input name="qteRecu" type="number" class="form-control" />
                            </div>
@@ -266,7 +266,7 @@
                                </div>
                            </div>
                            <div class="form-group col-lg-4">
-                               <label class="col-md-6 control-label">Quantité minimum</label>
+                               <label class="col-md-6 control-label">Quantitï¿½ minimum</label>
                                <div class="col-md-6">
                                    <input type="number" min="0" step="1" name="quantite" value="@item.QuantiteMinCommande" class="form-control">
                                </div>
@@ -297,7 +297,7 @@
 </form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Retour</a>
 </div>
 
 @section Scripts {

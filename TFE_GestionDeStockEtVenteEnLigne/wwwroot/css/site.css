@@ -275,3 +275,21 @@ footer {
 .myFamilly {
     font-family: Comic Sans MS !important;
 }
+.monPanier {
+    background-color: white;
+    border-radius: 8px;
+    border: 2px solid black;
+    padding: 20px 30px 20px 30px;
+    margin-bottom: 10px;
+}
+.total {
+    font-size : 32px;
+    padding-top : 10px;
+    padding-bottom : 10px;
+}
+.moncheckbox {
+
+}
+#Livraison {
+    display: inline-block;
+}

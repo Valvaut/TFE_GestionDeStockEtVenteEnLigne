@@ -122,3 +122,19 @@ function deleteProdCom(id)
     var tr = document.getElementById(id);
     tr.remove();
 }
+
+function afficherAdd()
+{
+    var div = document.getElementById("add");
+    var Livraison = document.getElementById("Livraison");
+    if (document.getElementById("enlevementMagasin").checked)
+    {
+        div.setAttribute("hidden", "false");
+        Livraison.textContent= "En magasin"
+    }
+    else
+    {
+        div.removeAttribute("hidden");
+        Livraison.textContent = "Livraison";
+    }
+}

@@ -1,10 +1,10 @@
-@model TFE_GestionDeStockEtVenteEnLigne.Models.ProduitCatAdapter
+Ôªø@model TFE_GestionDeStockEtVenteEnLigne.Models.ProduitCatAdapter
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
+<h2>Cr√©ation</h2>
 
 <form asp-action="Create" method="post"  enctype="multipart/form-data">
     <div class="form-horizontal">
@@ -35,7 +35,7 @@
             </div>
             <div class="panel panel-default col-lg-9 col-md-9 col-sm-12">
                 @*1ERE ZONE*@
-                @*<div class="panel-heading"> CaractÈristiques du produit </div>*@
+                @*<div class="panel-heading"> Caract√©ristiques du produit </div>*@
                 <div class="form-group">
                     @*DENOMINAS*@
                     <label asp-for="Produit.Denomination" class="col-md-2 control-label"></label>
@@ -106,7 +106,7 @@
                                     }
                                     else
                                     {
-                                        <span>Aucun Mot clÈf trouver!</span>
+                                        <span>Aucun Mot cl√©f trouver!</span>
                                     }
                                 </div>
                             </div>
@@ -119,7 +119,7 @@
         <div class="row">
             @*CARACTERISTIQUES*@
             <div class="panel panel-default col-lg-12 col-md-12 col-sm-12">
-                <div class="panel-heading"> CaractÈristiques du produit </div>
+                <div class="panel-heading"> Caract√©ristiques du produit </div>
                 <div class="form-group">
                     <label asp-for="Produit.Valeur" class="col-md-2 control-label"></label>
                     <div class="col-md-10">
@@ -155,7 +155,7 @@
         <div class="row">
             @*VENTE*@
             <div class="panel panel-default col-lg-12 col-md-12 col-sm-12">
-                <div class="panel-heading"> CaractÈristiques de vente </div>
+                <div class="panel-heading"> Caract√©ristiques de vente </div>
                 <div>
                     <div class="row">
                         <div class="form-group col-lg-4">
@@ -258,7 +258,7 @@
                             </div>
                         </div>
                         <div class="form-group col-lg-4">
-                            <label class="col-md-6 control-label">QuantitÈ minimum</label>
+                            <label class="col-md-6 control-label">Quantit√© minimum</label>
                             <div class="col-md-6">
                                 <input type="number" min="0" step="1" name="quantite" class="form-control" required />
                             </div>
