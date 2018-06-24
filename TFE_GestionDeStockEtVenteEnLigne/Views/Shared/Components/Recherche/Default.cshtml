@@ -1,4 +1,4 @@
-@model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Categorie>
+﻿@model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Categorie>
 
 @{
     Layout = null;
@@ -40,17 +40,21 @@
 
 
     <!--Visible on mobile device only-->
+
     <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <form asp-controller="Produits" asp-action="Index" method="get" role="search">
-            <div class="iput-group input-group-lg" style="margin-top:20px;margin-left:10px;margin-right:10px;">
-                <input type="search" class="form-control" name="SearchStr" placeholder="Search....." value="@ViewData["Filter"]">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-                </span>
+        <div class="col-sm-3"></div>
+        <div class="col-sm-5 mypopup">
+            <form asp-controller="Produits" asp-action="Index" method="get" role="search">
+                <div class="iput-group input-group-lg" style="margin-top:20px;margin-left:10px;margin-right:10px;">
+                    <input type="search" class="form-control" name="SearchStr" placeholder="Search....." value="@ViewData["Filter"]">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                    </span>
+                </div>
+            </form>
+            <div class="">
+                @Html.Partial("Categorie", Model)
             </div>
-        </form>
-        <div class="mypopup">
-            @Html.Partial("Categorie", Model)
         </div>
     </div>
 </body>

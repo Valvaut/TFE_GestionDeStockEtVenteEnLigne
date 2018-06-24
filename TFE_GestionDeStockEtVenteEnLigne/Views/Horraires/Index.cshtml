@@ -11,60 +11,63 @@
     </div>
 
     <div class="myCenterCorps ">
-        <h2 class="borderDown">L'Espace Du Petit Futé</h2>
-        <div class="grad colorBlue bienvenue">Nous vous souhaitons la bienvenue</div>
-        <h3>Nous rendre visite</h3>
-        <table class="colorBlue textCenter info marginAuto">
-            <tbody>
-                @foreach (var item in Model.Horraire)
-                 {
-                    <tr>
-                        <td>
-                            Lundi @Html.DisplayFor(modelItem => item.Lundi)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Mardi @Html.DisplayFor(modelItem => item.Mardi)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Mercredi @Html.DisplayFor(modelItem => item.Mercredi)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Jeudi @Html.DisplayFor(modelItem => item.Jeudi)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Vendredi @Html.DisplayFor(modelItem => item.Vendredi)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Samedi @Html.DisplayFor(modelItem => item.Samedi)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Dimanche @Html.DisplayFor(modelItem => item.Dimanche)
-                        </td>
-                    </tr>
-                 }
-            </tbody>
-        </table>
-        <div class="colorBlue info">
-            <h3>Nous Contacter</h3>
+        <div class="enteteAccueil"><h2>L'Espace Du Petit Futé</h2></div>@*class="borderDown"*@
 
-            <span>A-kreides, 43 </span><br />
-            <span>6700 Toernich - Arlon</span><br />
-            <span> Belgique </span><br />
-            <br />
-            <span>Tel : 0032 (0)63 236133</span><br />
-            <span>E-mail : michele.tinant@skynet.be</span><br />
+        <div class="corpsAccueil">
+            <div class="grad colorBlue bienvenue">Nous vous souhaitons la bienvenue</div>
+            <h3 class="colorBlue">Nous rendre visite</h3>
+            <table class="colorBlue textCenter info marginAuto">
+                <tbody>
+                    @foreach (var item in Model.Horraire)
+                    {
+                        <tr>
+                            <td>
+                                Lundi @Html.DisplayFor(modelItem => item.Lundi)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Mardi @Html.DisplayFor(modelItem => item.Mardi)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Mercredi @Html.DisplayFor(modelItem => item.Mercredi)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Jeudi @Html.DisplayFor(modelItem => item.Jeudi)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Vendredi @Html.DisplayFor(modelItem => item.Vendredi)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Samedi @Html.DisplayFor(modelItem => item.Samedi)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Dimanche @Html.DisplayFor(modelItem => item.Dimanche)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="colorBlue info">
+                <h3>Nous Contacter</h3>
+
+                <span>A-kreides, 43 </span><br />
+                <span>6700 Toernich - Arlon</span><br />
+                <span> Belgique </span><br />
+                <br />
+                <span>Tel : 0032 (0)63 236133</span><br />
+                <div class="col-sm-12" style="word-break: break-word">E-mail : michele.tinant@skynet.be</div><br />
+            </div>
         </div>
     </div>
     

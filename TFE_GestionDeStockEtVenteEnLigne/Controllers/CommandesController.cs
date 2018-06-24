@@ -84,28 +84,32 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Controllers
         // GET: Commandes/Create
         public  IActionResult Create()
         {
-            var IdUser = _userManager.GetUserId(User);
-            var panier = _context.Panier.Where(p=>p.RegisterViewModelID == IdUser).ToArray();
-            TempData["prodNotDispo"] = "";
-            foreach (var prod in panier)
+            if(TempData["source"] != null && TempData["source"].ToString() == "panier")
             {
-                var produit = _context.Produits.SingleOrDefault(p=>p.ID == prod.ProduitID);
-                if (produit.QuantiteEmballage < prod.Quantite)
+                var IdUser = _userManager.GetUserId(User);
+                var panier = _context.Panier.Where(p=>p.RegisterViewModelID == IdUser).ToArray();
+                TempData["prodNotDispo"] = "";
+                foreach (var prod in panier)
                 {
-                    TempData["prodNotDispo"] += "Produit : " + produit.Denomination + " plus suffisament en stock,";
+                    var produit = _context.Produits.SingleOrDefault(p=>p.ID == prod.ProduitID);
+                    if (produit.QuantiteEmballage < prod.Quantite)
+                    {
+                        TempData["prodNotDispo"] += "Produit : " + produit.Denomination + " plus suffisament en stock,";
+                    }
                 }
+                if (!(TempData["prodNotDispo"].Equals("")))
+                {
+                    return RedirectToAction("Index","Paniers");
+                }
+                CommandeAdresseAdaptateur addadp = new CommandeAdresseAdaptateur();
+                addadp.ListeAdresse =  _context.Adresses.Include(a => a.DomicileClient).Where(a=>a.DomicileClient.Any(p=>p.RegisterViewModelID == IdUser)).ToList();
+                if (addadp.ListeAdresse.Count <= 0 )
+                {
+                    addadp.ListeAdresse.Add(new Adresse());
+                }
+                return View(addadp);
             }
-            if (!(TempData["prodNotDispo"].Equals("")))
-            {
-                return RedirectToAction("Index","Paniers");
-            }
-            CommandeAdresseAdaptateur addadp = new CommandeAdresseAdaptateur();
-            addadp.ListeAdresse =  _context.Adresses.Include(a => a.DomicileClient).Where(a=>a.DomicileClient.Any(p=>p.RegisterViewModelID == IdUser)).ToList();
-            if (addadp.ListeAdresse.Count <= 0 )
-            {
-                addadp.ListeAdresse.Add(new Adresse());
-            }
-            return View(addadp);
+            return NotFound();
         }
 
         // POST: Commandes/Create

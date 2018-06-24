@@ -7,6 +7,9 @@ module.exports = function (callback, html) {
                 content: html,
                 engine: 'jsrender',
                 recipe: 'phantom-pdf'
+            },
+            "phantom-pdf": {
+                "allowLocalFilesAccess": true
             }
         }).then(function (resp) {
             callback(null, resp.content.toJSON().data);

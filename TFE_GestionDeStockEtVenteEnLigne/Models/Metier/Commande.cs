@@ -12,7 +12,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public int? ClientID { get; set; }
         public String RegisterViewModelID { get; set; }
         public int? AdresseID { get; set; }
-        [Display(Name = "Date de coommande")]
+        [Display(Name = "Date de commande")]
         public DateTime DateCommade{ get; set; }
         [Display(Name = "Commande en cours")]
         public bool EnCours { get; set; }
