@@ -9,11 +9,14 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
     public class Adresse
     {
         public int ID { get; set; }
+        [Display(Name = "Localité")]
         public String Localite { get; set; }
         public String Rue { get; set; }
 
         [Range(0,int.MaxValue)]
+        [Display(Name = "Numéro")]
         public int Numero { get; set; }
+        [Display(Name = "Numéro de boite")]
         public String NumeroBoite { get; set; }
         public String Pays { get; set; }
 

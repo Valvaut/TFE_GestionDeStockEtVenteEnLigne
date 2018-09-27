@@ -16,11 +16,11 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public DateTime DateCommade{ get; set; }
         [Display(Name = "Commande en cours")]
         public bool EnCours { get; set; }
-        [Display(Name = "Commande envoyer")]
+        [Display(Name = "Commande envoyée")]
         public DateTime Envoie { get; set; }
 
         public virtual Facture Facture { get; set; }
-        [Display(Name = "adresse de facturation")]
+        [Display(Name = "Adresse de facturation")]
         public Adresse AdresseFacturation { get; set; }
         public Client Client{ get; set; }
         public ICollection<Possede> Possede { get; set; }

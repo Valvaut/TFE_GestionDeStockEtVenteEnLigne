@@ -5,11 +5,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<h2>Edition</h2>
 
 <form asp-action="Edit">
     <div class="form-horizontal">
-        <h4>ApplicationUser</h4>
+        @*<h4>ApplicationUser</h4>*@
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
@@ -106,7 +106,7 @@
                 <span asp-validation-for="ConcurrencyStamp" class="text-danger"></span>
             </div>
         </div>*@
-        <div class="form-group">
+        @*<div class="form-group">
             <label asp-for="PhoneNumber" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <input asp-for="PhoneNumber" class="form-control" />
@@ -120,7 +120,7 @@
                     <label asp-for="PhoneNumberConfirmed"></label>
                 </div>
             </div>
-        </div>
+        </div>*@
         @*<div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <div class="checkbox">
@@ -153,13 +153,13 @@
         </div>*@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Sauvegarde" class="btn btn-default" />
             </div>
         </div>
     </div>
 </form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Retour à la liste</a>
 </div>
 

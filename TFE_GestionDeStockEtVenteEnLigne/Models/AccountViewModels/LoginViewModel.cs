@@ -17,7 +17,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models.AccountViewModels
         [Display(Name="Mot de passe")]
         public string Password { get; set; }
 
-        [Display(Name = "souvenir des informations")]
+        [Display(Name = "Se souvenir des informations")]
         public bool RememberMe { get; set; }
     }
 }

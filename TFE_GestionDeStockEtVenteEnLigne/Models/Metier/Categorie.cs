@@ -15,7 +15,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public ICollection<Produit> Produits { get; set; }
         [Display(Name = "Catégories Enfants")]
         public ICollection<Categorie> CategorieEnfant { get; set; }
-        [Display(Name = "Catégorie Parents")]
+        [Display(Name = "Catégorie Parent")]
         public virtual Categorie CategorieParent { get; set; }
 
       

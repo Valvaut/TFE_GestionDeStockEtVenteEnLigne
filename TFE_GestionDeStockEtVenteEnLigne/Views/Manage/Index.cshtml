@@ -3,7 +3,7 @@
     ViewData["Title"] = "Mon Profil";
 }
 
-<h2>@ViewData["Title"].</h2>
+<h2>@ViewData["Title"]</h2>
 <p class="text-success">@ViewData["StatusMessage"]</p>
 
 <div>
@@ -26,11 +26,11 @@
         <dd>
             @ViewData["prenom"]
         </dd>
-        <dt>Password:</dt>
+        <dt>Mot de passe:</dt>
         <dd>
             @if (Model.HasPassword)
             {
-                <a asp-controller="Manage" asp-action="ChangePassword" class="btn-bracketed">Change</a>
+                <a asp-controller="Manage" asp-action="ChangePassword" class="btn-bracketed">Modifier</a>
             }
             else
             {

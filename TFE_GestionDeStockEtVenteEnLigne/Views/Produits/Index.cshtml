@@ -1,22 +1,63 @@
 ﻿@model IEnumerable<TFE_GestionDeStockEtVenteEnLigne.Models.Produit>
-
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Index";
 }
 
 
-<div class="flexbox "> @*myCenter*@
+<div class="flexbox ">
+    @*myCenter*@
 
-    <div class="myCenterSearch">
-        @await Component.InvokeAsync("Recherche")
+
+    <div class="myCenterSearch ">
+        <div class="hidden-xs">
+            <div class="myborder ">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="">
+                        <ul class="connexion">
+                            <li>
+                                <a class="colorBlue btnConf btn  btn-lg btngrad" asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Mon Profil</a>@*@ Hello UserManager.GetUserName(User)*@
+                            </li>
+                            <li>
+                                <button type="submit" class="btn  btn-lg btnConf btngrad">Déconnexion</button> @*navbar-link btn-link*@
+                            </li>
+                        </ul>
+                    </form>
+                }
+                else
+                {
+                    <ul class="connexion">
+                        <li>
+                            <a class="colorBlue btnConf btn  btn-lg btngrad" asp-area="" asp-controller="Account" asp-action="Register">S'inscrire</a>
+                        </li>
+                        <li>
+                            <a class="colorBlue btnConf btn  btn-lg btngrad" asp-area="" asp-controller="Account" asp-action="Login">Connexion</a>
+                        </li>
+                    </ul>
+
+                }
+
+            </div>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="myborder">
+                    @await Html.PartialAsync("_PanierView")
+                </div>
+            }
+        </div>
+        <div class="myborder">
+            @await Component.InvokeAsync("Recherche")
+        </div>
     </div>
-   
+
     <div class="col-lg-12">
         <h2>Nos produits</h2>
         <div class="row">
             @ViewData["passtock"]
         </div>
-        
+
 
         @if (@ViewData["cat"] != null)
         {
@@ -31,135 +72,138 @@
         {
             if (User.IsInRole("gestionnaire"))
             {
-            <p>
-                <a asp-action="Create">Nouveau</a> |
-                <a  asp-action="Index" asp-route-qte="0">produits en rupture de stock</a>
-            </p>
+                <p>
+                    <a asp-action="Create">Nouveau</a> |
+                    <a asp-action="Index" asp-route-qte="0">produits en rupture de stock</a>
+                </p>
             }
         }
         @*<form asp-action="Index" method="get">
-            <div class="form-action no-color">
-                <p>
-                    Find: <input type="text" name="SearchStr" value="@ViewData["Filter"]" />
-                    <input type="submit" value="Search" class="btn btn-default" />
-                </p>
-            </div>
-        </form>*@
+                <div class="form-action no-color">
+                    <p>
+                        Find: <input type="text" name="SearchStr" value="@ViewData["Filter"]" />
+                        <input type="submit" value="Search" class="btn btn-default" />
+                    </p>
+                </div>
+            </form>*@
         @*<table class="table ">
-            <thead>
-                <tr>
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.RefSort">
-                            @Html.DisplayNameFor(model => model.Ref)
-                        </a>
-                    </th>
-                    <th>
-                        <a asp-action="Index" asp-route-sortOrder="@ViewBag.DenoSort">
-                            @Html.DisplayNameFor(model => model.Denomination)
-                        </a>
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Prix)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.QuantiteEmballage)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.NBPieceEmballage)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TVA)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.CompteCompta)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Marque)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.QuantiteStock)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Image)
-                    </th>
-                    <th>
-                        <span>Image</span>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                 {
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Ref)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Denomination)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Prix)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.QuantiteEmballage)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NBPieceEmballage)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TVA)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CompteCompta)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Marque)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.QuantiteStock)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Image)
-                        </td>
-
-                        <td>
-                            @{
-                                var base64 = Convert.ToBase64String(item.Image);
-                                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-                            }
-                            <img class="imagePetite" src="@imgSrc" id="myBtn" />
-                            <div id="myModal" class="modal">
-                                <div class="modal-content">
-                                    <span class="close">&times;</span>
-                                    <img src="@imgSrc" class="imageGrande" />
-                                </div>
-                            </div>
-                        </td>
-                         <td>
-                        <a asp-action="Details" asp-route-id="@item.ID">Details</a>
-                        @if (User.Identity.IsAuthenticated)
-                         {
-                            if (User.IsInRole("gestionnaire"))
-                            {
-                                <span> |</span> <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
-                            }
-                            <form asp-controller="Account" asp-action="AddPanier" asp-route-id="@item.ID" method="post">
-                                <input type="number" name="Quantite" min="1" />
-                                <input type="submit" value="Ajouter au panier" class="btn btn-default" />
-                            </form>
-                         }
-                        </td>
+                        <th>
+                            <a asp-action="Index" asp-route-sortOrder="@ViewBag.RefSort">
+                                @Html.DisplayNameFor(model => model.Ref)
+                            </a>
+                        </th>
+                        <th>
+                            <a asp-action="Index" asp-route-sortOrder="@ViewBag.DenoSort">
+                                @Html.DisplayNameFor(model => model.Denomination)
+                            </a>
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Prix)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.QuantiteEmballage)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NBPieceEmballage)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TVA)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CompteCompta)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Marque)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.QuantiteStock)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Image)
+                        </th>
+                        <th>
+                            <span>Image</span>
+                        </th>
                     </tr>
-                 }
-            </tbody>
-        </table>*@
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                     {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Ref)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Denomination)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Prix)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.QuantiteEmballage)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NBPieceEmballage)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TVA)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CompteCompta)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Marque)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.QuantiteStock)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Image)
+                            </td>
 
+                            <td>
+                                @{
+                                    var base64 = Convert.ToBase64String(item.Image);
+                                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                }
+                                <img class="imagePetite" src="@imgSrc" id="myBtn" />
+                                <div id="myModal" class="modal">
+                                    <div class="modal-content">
+                                        <span class="close">&times;</span>
+                                        <img src="@imgSrc" class="imageGrande" />
+                                    </div>
+                                </div>
+                            </td>
+                             <td>
+                            <a asp-action="Details" asp-route-id="@item.ID">Details</a>
+                            @if (User.Identity.IsAuthenticated)
+                             {
+                                if (User.IsInRole("gestionnaire"))
+                                {
+                                    <span> |</span> <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
+                                }
+                                <form asp-controller="Account" asp-action="AddPanier" asp-route-id="@item.ID" method="post">
+                                    <input type="number" name="Quantite" min="1" />
+                                    <input type="submit" value="Ajouter au panier" class="btn btn-default" />
+                                </form>
+                             }
+                            </td>
+                        </tr>
+                     }
+                </tbody>
+            </table>*@
+        @if (Model.ToList().Count == 0)
+        {
+            <h1>Aucun produit pour le moment</h1>
+        }
         @foreach (var item in Model)
         {
             <div class="panel panel-default col-lg-3 col-md-6 col-sm-12">
@@ -188,7 +232,7 @@
                             }
                             <form asp-controller="Account" asp-action="AddPanier" asp-route-id="@item.ID" method="post">
                                 <input class="col-lg-12 " type="number" name="Quantite" min="1" placeholder="Qté emballages voulue" required />
-                                <input class="col-lg-12 btn btn-default textRed" type="submit" value="Ajouter au panier" />
+                                <input class="col-lg-12 btn btn-default colorBlue" type="submit" value="Ajouter au panier" />
                             </form>
                         }
                     </div>
@@ -201,30 +245,30 @@
 </div>
 
 <script>
-//image
-// Get the modal
-var modal = document.getElementById('myModal');
+    //image
+    // Get the modal
+    var modal = document.getElementById('myModal');
 
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks the button, open the modal
-btn.onclick = function() {
-    modal.style.display = "block";
-}
+    // When the user clicks the button, open the modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
         modal.style.display = "none";
     }
-}
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
 </script>

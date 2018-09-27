@@ -26,7 +26,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public double Prix { get; set; }
 
         [Range(0, int.MaxValue)]
-        [Display(Name = "Quantité d'emballage en stock")]
+        [Display(Name = "Quantité d'emballages en stock")]
         public int QuantiteEmballage { get; set; }
 
         [Range(0, int.MaxValue)]
@@ -45,11 +45,11 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public String Marque { get; set; }
 
         [Range(0, int.MaxValue)]
-        [Display(Name = "Quantité envrack")]
+        [Display(Name = "Quantité en vrac")]
         public int QuantiteStock { get; set; }
 
         [Range(0, int.MaxValue)]
-        [Display(Name = "Quantité Total")]
+        [Display(Name = "Quantité totale")]
         public int QuantiteStockTotal { get; set; }
 
         public Byte[] Image { get; set; }

@@ -1,74 +1,158 @@
 ﻿@using TFE_GestionDeStockEtVenteEnLigne.Controllers
 @model TFE_GestionDeStockEtVenteEnLigne.Models.HorraireEventAdapter
+@using Microsoft.AspNetCore.Identity
+@using TFE_GestionDeStockEtVenteEnLigne.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Accueil";
 }
 
-<div class="flexbox ">
+<div class="flexbox">
     <div class="myCenterSearch ">
-        @await Component.InvokeAsync("Recherche")
-    </div>
+        <div class="hidden-xs">
+            <div class="myborder ">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="">
+                        <ul class="connexion">
+                            <li>
+                                <a class="colorBlue btnConf btn  btn-lg btngrad" asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Mon Profil</a>@*@ Hello UserManager.GetUserName(User)*@
+                            </li>
+                            <li>
+                                <button type="submit" class="btn  btn-lg btnConf btngrad">Déconnexion</button> @*navbar-link btn-link*@
+                            </li>
+                        </ul>
+                    </form>
+                }
+                else
+                {
+                    <ul class="connexion">
+                        <li>
+                            <a class="colorBlue btnConf btn  btn-lg btngrad" asp-area="" asp-controller="Account" asp-action="Register">S'inscrire</a>
+                        </li>
+                        <li>
+                            <a class="colorBlue btnConf btn  btn-lg btngrad" asp-area="" asp-controller="Account" asp-action="Login">Connexion</a>
+                        </li>
+                    </ul>
 
-    <div class="myCenterCorps ">
-        <div class="enteteAccueil"><h2>L'Espace Du Petit Futé</h2></div>@*class="borderDown"*@
+                }
+
+            </div>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="myborder">
+                    @await Html.PartialAsync("_PanierView")
+                </div>
+            }
+        </div>
+        <div class="myborder">
+            @await Component.InvokeAsync("Recherche")
+        </div>
+    </div>
+    <div class="myCenterCorps">
+        <div class="enteteAccueil colorBlue">
+            <div class="row">
+                <div class="col-xs-2"></div>
+                <div class="col-xs-8" style="padding-right : 0px;">
+                    <h2 class="grad">L'Espace du Petit Futé</h2>
+                    <h3>Pour vos loisirs créatifs</h3>
+                </div>
+                <img class="col-sm-2 myHidden" src="~/images/Depuis1997.png" />
+            </div>
+        </div>@*class="borderDown"*@
 
         <div class="corpsAccueil">
-            <div class="grad colorBlue bienvenue">Nous vous souhaitons la bienvenue</div>
-            <h3 class="colorBlue">Nous rendre visite</h3>
-            <table class="colorBlue textCenter info marginAuto">
-                <tbody>
-                    @foreach (var item in Model.Horraire)
-                    {
-                        <tr>
-                            <td>
-                                Lundi @Html.DisplayFor(modelItem => item.Lundi)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Mardi @Html.DisplayFor(modelItem => item.Mardi)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Mercredi @Html.DisplayFor(modelItem => item.Mercredi)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Jeudi @Html.DisplayFor(modelItem => item.Jeudi)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Vendredi @Html.DisplayFor(modelItem => item.Vendredi)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Samedi @Html.DisplayFor(modelItem => item.Samedi)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Dimanche @Html.DisplayFor(modelItem => item.Dimanche)
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            <div class="colorBlue info">
-                <h3>Nous Contacter</h3>
+            <div class="row" style="justify-content : space-around;">
+                <br /><br />
+                @* bienvenue *@
+                <div class="col-sm-12">
+                    <div class="col-sm-1"></div>
+                    <div class="grad colorBlue bienvenue col-sm-10 ">Nous vous souhaitons la bienvenue</div>
+                </div>
+                <div class="myHidden"><br /><br /><br /><br /><br /></div>
+                @* Construction *@
+                <div class="col-sm-12 colorBlue">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-4 col-xs-12">
+                        <h3>Inventaire en cours</h3>
+                        <h4>De nouveaux articles sont ajoutés chauqe jour</h4>
+                    </div>
+                    <div class="col-sm-2"></div>
+                    <img class="col-sm-3 col-xs-12" src="~/images/page_en_construction.gif" />
+                </div>
+                @* Nounours *@
+                <div class="col-sm-12 col-xs-12">
+                   <div class="myHidden"> <br /><br /></div>
+                    <div class="col-sm-2"></div>
+                    <img class="col-sm-4 col-xs-12 myHidden" src="~/images/Petits-ours-feutrine.png" />
 
-                <span>A-kreides, 43 </span><br />
-                <span>6700 Toernich - Arlon</span><br />
-                <span> Belgique </span><br />
-                <br />
-                <span>Tel : 0032 (0)63 236133</span><br />
-                <div class="col-sm-12" style="word-break: break-word">E-mail : michele.tinant@skynet.be</div><br />
+                    <table class="colorBlue textCenter info marginAuto col-sm-6 col-xs-12">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <h3 class="colorBlue col">Nous rendre visite</h3>
+                                </td>
+                            </tr>
+                            @foreach (var item in Model.Horraire)
+                            {
+                                <tr>
+                                    <td>
+                                        Lundi @Html.DisplayFor(modelItem => item.Lundi)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Mardi @Html.DisplayFor(modelItem => item.Mardi)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Mercredi @Html.DisplayFor(modelItem => item.Mercredi)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Jeudi @Html.DisplayFor(modelItem => item.Jeudi)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Vendredi @Html.DisplayFor(modelItem => item.Vendredi)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Samedi @Html.DisplayFor(modelItem => item.Samedi)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Dimanche @Html.DisplayFor(modelItem => item.Dimanche)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <img class="col-sm-4 col-xs-12 myHiddenInverse" src="~/images/Petits-ours-feutrine.png" />
+                </div>
+                @* bonhomme *@
+                <div class="colorBlue info col-sm-12">
+                    <div class="col-sm-7">
+                        <h3>Nous Contacter</h3>
+                        <span>A-kreides, 43 </span><br />
+                        <span>6700 Toernich - Arlon</span><br />
+                        <span> Belgique </span><br />
+                        <span>BE 0724 400 552</span><br />
+                        <span>Tel : +32 (0)63 236133</span><br />
+                        <div class="col-sm-12" style="word-break: break-word">E-mail : contact@lespacedupetifute.be</div>
+                        <div class="myHidden"></div><br /></div>
+                    <img class="col-sm-4 col-xs-12" src="~/images/Poupées Fimo.png" />
+                </div>
             </div>
         </div>
     </div>
-    
+
 </div>

@@ -11,6 +11,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         public int RepresentantID { get; set; }
         public int FournisseurID { get; set; }
 
+
         public Fournisseur Fournisseur { get; set; }
         public Representant Representant { get; set; }
     }

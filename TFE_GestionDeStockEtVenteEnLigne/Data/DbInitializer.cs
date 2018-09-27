@@ -22,7 +22,7 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Data
 
             var Horraire = new Horraire[]
             {
-                new Horraire{Lundi="10-19",Mardi="10-19",Mercredi="10-19",Jeudi="10-19",Vendredi="10-19",Samedi="Sur Rendez-vous",Dimanche="Fermer" }
+                new Horraire{Lundi="10-19",Mardi="10-19",Mercredi="10-19",Jeudi="10-19",Vendredi="10-19",Samedi="Sur Rendez-vous",Dimanche="Fermé" }
             };
             foreach (Horraire h in Horraire)
             {

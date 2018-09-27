@@ -21,11 +21,11 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
         [Range(0, int.MaxValue)]
         [Display(Name = "Taux de TVA")]
         public int TauxTVA { get; set; }
-
+        [Display(Name = "Taux TVA ?")]
         public TauxTVA TauxTVAObjet {get;set;}
 
         [Range(0, int.MaxValue)]
-        [Display(Name = "Quantité a commandé au mminimum")]
+        [Display(Name = "Quantité à commander au mminimum")]
         public int QuantiteMinCommande { get; set; }
 
         public Produit Produit { get; set; }

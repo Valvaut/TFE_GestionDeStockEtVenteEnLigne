@@ -103,8 +103,8 @@ function selectAdresse()
     pays.value = tab[4];
     var codepostal = document.getElementById("codepostal");
     codepostal.value = tab[5];
-    var comune = document.getElementById("comune");
-    comune.value = tab[6];
+    //var comune = document.getElementById("comune");
+    //comune.value = tab[6];
 }
 
 function afficherImage()

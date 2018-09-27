@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -12,9 +13,11 @@ namespace TFE_GestionDeStockEtVenteEnLigne.Models
     public class ApplicationUser : IdentityUser
     {
         public String Nom { get; set; }
+        [Display(Name = "Prénom")]
         public String Prenom { get; set; }
-
+        [Display(Name = "Numéro de TVA")]
         public String NumTva { get; set; }
+        [Display(Name = "Téléphone")]
         public String Tel { get; set; }
         public bool Newsletter { get; set; }
         public bool Actif { get; set; }

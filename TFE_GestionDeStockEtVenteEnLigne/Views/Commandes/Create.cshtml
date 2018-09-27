@@ -6,20 +6,21 @@
 
 <h2>Adresse de facturation</h2>
 <form asp-action="Create">
+
     <div class="form-horizontal">
         <hr />
 
-        <div class="form-group">
+        @*<div class="form-group">
             <label class="col-md-3 control-label">Enlèvement en magasin?</label>
-            <div class="col-md-9">
+            <div class="col-md-9">*@
                 @*@Html.CheckBox("enlevementMagasin", false)*@
-                <div><input id="enlevementMagasin" type="checkbox" name="enlevementMagasin" class="moncheckbox" value="true" onchange="afficherAdd()"> <div id="Livraison">Oui</div></div>
+                @*<div><input id="enlevementMagasin" type="checkbox" name="enlevementMagasin" class="moncheckbox" value="true" onchange="afficherAdd()"> <div id="Livraison">Oui</div></div>
             </div>
-        </div>
+        </div>*@
 
         <div id="add" class="monPanier">
             <div class="form-group">
-                <label class="col-md-2 control-label">Vos adresse :</label>
+                <label class="col-md-2 control-label">Vos adresses :</label>
                 <div class="col-md-10">
                     <select id="selectadr" onchange="selectAdresse()" asp-for="Adresse" class="selectpicker">
                         @foreach (var adr in Model.ListeAdresse)
@@ -72,13 +73,13 @@
                     <span asp-validation-for="Adresse.CodePostal" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="Adresse.Comune" class="col-md-2 control-label">Commune*</label>
                 <div class="col-md-10">
                     <input id="comune" asp-for="Adresse.Comune" class="form-control" value="@Model.ListeAdresse[0].Comune" required />
                     <span asp-validation-for="Adresse.Comune" class="text-danger"></span>
                 </div>
-            </div>
+            </div>*@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -89,7 +90,7 @@
 </form>
 
 <div>
-    <a asp-controller="Paniers" asp-action="Index">Anuler</a>
+    <a asp-controller="Paniers" asp-action="Index">Annuler</a>
 </div>
 
 @section Scripts {
